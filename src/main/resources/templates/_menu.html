@@ -1,0 +1,14 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <a th:href="@{/my-profile}">My Profile</a>
+
+    | &nbsp;
+
+    <div sec:authorize="isAuthenticated()">
+        <a th:if="${#request.userPrincipal != null}"
+           href="javascript: document.logoutForm.submit()">Logout</a>
+        <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+            <input hidden type="submit" value="Sign Out" />
+        </form>
+    </div>
+</div>
