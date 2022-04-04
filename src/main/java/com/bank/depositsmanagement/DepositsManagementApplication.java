@@ -21,7 +21,7 @@ public class DepositsManagementApplication {
 //	 		repository.save(
 //					User.builder()
 //							.username("admin")
-//							.password(new EncrytedPasswordUtils().encryptPassword("12345678"))
+//							.password(EncrytedPasswordUtils.encryptPassword("12345678"))
 //							.role("ROLE_ADMIN")
 //							.isActive(true)
 //							.build()
@@ -30,7 +30,7 @@ public class DepositsManagementApplication {
 //			repository.save(
 //					User.builder()
 //							.username("user1")
-//							.password(new EncrytedPasswordUtils().encryptPassword("12345678"))
+//							.password(EncrytedPasswordUtils.encryptPassword("12345678"))
 //							.role("ROLE_USER")
 //							.isActive(true)
 //							.build()
