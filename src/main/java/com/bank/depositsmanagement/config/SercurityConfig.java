@@ -19,11 +19,14 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SercurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private DataSource dataSource;
+    private final DataSource dataSource;
+
+    public SercurityConfig(UserService userService, DataSource dataSource) {
+        this.userService = userService;
+        this.dataSource = dataSource;
+    }
 
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -40,6 +43,7 @@ public class SercurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/admin","/admin/**").hasRole("ADMIN")
+                .antMatchers("/user","user/**").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
             .exceptionHandling()
@@ -63,11 +67,6 @@ public class SercurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenRepository(this.persistentTokenRepository())
                 .tokenValiditySeconds(24 * 60 * 60); // 24h
     }
-
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring().antMatchers("/static/**");
-//    }
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {

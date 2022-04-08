@@ -17,15 +17,17 @@ import java.util.List;
 @Service
 public class UserService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
 
-        if (user == null || user.isActive() != true) {
-            System.out.println("User not found! " + username);
+        if (user == null || !user.isActive()) {
             throw new UsernameNotFoundException("User not found! " + username);
         }
 
@@ -36,8 +38,6 @@ public class UserService implements UserDetailsService {
         GrantedAuthority authority = new SimpleGrantedAuthority(role);
         grantList.add(authority);
 
-        UserDetails userDetails = (UserDetails) new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),grantList);
-
-        return userDetails;
+        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),grantList);
     }
 }

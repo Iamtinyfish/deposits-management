@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Add Customer</title>
+	<style>
+		.form-table {
+			text-align: left;
+		}
+	</style>
+</head>
+
+<body>
+	<th:block th:include="/common/_menu"/>
+	<br>
+	<th:block th:include="/common/_sidebar"/>
+	<br>
+	<h2>Customer</h2>
+
+	<form method="post" th:action="@{/user/customer/add}" th:object="${customer}">
+		<table class="form-table">
+			<tr>
+				<th><label for="firstName">First name</label></th>
+				<td>:</td>
+				<td><input id="firstName" th:field="*{firstName}" type="text"/></td>
+			</tr>
+			<tr>
+				<th><label for="lastName">Last name:</label></th>
+				<td>:</td>
+				<td><input id="lastName" th:field="*{lastName}" type="text"/></td>
+			</tr>
+			<tr>
+				<th><label for="genderRadio">Gender</label></th>
+				<td>:</td>
+				<td>
+					<ul id="genderRadio">
+						<li th:each="type : ${genderType}">
+							<label>
+								${type}
+								<input th:field="*{gender}" th:value="${type}" type="radio"/>
+							</label>
+						</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="birthday">Birthday</label></th>
+				<td>:</td>
+				<td><input id="birthday" th:field="*{birthday}" type="date"/></td>
+			</tr>
+			<tr>
+				<th><label for="IDCard">ID Card</label></th>
+				<td>:</td>
+				<td><input id="IDCard" th:field="*{IDCard}" type="number"/></td>
+			</tr>
+			<tr>
+				<th><label for="phone">Phone</label></th>
+				<td>:</td>
+				<td><input id="phone" th:field="*{phone}" type="number"/></td>
+			</tr>
+			<tr>
+				<th><label for="email">Email</label></th>
+				<td>:</td>
+				<td><input id="email" th:field="*{email}" type="email"/></td>
+			</tr>
+			<tr>
+				<th><label for="address">Address</label></th>
+				<td>:</td>
+				<td><input id="address" th:field="*{address}" type="text"/></td>
+			</tr>
+			<tr>
+				<ul th:if="${#fields.hasErrors('address')}">
+					<li th:each="err : ${#fields.errors('address')}" th:text="${err}">Input is incorrect</li>
+				</ul>
+			</tr>
+		</table>
+		<input type="submit" value="Submit"/>
+	</form>
+</body>
+
+</html>

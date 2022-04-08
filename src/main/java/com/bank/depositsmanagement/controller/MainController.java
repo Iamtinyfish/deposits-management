@@ -1,18 +1,29 @@
 package com.bank.depositsmanagement.controller;
 
+import com.bank.depositsmanagement.dao.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
+import java.util.Arrays;
 
 @Controller
 public class MainController {
 
-    @RequestMapping(value = {"/","/login"}, method = RequestMethod.GET)
+    private final UserRepository userRepository;
+
+    public MainController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @GetMapping({"/","/login"})
     public String loginPage(Model model, Principal principal) {
 
         if (principal != null) return "my-profile";
@@ -20,44 +31,42 @@ public class MainController {
         return "login";
     }
 
-    @RequestMapping(value = {"/admin"}, method = RequestMethod.GET)
-    public String adminPage(Model model, Principal principal) {
-
-        User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
-        model.addAttribute("user", loginedUser);
+    @GetMapping("/admin")
+    public String adminPage(Model model) {
 
         return "admin";
     }
 
-    @RequestMapping(value = "/my-profile", method = RequestMethod.GET)
-    public String myProfilePage(Model model, Principal principal) {
+    @GetMapping("/my-profile")
+    public String myProfilePage(Model model) {
 
         // Sau khi user login thanh cong se co principal
-//        String username = principal.getName();
+//        User loggedUser = (User) ((Authentication) principal).getPrincipal();
 //
-//        System.out.println("Username: " + username);
+//        model.addAttribute("user", loggedUser);
 
-        User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
-        model.addAttribute("user", loginedUser.toString());
+//        System.out.println(loggedUser.getAuthorities().toArray()[0]);
 
         return "my-profile";
     }
 
-    @RequestMapping(value = "/403", method = RequestMethod.GET)
+    @GetMapping("/user")
+    public String userPage(Model model) {
+
+        return "user";
+    }
+
+    @GetMapping("/403")
     public String accessDenied(Model model, Principal principal) {
 
         if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
-            model.addAttribute("user", loginedUser);
 
             String message = "Hi " + principal.getName() //
                     + "<br> You do not have permission to access this page!";
             model.addAttribute("message", message);
-        }
 
-        return "403";
+            return "403";
+        } else
+            return "login";
     }
 }

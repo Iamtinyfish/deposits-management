@@ -79,10 +79,9 @@ public class Employee {
 	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;
-	
-	@NotNull
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "position_id", nullable = false)
+
+	@ManyToOne
+	@JoinColumn(name = "position_id")
 	private Position position;
 	
 	@NotNull
@@ -98,7 +97,11 @@ public class Employee {
 	private Set<Transaction> transactionSet;
 
 	@PrePersist
-	void createdAt() {
-		this.createdAt = LocalDateTime.now();
+	public void setTimeInfo() {
+		LocalDateTime now = LocalDateTime.now();
+		if (this.createdAt == null) {
+			this.createdAt = now;
+		}
+		this.lastModifiedAt = now;
 	}
 }

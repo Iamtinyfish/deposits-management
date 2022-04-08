@@ -1,6 +1,5 @@
 package com.bank.depositsmanagement.entity;
 
-
 import lombok.*;
 import org.springframework.format.annotation.NumberFormat;
 

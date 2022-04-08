@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer</title>
+</head>
+
+<body>
+    <th:block th:include="/common/_menu"/><br>
+    <th:block th:include="/common/_sidebar"/><br>
+    <h2>Customer</h2>
+    <form th:action="@{/user/customer/search}" method="get">
+        <input name="IDCard" type="number"/>
+        <input type="submit" name="go" value="go">
+    </form>
+</body>
+
+</html>

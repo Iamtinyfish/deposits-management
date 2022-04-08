@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -17,7 +18,6 @@ public class Branch {
 
 	@Id
 	@GeneratedValue
-	@Column(nullable = false)
 	private Long id;
 
 	@NotBlank

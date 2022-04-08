@@ -2,6 +2,8 @@ package com.bank.depositsmanagement.entity;
 
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Indexed;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -17,17 +19,18 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "customer")
+@Indexed
 @Getter
 @Setter
 public class Customer {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	@Column(nullable = false)
 	@NotBlank
 	private String firstName;
-	
+
 	@Column(nullable = false)
 	@NotBlank
 	private String lastName;
@@ -40,6 +43,7 @@ public class Customer {
 	@NotNull
 	@Column(nullable = false)
 	@PastOrPresent
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthday;
 	
 	@NotBlank
@@ -52,6 +56,7 @@ public class Customer {
 	@Column(nullable = false, length = 20)
 	private String phone;
 
+	@NotBlank
 	@Column(unique = true)
 	@Email
 	private String email;
@@ -60,26 +65,27 @@ public class Customer {
 	@NotBlank
 	private String address;
 
-	@NotNull
 	@Column(nullable = false)
 	@PastOrPresent
 	private LocalDateTime createdAt;
 
-	@NotNull
 	@Column(nullable = false)
 	@PastOrPresent
 	private LocalDateTime lastModifiedAt;
 
-	@NotNull
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "last_modified_by", nullable = false)
 	private Employee lastModifiedBy;
 
 	@OneToMany(mappedBy = "holder")
-	private Set<DepositAccount> depositAccountSet;
+	private Set<DepositAccount> depositAccountSet = new java.util.LinkedHashSet<>();
 
 	@PrePersist
-	void createdAt() {
-		this.createdAt = LocalDateTime.now();
+	public void setTimeInfo() {
+		LocalDateTime now = LocalDateTime.now();
+		if (this.createdAt == null) {
+			this.createdAt = now;
+		}
+		this.lastModifiedAt = now;
 	}
 }
