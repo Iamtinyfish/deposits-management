@@ -25,10 +25,6 @@ public class DepositAccount {
 	@JoinColumn(name = "holder_id", nullable = false)
 	private Customer holder;
 
-	@ManyToOne
-	@JoinColumn(name = "deposit_type_id")
-	private DepositType depositType;
-
 	@Column(nullable = false)
 	private float interestRate;
 

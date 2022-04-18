@@ -25,44 +25,84 @@
 				<td><input id="firstName" th:field="*{firstName}" type="text"/></td>
 			</tr>
 			<tr>
+				<ul th:if="${#fields.hasErrors('firstName')}">
+					<li th:each="err : ${#fields.errors('firstName')}" th:text="${err}">Input is incorrect</li>
+				</ul>
+			</tr>
+
+			<tr>
 				<th><label for="lastName">Last name:</label></th>
 				<td>:</td>
 				<td><input id="lastName" th:field="*{lastName}" type="text"/></td>
 			</tr>
+			<tr>
+				<ul th:if="${#fields.hasErrors('lastName')}">
+					<li th:each="err : ${#fields.errors('lastName')}" th:text="${err}">Input is incorrect</li>
+				</ul>
+			</tr>
+
 			<tr>
 				<th><label for="genderRadio">Gender</label></th>
 				<td>:</td>
 				<td>
 					<ul id="genderRadio">
 						<li th:each="type : ${genderType}">
-							<label>
-								${type}
-								<input th:field="*{gender}" th:value="${type}" type="radio"/>
-							</label>
+							<label th:for="${type}" th:utext="${type}"></label>
+							<input th:field="*{gender}" th:value="${type}" type="radio"/>
 						</li>
 					</ul>
 				</td>
 			</tr>
+			<tr>
+				<ul th:if="${#fields.hasErrors('gender')}">
+					<li th:each="err : ${#fields.errors('gender')}" th:text="${err}">Input is incorrect</li>
+				</ul>
+			</tr>
+
 			<tr>
 				<th><label for="birthday">Birthday</label></th>
 				<td>:</td>
 				<td><input id="birthday" th:field="*{birthday}" type="date"/></td>
 			</tr>
 			<tr>
+				<ul th:if="${#fields.hasErrors('birthday')}">
+					<li th:each="err : ${#fields.errors('birthday')}" th:text="${err}">Input is incorrect</li>
+				</ul>
+			</tr>
+
+			<tr>
 				<th><label for="IDCard">ID Card</label></th>
 				<td>:</td>
 				<td><input id="IDCard" th:field="*{IDCard}" type="number"/></td>
 			</tr>
+			<tr>
+				<ul th:if="${#fields.hasErrors('IDCard')}">
+					<li th:each="err : ${#fields.errors('IDCard')}" th:text="${err}">Input is incorrect</li>
+				</ul>
+			</tr>
+
 			<tr>
 				<th><label for="phone">Phone</label></th>
 				<td>:</td>
 				<td><input id="phone" th:field="*{phone}" type="number"/></td>
 			</tr>
 			<tr>
+				<ul th:if="${#fields.hasErrors('phone')}">
+					<li th:each="err : ${#fields.errors('phone')}" th:text="${err}">Input is incorrect</li>
+				</ul>
+			</tr>
+
+			<tr>
 				<th><label for="email">Email</label></th>
 				<td>:</td>
 				<td><input id="email" th:field="*{email}" type="email"/></td>
 			</tr>
+			<tr>
+				<ul th:if="${#fields.hasErrors('email')}">
+					<li th:each="err : ${#fields.errors('email')}" th:text="${err}">Input is incorrect</li>
+				</ul>
+			</tr>
+
 			<tr>
 				<th><label for="address">Address</label></th>
 				<td>:</td>
@@ -73,6 +113,7 @@
 					<li th:each="err : ${#fields.errors('address')}" th:text="${err}">Input is incorrect</li>
 				</ul>
 			</tr>
+
 		</table>
 		<input type="submit" value="Submit"/>
 	</form>

@@ -89,7 +89,6 @@
 			<tr th:each="depositAccount : ${customer.getDepositAccountSet()}">
 				<td th:text="${depositAccount.id}"></td>
 				<td th:text="${depositAccount.balance}"></td>
-				<td th:text="${depositAccount.depositType}"></td>
 			</tr>
 		</tbody>
 	</table>

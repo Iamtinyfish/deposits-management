@@ -35,12 +35,12 @@ public class Customer {
 	@NotBlank
 	private String lastName;
 
-	@NotNull
+	@NotBlank
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private GenderType gender;
 
-	@NotNull
+	@NotBlank
 	@Column(nullable = false)
 	@PastOrPresent
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

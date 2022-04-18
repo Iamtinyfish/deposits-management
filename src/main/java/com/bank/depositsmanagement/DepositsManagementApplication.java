@@ -4,14 +4,13 @@ import com.bank.depositsmanagement.dao.BranchRepository;
 import com.bank.depositsmanagement.dao.EmployeeRepository;
 import com.bank.depositsmanagement.dao.UserRepository;
 import com.bank.depositsmanagement.entity.*;
-import com.bank.depositsmanagement.utils.EncrytedPasswordUtils;
+import com.bank.depositsmanagement.utils.EncryptedPasswordUtils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @SpringBootApplication
 public class DepositsManagementApplication {
@@ -34,7 +33,7 @@ public class DepositsManagementApplication {
 //			User admin = userRepository.save(
 //					User.builder()
 //							.username("admin")
-//							.password(EncrytedPasswordUtils.encryptPassword("12345678"))
+//							.password(EncryptedPasswordUtils.encryptPassword("12345678"))
 //							.role("ROLE_ADMIN")
 //							.isActive(true)
 //							.build()
@@ -59,7 +58,7 @@ public class DepositsManagementApplication {
 //			User user1 = userRepository.save(
 //					User.builder()
 //							.username("user1")
-//							.password(EncrytedPasswordUtils.encryptPassword("12345678"))
+//							.password(EncryptedPasswordUtils.encryptPassword("12345678"))
 //							.role("ROLE_USER")
 //							.isActive(true)
 //							.build()
@@ -81,4 +80,5 @@ public class DepositsManagementApplication {
 //							.build());
 //		};
 //	}
+
 }
