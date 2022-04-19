@@ -1,12 +1,10 @@
 package com.bank.depositsmanagement.config;
 
 import com.bank.depositsmanagement.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,13 +15,13 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-public class SercurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
 
     private final DataSource dataSource;
 
-    public SercurityConfig(UserService userService, DataSource dataSource) {
+    public SecurityConfig(UserService userService, DataSource dataSource) {
         this.userService = userService;
         this.dataSource = dataSource;
     }
@@ -42,6 +40,7 @@ public class SercurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/css/**","/js/**").permitAll()
                 .antMatchers("/admin","/admin/**").hasRole("ADMIN")
                 .antMatchers("/user","user/**").hasRole("USER")
                 .anyRequest().authenticated()
