@@ -1,6 +1,31 @@
+
 <div xmlns:th="http://www.thymeleaf.org"
      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <a th:href="@{/my-profile}">My Profile | </a>
+     <nav class="navbar navbar-expand-lg navbar-dark bg-light">       
+            <a class="nav-link nav-item" style="color: gray;" th:href="@{/my-profile}" role="button"  >
+              My Profile
+            </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" style="color: gray;" href="#" id="productDropdown" role="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              User
+            </a>
+            <div class="dropdown-menu" aria-labelledby="productDropdown">
+              <a class="dropdown-item" th:href="@{'/user/customer'}" >Customer</a>
+ <!--             <a class="dropdown-item">Shoes</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>-->
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+<!--    <a th:href="@{/my-profile}">My Profile | </a>
 
     <a th:href="@{/admin}" sec:authorize="hasRole('ROLE_ADMIN')">Admin | </a>
 
@@ -10,5 +35,5 @@
        href="javascript: document.logoutForm.submit()">Logout</a>
     <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
         <input hidden type="submit" value="Sign Out" />
-    </form>
+    </form>-->
 </div>
