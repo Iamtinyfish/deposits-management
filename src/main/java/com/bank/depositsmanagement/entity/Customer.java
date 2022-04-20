@@ -35,11 +35,8 @@ public class Customer {
 	@NotBlank
 	private String lastName;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private GenderType gender;
-
+	private boolean gender;
 
 	@NotNull
 	@Column(nullable = false)

@@ -1,18 +1,13 @@
 package com.bank.depositsmanagement.controller;
 
 import com.bank.depositsmanagement.dao.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.core.userdetails.User;
+import com.bank.depositsmanagement.entity.Employee;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.util.Arrays;
 
 @Controller
 public class MainController {
@@ -24,9 +19,15 @@ public class MainController {
     }
 
     @GetMapping({"/","/login"})
-    public String loginPage(Model model, Principal principal) {
+    public String loginPage(Model model, Principal principal, HttpSession session) {
 
-        if (principal != null) return "my-profile";
+        if (principal != null) {
+            Employee employee = userRepository.findByUsername(principal.getName()).getEmployee();
+
+            session.setAttribute("myProfile", employee);
+
+            return "my-profile";
+        }
 
         return "login";
     }
@@ -38,14 +39,9 @@ public class MainController {
     }
 
     @GetMapping("/my-profile")
-    public String myProfilePage(Model model) {
+    public String myProfilePage(Model model, HttpSession session) {
 
-        // Sau khi user login thanh cong se co principal
-//        User loggedUser = (User) ((Authentication) principal).getPrincipal();
-//
-//        model.addAttribute("user", loggedUser);
-
-//        System.out.println(loggedUser.getAuthorities().toArray()[0]);
+        model.addAttribute("myProfile", session.getAttribute("myProfile"));
 
         return "my-profile";
     }
@@ -64,7 +60,6 @@ public class MainController {
             String message = "Hi " + principal.getName() //
                     + "<br> You do not have permission to access this page!";
             model.addAttribute("message", message);
-
             return "403";
         } else
             return "login";
