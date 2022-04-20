@@ -4,3 +4,11 @@ body {
     border: 0;
     font-size: 100%;
 }
+
+td{
+	color: red;
+}
+
+.title{
+	color: gray;
+}
