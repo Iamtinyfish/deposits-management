@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>Add Customer</title>
+	<title>New Customer</title>
 	<style>
 		.error-message {
 			color: red;
@@ -18,80 +18,14 @@
 	<br>
 	<th:block th:include="/common/_sidebar"/>
 	<br>
-	<h2>Customer</h2>
+
+	<h2>New Customer</h2>
 
 	<form method="post" th:action="@{/user/customer/add}" th:object="${customer}">
-		<div>
-			<label for="firstName">First name</label><br>
-			<input th:errorClass="error-input" id="firstName" th:field="*{firstName}" type="text" autofocus />
-			<ul th:if="${#fields.hasErrors('firstName')}">
-				<li th:each="err : ${#fields.errors('firstName')}" th:text="${err}">Input is incorrect</li>
-			</ul>
-		</div>
-
-		<div>
-			<label for="lastName">Last name</label><br>
-			<input th:errorClass="error-input" id="lastName" th:field="*{lastName}" type="text"/>
-			<ul th:if="${#fields.hasErrors('lastName')}">
-				<li th:each="err : ${#fields.errors('lastName')}" th:text="${err}">Input is incorrect</li>
-			</ul>
-		</div>
-
-		<div>
-			<label for="genderRadio">Gender</label>
-			<ul id="genderRadio">
-				<li th:each="type : ${genderType}">
-					<label th:for="${type}" th:utext="${type}"></label>
-					<input th:field="*{gender}" th:value="${type}" type="radio"/>
-				</li>
-			</ul>
-			<ul th:if="${#fields.hasErrors('gender')}">
-				<li th:each="err : ${#fields.errors('gender')}" th:text="${err}">Input is incorrect</li>
-			</ul>
-		</div>
-
-		<div>
-			<label for="birthday">Birthday</label><br>
-			<input th:errorClass="error-input" id="birthday" th:field="*{birthday}" type="date"/>
-			<ul th:if="${#fields.hasErrors('birthday')}">
-				<li th:each="err : ${#fields.errors('birthday')}" th:text="${err}">Input is incorrect</li>
-			</ul>
-		</div>
-
-		<div>
-			<label for="IDCard">ID Card</label><br>
-			<input th:errorClass="error-input" id="IDCard" th:field="*{IDCard}" type="number"/>
-			<ul th:if="${#fields.hasErrors('IDCard')}">
-				<li th:each="err : ${#fields.errors('IDCard')}" th:text="${err}">Input is incorrect</li>
-			</ul>
-		</div>
-
-		<div>
-			<label for="phone">Phone</label><br>
-			<input th:errorClass="error-input" id="phone" th:field="*{phone}" type="number"/>
-			<ul th:if="${#fields.hasErrors('phone')}">
-				<li th:each="err : ${#fields.errors('phone')}" th:text="${err}">Input is incorrect</li>
-			</ul>
-		</div>
-
-		<div>
-			<label for="email">Email</label><br>
-			<input th:errorClass="error-input" id="email" th:field="*{email}" type="email"/>
-			<ul th:if="${#fields.hasErrors('email')}">
-				<li th:each="err : ${#fields.errors('email')}" th:text="${err}">Input is incorrect</li>
-			</ul>
-		</div>
-
-		<div>
-			<label for="address">Address</label><br>
-			<input th:errorClass="error-input" id="address" th:field="*{address}" type="text"/>
-			<ul th:if="${#fields.hasErrors('address')}">
-				<li th:each="err : ${#fields.errors('address')}" th:text="${err}">Input is incorrect</li>
-			</ul>
-		</div>
-
+		<th:block th:include="/common/_customer-input-form"/>
 		<input type="submit" value="Submit"/>
 	</form>
+
 </body>
 
 </html>
