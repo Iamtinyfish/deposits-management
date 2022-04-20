@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>New Deposit Account</title>
+</head>
+
+<body>
+<th:block th:include="/dropdown"/>
+
+<h1>New Deposit Account</h1>
+<div th:object="${depositAccount}">
+	<div>
+		Deposit Account ID<br>
+		<p th:text="*{id}"></p>
+	</div>
+
+	<h2>Holder Information</h2>
+
+	<div>
+		Customer ID<br>
+		<p th:text="*{holder.id}"></p>
+	</div>
+
+	<div>
+		Name<br>
+		<p th:text="${depositAccount.holder.firstName + ' ' + depositAccount.holder.lastName}"></p>
+	</div>
+
+	<div>
+		ID Card<br>
+		<p th:text="*{holder.IDCard}"></p>
+	</div>
+
+	<div>
+		Address<br>
+		<p th:text="*{holder.address}"></p>
+	</div>
+
+	<h2>Account Information</h2>
+
+	<div>
+		Interest money<br>
+		<p th:text="*{period}"></p>
+	</div>
+
+	<div>
+		Interest rate<br>
+		<p th:text="*{interestRate}"></p>
+	</div>
+
+	<!--		<div>-->
+	<!--			<label th:for="period">Period</label><br>-->
+	<!--			<input th:errorClass="error-input" th:field="*{period}" type="text" />-->
+	<!--			<ul th:if="${#fields.hasErrors('period')}">-->
+	<!--				<li th:each="err : ${#fields.errors('period')}" th:text="#{err}">Input is incorrect</li>-->
+	<!--			</ul>-->
+	<!--		</div>-->
+
+	<!--		<div>-->
+	<!--			Interest rate<br>-->
+	<!--			<p th:text="${}"></p>-->
+	<!--		</div>-->
+
+	<div>
+		Interest money<br>
+		<p th:text="*{balance}"></p>
+	</div>
+
+	<div>
+		Interest money<br>
+		<p th:text="*{interestMoney}"></p>
+	</div>
+
+	<div>
+		Number of day<br>
+		<p th:text="*{numberOfDay}"></p>
+	</div>
+
+	<div>
+		Create at<br>
+		<p th:text="*{createdAt}"></p>
+	</div>
+
+	<div>
+		Create by<br>
+		<p th:text="*{createBy}"></p>
+	</div>
+	<!--	<th:block th:include="/common/_deposit-account-form"/>-->
+</div>
+</body>
+
+</html>

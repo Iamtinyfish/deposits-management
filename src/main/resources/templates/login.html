@@ -1,40 +1,49 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title>Login</title>
-	<link th:href="@{/css/main.css}" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300&family=Roboto:wght@100;300&display=swap" rel="stylesheet">
+    <link th:href="@{/css/login.css}" rel="stylesheet">
 </head>
 <body>
-<h1>Login</h1>
-
-<div th:if="${#request.getParameter('error') == 'true'}">
+    <div class="background"></div>
+	<div  class="text"><span>Welcome Back</span></div >
+    <div  th:if="${#request.getParameter('error') == 'true'}" class="text">
 	Login Failed!!!<br/>
 	Reason:
 	<span th:if="${#session!= null and #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}"
 	      th:utext="${#session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').message}">
                 Static summary
         </span>
-</div>
+	</div>
+    <div class="account">
+        <div class="account__sign-up">
+            <h4>Ngân hàng</h4>
+<!--            <p>Bạn chưa có tài khoản? Tạo ngay!</p>-->
+           <!-- <button onclick=handleSignIn()>Đăng ký</button>-->
+        </div>
+        <div class="account__form animaltion-right right "  id="sign-up">
+              <form name='loginForm' th:action="@{/j_spring_security_check}" method='POST' class="login sign-up d-block" id="form-login">
+                <h3>Đăng nhập</h3>
+                <input type="text" name="username" autofocus required class="btn" placeholder="Username"><br>
+                <input type="password" name="password" class="btn" required placeholder="Password"><br><br>
+                <div class="action">
+                	<input type="submit" value="Login" name="submit" class="button"/>
+                	<label for="remember">Remember me?<input type="checkbox" id="remember" name="remember-me"/></label >
+                </div >
+              </form>  
+        </div>
+        <div class="account__login account__sign-up">
 
-<form name='loginForm' th:action="@{/j_spring_security_check}" method='POST'>
-	<table>
-		<tr>
-			<td>User:</td>
-			<td><input type='text' name='username' autofocus required/></td>
-		</tr>
-		<tr>
-			<td>Password:</td>
-			<td><input type='password' name='password' required/></td>
-		</tr>
-		<tr>
-			<td>Remember Me?</td>
-			<td><input type="checkbox" name="remember-me"/></td>
-		</tr>
-		<tr>
-			<td><input name="submit" type="submit" value="submit"/></td>
-		</tr>
-	</table>
-</form>
+        </div>
+    </div>
+  
 </body>
 </html>

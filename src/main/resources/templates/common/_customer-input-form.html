@@ -1,7 +1,7 @@
 <div xmlns:th="http://www.thymeleaf.org">
 	<div>
 		<label th:for="firstName">First name</label><br>
-		<input th:errorClass="error-input" th:field="*{firstName}" type="text" autofocus/>
+		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{firstName}" type="text" autofocus/>
 		<ul th:if="${#fields.hasErrors('firstName')}">
 			<li th:each="err : ${#fields.errors('firstName')}" th:text="#{err}">Input is incorrect</li>
 		</ul>
@@ -9,7 +9,7 @@
 
 	<div>
 		<label th:for="lastName">Last name</label><br>
-		<input th:errorClass="error-input" th:field="*{lastName}" type="text"/>
+		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{lastName}" type="text"/>
 		<ul th:if="${#fields.hasErrors('lastName')}">
 			<li th:each="err : ${#fields.errors('lastName')}" th:text="#{err}">Input is incorrect</li>
 		</ul>
@@ -17,7 +17,7 @@
 
 	<div>
 		<label th:for="gender">Gender</label>
-		<select th:field="*{gender}">
+		<select th:readonly="${readOnly == true}" th:field="*{gender}">
 			<option th:value="true">Male</option>
 			<option th:value="false">Female</option>
 		</select>
@@ -28,7 +28,7 @@
 
 	<div>
 		<label th:for="birthday">Birthday</label><br>
-		<input th:errorClass="error-input" th:field="*{birthday}" type="date"/>
+		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{birthday}" type="date"/>
 		<ul th:if="${#fields.hasErrors('birthday')}">
 			<li th:each="err : ${#fields.errors('birthday')}" th:text="#{err}">Input is incorrect</li>
 		</ul>
@@ -36,7 +36,7 @@
 
 	<div>
 		<label th:for="IDCard">ID Card</label><br>
-		<input th:errorClass="error-input" th:field="*{IDCard}" type="number"/>
+		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{IDCard}" type="number"/>
 		<ul th:if="${#fields.hasErrors('IDCard')}">
 			<li th:each="err : ${#fields.errors('IDCard')}" th:text="#{err}">Input is incorrect</li>
 		</ul>
@@ -44,7 +44,7 @@
 
 	<div>
 		<label th:for="phone">Phone</label><br>
-		<input th:errorClass="error-input" th:field="*{phone}" type="number"/>
+		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{phone}" type="number"/>
 		<ul th:if="${#fields.hasErrors('phone')}">
 			<li th:each="err : ${#fields.errors('phone')}" th:text="#{err}">Input is incorrect</li>
 		</ul>
@@ -52,7 +52,7 @@
 
 	<div>
 		<label th:for="email">Email</label><br>
-		<input th:errorClass="error-input" th:field="*{email}" type="email"/>
+		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{email}" type="email"/>
 		<ul th:if="${#fields.hasErrors('email')}">
 			<li th:each="err : ${#fields.errors('email')}" th:text="#{err}">Input is incorrect</li>
 		</ul>
@@ -60,7 +60,7 @@
 
 	<div>
 		<label th:for="address">Address</label><br>
-		<input th:errorClass="error-input" th:field="*{address}" type="text"/>
+		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{address}" type="text"/>
 		<ul th:if="${#fields.hasErrors('address')}">
 			<li th:each="err : ${#fields.errors('address')}" th:text="#{err}">Input is incorrect</li>
 		</ul>

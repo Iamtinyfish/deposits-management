@@ -3,25 +3,70 @@
 <head>
 	<meta charset="UTF-8">
 	<title>New Deposit Account</title>
-	<style>
-		.error-message {
-			color: red;
-		}
-		.error-input {
-			border-color: red;
-		}
-	</style>
 </head>
 
 <body>
-<th:block th:include="/common/_menu"/>
-<br>
-<th:block th:include="/common/_sidebar"/>
-<br>
+<th:block th:include="/dropdown"/>
 
-<h2>New Deposit Account</h2>
+<h1>New Deposit Account</h1>
+<form method="post" th:action="@{/user/deposit-account/add}" th:object="${depositAccount}">
+	<h2>Holder Information</h2>
 
-<th:block th:include="/common/_deposit-account-form"/>
+	<div>
+		Customer ID<br>
+		<p th:text="*{holder.id}"></p>
+	</div>
+
+	<div>
+		Name<br>
+		<p th:text="${depositAccount.holder.firstName + ' ' + depositAccount.holder.lastName}"></p>
+	</div>
+
+	<div>
+		ID Card<br>
+		<p th:text="*{holder.IDCard}"></p>
+	</div>
+
+	<div>
+		Address<br>
+		<p th:text="*{holder.address}"></p>
+	</div>
+
+	<h2>Account Information</h2>
+
+	<div>
+		<label th:for="period">Period</label><br>
+		<select th:field="*{period}">
+			<option th:each="interestRate : ${interestRate}"
+			        th:value="${interestRate.period}"
+			        th:text="#{${interestRate.period + ' month'}}">Wireframe
+			</option>
+		</select>
+	</div>
+
+	<div>
+		Interest rate<br>
+		<p></p>
+	</div>
+
+	<div>
+		<label th:for="balance">Deposit</label><br>
+		<input th:errorClass="error-input" th:field="*{balance}" type="number"/>
+		<ul th:if="${#fields.hasErrors('balance')}">
+			<li th:each="err : ${#fields.errors('gender')}" th:text="#{err}">Input is incorrect</li>
+		</ul>
+	</div>
+
+	<input type="submit" value="Submit"/>
+	<!--	<th:block th:include="/common/_deposit-account-form"/>-->
+</form>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	let interestRate = [[${interestRate}]];
+	console.log(interestRate);
+	/*]]>*/
+</script>
 </body>
 
 </html>

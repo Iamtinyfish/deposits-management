@@ -1,0 +1,225 @@
+.background {
+    background-image: linear-gradient(to right, #0000005c, #0000005c),
+    url("https://images.foody.vn/images/101988395(3).jpg");
+    background-repeat: no-repeat;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    z-index: -1;
+}
+
+.text {
+    text-align: center;
+    background-color: white;
+    width: 20rem;
+    padding: 0.8rem 0;
+    border-radius: 0 0 0.3rem 0.3rem;
+    box-shadow: 1px 1px 15px 2px;
+    position: fixed;
+    left: 50%;
+    top: -12%;
+    animation: alert 4s;
+    transform: translateX(-50%);
+}
+
+.text span {
+    color: #00000078;
+    font-size: 1.3rem;
+}
+
+.account {
+    width: 55rem;
+    background-color: #00000085;
+    border-radius: 0.3rem;
+    position: relative;
+    height: 27rem;
+    margin: 7rem auto;
+    justify-content: space-between;
+    display: flex;
+}
+
+.account__sign-up {
+    height: 60%;
+    margin-top: 8rem;
+    margin-left: 3rem;
+}
+
+.account__sign-up h4 {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.7em;
+    margin: 0.5rem 0;
+    color: white;
+    font-weight: 300;
+}
+
+.account__sign-up p {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    padding-bottom: 1rem;
+    color: white;
+    font-weight: 100;
+}
+
+.account__sign-up button {
+    text-align: center;
+    outline: none;
+    cursor: pointer;
+    background-color: #00000085;
+    border-radius: 0.4rem;
+    padding: 0.4rem 1.5rem;
+    color: white;
+    border: 1px solid white;
+    text-transform: uppercase;
+    font-weight: 200;
+    font-family: "Roboto", sans-serif;
+}
+
+.account__form {
+    position: absolute;
+    width: 28rem;
+    box-shadow: 1px 1px 15px 2px;
+    height: 29.6rem;
+    z-index: 1;
+    background-color: white;
+    border-radius: 0.3rem;
+    top: -5%;
+    transition: 0.4s all;
+}
+
+.account__form form.sign-up {
+    width: 80%;
+    margin: 5rem auto;
+}
+
+.account__form form.login {
+    /* display:none; */
+}
+
+.account__form form.login label {
+    text-decoration: none;
+    color: #808080a8;
+    margin-left: 6.5rem;
+    cursor: pointer;
+
+}
+
+.action {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+
+.account__form form.login label input {
+    width: 2rem;
+    cursor: pointer;
+}
+
+.account__form h3 {
+    color: #f09283;
+    text-transform: uppercase;
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    margin-bottom: 1rem;
+}
+
+.account__form form input {
+    border-radius: 0px;
+    border-bottom: 1px solid #80808045;
+    width: 100%;
+    cursor: auto;
+    text-align: start;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+.account__form .button {
+    text-align: center;
+    text-transform: uppercase;
+    background-color: #f09283;
+    padding: 0.4rem 2rem;
+    border-radius: 0.4rem;
+    color: white;
+    font-weight: 400;
+    outline: none;
+    border: 1px solid #ffff006e;
+    width: 8rem;
+    margin-top: 0rem;
+}
+
+.account__form .login .button {
+    width: 6.7rem;
+}
+
+.account__login {
+    margin-top: 7rem;
+    margin-right: 6rem;
+}
+
+.account__login h4 {
+    width: 100%;
+}
+
+.right {
+    animation: animaltion__right 1.5s;
+}
+
+.left {
+    animation: animaltion__left 1.5s;
+}
+
+.animaltion-left {
+    left: 5%;
+    transition: 0.4s all;
+}
+
+.animaltion-right {
+    left: 44%;
+    transition: 0.4s all;
+}
+
+/* .animaltion{
+
+} */
+
+@keyframes animaltion__left {
+    0% {
+        left: 44%;
+    }
+    50% {
+        left: 0%;
+    }
+    100% {
+        left: 5%;
+    }
+}
+
+@keyframes animaltion__right {
+    0% {
+        left: 5%;
+    }
+    50% {
+        left: 49%;
+    }
+    100% {
+        left: 44%;
+    }
+}
+
+@keyframes alert {
+    0% {
+        top: -10%;
+    }
+    10% {
+        top: 0%
+    }
+    90% {
+        top: 0%
+    }
+    100% {
+        top: -10%;
+    }
+}
