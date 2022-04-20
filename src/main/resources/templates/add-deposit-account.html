@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>New Deposit Account</title>
+	<style>
+		.error-message {
+			color: red;
+		}
+		.error-input {
+			border-color: red;
+		}
+	</style>
+</head>
+
+<body>
+<th:block th:include="/common/_menu"/>
+<br>
+<th:block th:include="/common/_sidebar"/>
+<br>
+
+<h2>New Deposit Account</h2>
+
+<th:block th:include="/common/_deposit-account-form"/>
+</body>
+
+</html>

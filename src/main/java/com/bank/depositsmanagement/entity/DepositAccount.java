@@ -1,9 +1,11 @@
 package com.bank.depositsmanagement.entity;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.PositiveOrZero;
@@ -31,8 +33,8 @@ public class DepositAccount {
 	@PositiveOrZero
 	@Column(nullable = false)
 	private int period;
-	
-	@PositiveOrZero
+
+	@Min(500000)
 	@NotNull
 	@Column(nullable = false)
 	@NumberFormat(pattern = "#,###,###,###.##", style = NumberFormat.Style.CURRENCY)
@@ -42,16 +44,14 @@ public class DepositAccount {
 	@Transient
 	private BigDecimal interestMoney;
 
+	@PositiveOrZero
+	@Transient
+	private int numberOfDay;
+
 	@Column(nullable = false)
 	@NotNull
 	@PastOrPresent
 	private LocalDateTime createdAt;
-
-	@Column(nullable = false)
-	@NotNull
-	@PastOrPresent
-	private LocalDateTime startedPeriodAt;
-
 
 	@NotNull
 	@ManyToOne(optional = false)

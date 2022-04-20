@@ -1,0 +1,78 @@
+<div xmlns:th="http://www.thymeleaf.org">
+	<form method="post" th:action="@{/user/deposit-account/add}" th:object="${depositAccount}">
+		<div>
+			Deposit Account ID<br>
+			<p th:text="*{id}"></p>
+		</div>
+
+		<h3>Holder Information</h3>
+
+		<div>
+			Customer ID<br>
+			<p th:text="*{id}"></p>
+		</div>
+
+		<div>
+			Name<br>
+			<p th:text="*{id}"></p>
+		</div>
+
+		<div>
+			ID Card<br>
+			<p th:text="*{id}"></p>
+		</div>
+
+		<div>
+			Address<br>
+			<p th:text="*{id}"></p>
+		</div>
+
+		<h3>Account Info<h3>
+
+		<div>
+			<label th:for="period">Period</label><br>
+			<input th:errorClass="error-input" th:field="*{period}" type="text" autofocus />
+			<ul th:if="${#fields.hasErrors('period')}">
+				<li th:each="err : ${#fields.errors('period')}" th:text="#{err}">Input is incorrect</li>
+			</ul>
+		</div>
+
+		<div>
+			<label th:for="lastName">Interest rate</label><br>
+			<input th:errorClass="error-input" th:field="*{lastName}" type="text"/>
+			<ul th:if="${#fields.hasErrors('lastName')}">
+				<li th:each="err : ${#fields.errors('lastName')}" th:text="#{err}">Input is incorrect</li>
+			</ul>
+		</div>
+
+		<div>
+			<label th:for="balance">Balance</label>
+			<input th:errorClass="error-input" th:field="*{balance}" type="number"/>
+			<ul th:if="${#fields.hasErrors('balance')}">
+				<li th:each="err : ${#fields.errors('gender')}" th:text="#{err}">Input is incorrect</li>
+			</ul>
+		</div>
+
+		<div>
+			Interest money<br>
+			<p th:text="*{interestMoney}"></p>
+		</div>
+
+		<div>
+			Number of day<br>
+			<p th:text="*{numberOfDay}"></p>
+		</div>
+asda
+		<div>
+			Create at<br>
+			<p th:text="*{createdAt}"></p>
+		</div>
+
+		<div>
+			Create by<br>
+			<p th:text="*{createdBy}"></p>
+		</div>
+
+		<input type="submit" value="Submit"/>
+	</form>
+</div>

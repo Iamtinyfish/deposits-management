@@ -32,10 +32,8 @@ public class Employee {
 	@Column(nullable = false)
 	private String lastName;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private GenderType gender;
+	private boolean gender;
 
 	@NotNull
 	@Column(nullable = false)
@@ -83,11 +81,6 @@ public class Employee {
 	@ManyToOne
 	@JoinColumn(name = "position_id")
 	private Position position;
-	
-	@NotNull
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "branch_id", nullable = false)
-	private Branch branch;
 
 	//
 	@OneToMany(mappedBy = "createBy")

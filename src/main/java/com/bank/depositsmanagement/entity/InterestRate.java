@@ -13,7 +13,6 @@ import javax.validation.constraints.PositiveOrZero;
 @Getter
 @Setter
 public class InterestRate {
-
     @Id
     @GeneratedValue
     private Long id;
