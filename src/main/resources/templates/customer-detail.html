@@ -11,39 +11,35 @@
 </head>
 
 <body>
-<th:block th:include="/common/_menu"/>
-<br>
+<th:block th:include="/dropdown"/>
 
-<th:block th:include="/common/_sidebar"/>
-<br>
-
-<h2>Customer Detail</h2>
+<h1>Customer Detail</h1>
 
 <form method="post" th:action="@{/user/customer/update}" th:object="${customer}">
 
 	<div>
 		ID<br>
-		<p th:text="${customer.id}"></p>
+		<p th:text="*{id}"></p>
 	</div>
 
 	<th:block th:include="/common/_customer-input-form"/>
 
 	<div>
 		Create at<br>
-		<p th:text="${customer.createdAt}"></p>
+		<p th:text="*{createdAt}"></p>
 	</div>
 
 	<div>
 		Last modified at<br>
-		<p th:text="${customer.lastModifiedAt}"></p>
+		<p th:text="*{lastModifiedAt}"></p>
 	</div>
 
 	<div>
 		Last modified by employee<br>
-		<p th:text="${customer.lastModifiedBy.id}"></p>
+		<p th:text="*{lastModifiedBy.id}"></p>
 	</div>
 
-	<input type="submit" value="Update"/>
+	<input th:hidden="true" type="submit" value="Update"/>
 
 </form>
 

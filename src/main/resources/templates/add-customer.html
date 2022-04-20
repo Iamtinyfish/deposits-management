@@ -3,28 +3,17 @@
 <head>
 	<meta charset="UTF-8">
 	<title>New Customer</title>
-	<style>
-		.error-message {
-			color: red;
-		}
-		.error-input {
-			border-color: red;
-		}
-	</style>
 </head>
 
 <body>
-	<th:block th:include="/common/_menu"/>
-	<br>
-	<th:block th:include="/common/_sidebar"/>
-	<br>
+<th:block th:include="/dropdown"/>
 
-	<h2>New Customer</h2>
+<h1>New Customer</h1>
 
-	<form method="post" th:action="@{/user/customer/add}" th:object="${customer}">
-		<th:block th:include="/common/_customer-input-form"/>
-		<input type="submit" value="Submit"/>
-	</form>
+<form method="post" th:action="@{/user/customer/add}" th:object="${customer}">
+	<th:block th:include="/common/_customer-input-form"/>
+	<input type="submit" value="Submit"/>
+</form>
 
 </body>
 

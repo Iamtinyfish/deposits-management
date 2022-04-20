@@ -52,6 +52,7 @@ public class CustomerController {
     public String customerDetail(Model model, @RequestParam(value = "IDCard") String IDCard) {
         Customer customer = customerRepository.findByIDCard(IDCard);
         model.addAttribute("customer", customer);
+        model.addAttribute("readOnly", true);
         return "customer-detail";
     }
 }
