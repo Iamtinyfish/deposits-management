@@ -8,6 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -19,7 +20,8 @@ import java.util.Set;
 @Table(name = "employee")
 @Getter
 @Setter
-public class Employee {
+@ToString
+public class Employee implements Serializable {
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -92,9 +94,7 @@ public class Employee {
 	@PrePersist
 	public void setTimeInfo() {
 		LocalDateTime now = LocalDateTime.now();
-		if (this.createdAt == null) {
-			this.createdAt = now;
-		}
+		this.createdAt = now;
 		this.lastModifiedAt = now;
 	}
 }

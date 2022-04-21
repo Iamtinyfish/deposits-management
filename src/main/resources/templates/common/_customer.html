@@ -1,52 +1,52 @@
-<div xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="customer-input-form" xmlns:th="http://www.thymeleaf.org">
 	<div>
-		<label th:for="firstName">First name</label><br>
+		<label th:for="firstName">Tên</label><br>
 		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{firstName}" type="text" autofocus/>
 		<ul th:if="${#fields.hasErrors('firstName')}">
-			<li th:each="err : ${#fields.errors('firstName')}" th:text="#{err}">Input is incorrect</li>
+			<li th:each="err : ${#fields.errors('firstName')}" th:text="${err}">Input is incorrect</li>
 		</ul>
 	</div>
 
 	<div>
-		<label th:for="lastName">Last name</label><br>
+		<label th:for="lastName">Họ</label><br>
 		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{lastName}" type="text"/>
 		<ul th:if="${#fields.hasErrors('lastName')}">
-			<li th:each="err : ${#fields.errors('lastName')}" th:text="#{err}">Input is incorrect</li>
+			<li th:each="err : ${#fields.errors('lastName')}" th:text="${err}">Input is incorrect</li>
 		</ul>
 	</div>
 
 	<div>
-		<label th:for="gender">Gender</label>
-		<select th:readonly="${readOnly == true}" th:field="*{gender}">
-			<option th:value="true">Male</option>
-			<option th:value="false">Female</option>
+		<label th:for="gender">Giới tính</label><br>
+		<select th:field="*{gender}">
+			<option th:value="false" th:default>Nam</option>
+			<option th:value="true">Nữ</option>
 		</select>
 		<ul th:if="${#fields.hasErrors('gender')}">
-			<li th:each="err : ${#fields.errors('gender')}" th:text="#{err}">Input is incorrect</li>
+			<li th:each="err : ${#fields.errors('gender')}" th:text="${err}">Input is incorrect</li>
 		</ul>
 	</div>
 
 	<div>
-		<label th:for="birthday">Birthday</label><br>
+		<label th:for="birthday">Ngày sinh</label><br>
 		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{birthday}" type="date"/>
 		<ul th:if="${#fields.hasErrors('birthday')}">
-			<li th:each="err : ${#fields.errors('birthday')}" th:text="#{err}">Input is incorrect</li>
+			<li th:each="err : ${#fields.errors('birthday')}" th:text="${err}">Input is incorrect</li>
 		</ul>
 	</div>
 
 	<div>
-		<label th:for="IDCard">ID Card</label><br>
+		<label th:for="IDCard">CCCD</label><br>
 		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{IDCard}" type="number"/>
 		<ul th:if="${#fields.hasErrors('IDCard')}">
-			<li th:each="err : ${#fields.errors('IDCard')}" th:text="#{err}">Input is incorrect</li>
+			<li th:each="err : ${#fields.errors('IDCard')}" th:text="${err}">Input is incorrect</li>
 		</ul>
 	</div>
 
 	<div>
-		<label th:for="phone">Phone</label><br>
+		<label th:for="phone">Số điện thoại</label><br>
 		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{phone}" type="number"/>
 		<ul th:if="${#fields.hasErrors('phone')}">
-			<li th:each="err : ${#fields.errors('phone')}" th:text="#{err}">Input is incorrect</li>
+			<li th:each="err : ${#fields.errors('phone')}" th:text="${err}">Input is incorrect</li>
 		</ul>
 	</div>
 
@@ -54,15 +54,15 @@
 		<label th:for="email">Email</label><br>
 		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{email}" type="email"/>
 		<ul th:if="${#fields.hasErrors('email')}">
-			<li th:each="err : ${#fields.errors('email')}" th:text="#{err}">Input is incorrect</li>
+			<li th:each="err : ${#fields.errors('email')}" th:text="${err}">Input is incorrect</li>
 		</ul>
 	</div>
 
 	<div>
-		<label th:for="address">Address</label><br>
+		<label th:for="address">Địa chỉ</label><br>
 		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{address}" type="text"/>
 		<ul th:if="${#fields.hasErrors('address')}">
-			<li th:each="err : ${#fields.errors('address')}" th:text="#{err}">Input is incorrect</li>
+			<li th:each="err : ${#fields.errors('address')}" th:text="${err}">Input is incorrect</li>
 		</ul>
 	</div>
 </div>

@@ -81,9 +81,7 @@ public class Customer {
 	@PrePersist
 	public void setTimeInfo() {
 		LocalDateTime now = LocalDateTime.now();
-		if (this.createdAt == null) {
-			this.createdAt = now;
-		}
+		this.createdAt = now;
 		this.lastModifiedAt = now;
 	}
 }

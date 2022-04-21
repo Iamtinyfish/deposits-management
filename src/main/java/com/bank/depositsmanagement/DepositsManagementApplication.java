@@ -1,7 +1,13 @@
 package com.bank.depositsmanagement;
 
+import com.bank.depositsmanagement.config.InitData;
+import com.bank.depositsmanagement.dao.EmployeeRepository;
+import com.bank.depositsmanagement.dao.InterestRateReferenceRepository;
+import com.bank.depositsmanagement.dao.UserRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class DepositsManagementApplication {
@@ -11,56 +17,11 @@ public class DepositsManagementApplication {
 	}
 
 //	@Bean
-//	public CommandLineRunner loadData(UserRepository userRepository, EmployeeRepository employeeRepository) {
+//	public CommandLineRunner loadData(UserRepository userRepository, EmployeeRepository employeeRepository, InterestRateReferenceRepository interestRateReferenceRepository) {
 //
 //		return args -> {
-//
-//			User admin = userRepository.save(
-//					User.builder()
-//							.username("admin")
-//							.password(EncryptedPasswordUtils.encryptPassword("12345678"))
-//							.role("ROLE_ADMIN")
-//							.isActive(true)
-//							.build()
-//			);
-//
-//			employeeRepository.save(
-//					Employee.builder()
-//							.firstName("Unknown")
-//							.lastName("Unknown")
-//							.gender(true)
-//							.birthday(LocalDate.now())
-//							.IDCard("012345678910")
-//							.phone("0123456789")
-//							.email("admin@bank.com")
-//							.address("Unknown")
-//							.status(EmployeeStatus.WORKING)
-//							.user(admin)
-//							.build()
-//			);
-//
-//			User user1 = userRepository.save(
-//					User.builder()
-//							.username("user1")
-//							.password(EncryptedPasswordUtils.encryptPassword("12345678"))
-//							.role("ROLE_USER")
-//							.isActive(true)
-//							.build()
-//			);
-//
-//			employeeRepository.save(
-//					Employee.builder()
-//							.firstName("Unknown")
-//							.lastName("Unknown")
-//							.gender(false)
-//							.birthday(LocalDate.now())
-//							.IDCard("123456789100")
-//							.phone("1234567890")
-//							.email("employee@bank.com")
-//							.address("Unknown")
-//							.status(EmployeeStatus.WORKING)
-//							.user(user1)
-//							.build());
+////			InitData.createUser(userRepository,employeeRepository);
+////			InitData.createInterestRateReference(interestRateReferenceRepository);
 //		};
 //	}
 
