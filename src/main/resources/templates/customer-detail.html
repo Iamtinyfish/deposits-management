@@ -1,8 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Customer Detail</title>
+	<th:block th:insert="~{/common/_layout::metadata('Hồ sơ khách hàng')}"/>
 	<style>
 		.border-table, .border-table th, .border-table td {
 			border: 1px solid black;
@@ -11,57 +10,83 @@
 </head>
 
 <body>
-<th:block th:include="/dropdown"/>
+<th:block th:insert="~{/common/_layout::navbar}"/>
 
-<h1>Customer Detail</h1>
+<h1 class="title">Hồ sơ khách hàng</h1 >
 
 <form method="post" th:action="@{/user/customer/update}" th:object="${customer}">
 
+	<input hidden th:field="*{id}">
+
 	<div>
-		ID<br>
+		Mã khách hàng<br>
 		<p th:text="*{id}"></p>
 	</div>
 
-	<th:block th:include="/common/_customer-input-form"/>
+	<th:block th:insert="~{/common/_customer::customer-input-form}"/>
 
 	<div>
-		Create at<br>
+		Ngày tạo<br>
 		<p th:text="*{createdAt}"></p>
 	</div>
 
 	<div>
-		Last modified at<br>
+		Ngày sửa lần cuối<br>
 		<p th:text="*{lastModifiedAt}"></p>
 	</div>
 
 	<div>
-		Last modified by employee<br>
+		Sửa lần cuối bởi nhân viên có mã<br>
 		<p th:text="*{lastModifiedBy.id}"></p>
 	</div>
 
-	<input th:hidden="true" type="submit" value="Update"/>
+	<input id="updateBtn" th:hidden="${readOnly == true}" type="submit" value="Update"/>
+
+	<button id="editBtn" th:hidden="${readOnly == false}" type="button">Edit</button>
 
 </form>
 
-<h2>Deposit Account</h2>
+<h2>Tài khoản tiền gửi</h2>
 
-<a th:href="@{'/user/deposit-account/add?customerID=' + ${customer.id}}">New Deposit Account</a>
+<a th:href="@{'/user/deposit-account/add?customerID=' + ${customer.id}}">Thêm tài khoản tiền gửi mới</a>
 
 <table class="border-table">
 	<thead>
 	<tr>
-		<th>Account no</th>
-		<th>Balance</th>
-		<th>Type</th>
+		<th>Số tài khoản</th>
+		<th>Số dư</th>
+		<th>Loại</th>
+		<th></th>
 	</tr>
 	</thead>
 	<tbody>
-	<tr th:each="depositAccount : ${customer.getDepositAccountSet()}">
+	<tr th:each="depositAccount : ${customer.depositAccountSet}">
 		<td th:text="${depositAccount.id}"></td>
 		<td th:text="${depositAccount.balance}"></td>
+		<td th:text="${depositAccount.period == 0 ? 'Không kì hạn' : ('Có kì hạn: ' + depositAccount.period + ' tháng')}"></td>
+		<td><a th:href="@{'/user/deposit-account/detail?depositAccountID=' + ${depositAccount.id}}">Chi tiết</a></td>
 	</tr>
 	</tbody>
 </table>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	const allInputElements = document.getElementsByTagName("input");
+	const editBtn = document.getElementById("editBtn");
+	const updateBtn = document.getElementById("updateBtn");
+
+	editBtn.onclick = () => {
+		for (const inputElement of allInputElements) {
+			inputElement.readOnly = false;
+			updateBtn.hidden = false;
+			editBtn.hidden = true;
+		}
+	};
+
+	/*]]>*/
+</script>
+
+<th:block th:insert="~{/common/_layout::js-lib}"/>
 </body>
 
 </html>

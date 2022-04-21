@@ -1,72 +1,82 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title>New Deposit Account</title>
+	<th:block th:insert="~{common/_layout::metadata('Tài khoản tiền gửi mới')}"/>
 </head>
 
 <body>
-<th:block th:include="/dropdown"/>
+<th:block th:insert="~{/common/_layout::navbar}"/>
 
-<h1>New Deposit Account</h1>
+<h1>Tài khoản tiền gửi mới</h1>
+
 <form method="post" th:action="@{/user/deposit-account/add}" th:object="${depositAccount}">
-	<h2>Holder Information</h2>
+	<th:block th:insert="~{common/_customer::holder-info}" />
+
+	<h2>Thông tin tài khoản</h2>
 
 	<div>
-		Customer ID<br>
-		<p th:text="*{holder.id}"></p>
-	</div>
-
-	<div>
-		Name<br>
-		<p th:text="${depositAccount.holder.firstName + ' ' + depositAccount.holder.lastName}"></p>
-	</div>
-
-	<div>
-		ID Card<br>
-		<p th:text="*{holder.IDCard}"></p>
-	</div>
-
-	<div>
-		Address<br>
-		<p th:text="*{holder.address}"></p>
-	</div>
-
-	<h2>Account Information</h2>
-
-	<div>
-		<label th:for="period">Period</label><br>
-		<select th:field="*{period}">
-			<option th:each="interestRate : ${interestRate}"
-			        th:value="${interestRate.period}"
-			        th:text="#{${interestRate.period + ' month'}}">Wireframe
-			</option>
+		<label th:for="currency">Loại tiền tệ</label><br>
+		<select th:field="*{currency}">
+			<option th:value="VND">VND</option>
+			<option th:value="USD">USD</option>
 		</select>
-	</div>
-
-	<div>
-		Interest rate<br>
-		<p></p>
-	</div>
-
-	<div>
-		<label th:for="balance">Deposit</label><br>
-		<input th:errorClass="error-input" th:field="*{balance}" type="number"/>
-		<ul th:if="${#fields.hasErrors('balance')}">
-			<li th:each="err : ${#fields.errors('gender')}" th:text="#{err}">Input is incorrect</li>
+		<ul th:if="${#fields.hasErrors('currency')}">
+			<li th:each="err : ${#fields.errors('currency')}" th:text="${err}">Input is incorrect</li>
 		</ul>
 	</div>
 
-	<input type="submit" value="Submit"/>
-	<!--	<th:block th:include="/common/_deposit-account-form"/>-->
+	<div>
+		<label th:for="period">Kì hạn</label><br>
+		<select th:field="*{period}">
+			<option th:each="period : ${periods}"
+			        th:value="${period}"
+			        th:text="${period + ' tháng'}">Wireframe
+			</option>
+		</select>
+		<ul th:if="${#fields.hasErrors('period')}">
+			<li th:each="err : ${#fields.errors('period')}" th:text="${err}">Input is incorrect</li>
+		</ul>
+	</div>
+
+	<div>
+		Lãi suất<br>
+		<p id="interestRate"></p>
+	</div>
+
+	<div>
+		<label th:for="balance">Số tiền gửi</label><br>
+		<input th:errorClass="error-input" th:field="*{balance}" type="number"/>
+		<ul th:if="${#fields.hasErrors('balance')}">
+			<li th:each="err : ${#fields.errors('balance')}" th:text="${err}">Input is incorrect</li>
+		</ul>
+	</div>
+
+	<input type="submit" value="Gửi"/>
 </form>
 
 <script th:inline="javascript">
 	/*<![CDATA[*/
-	let interestRate = [[${interestRate}]];
-	console.log(interestRate);
+	const interestRateReferences = [[${interestRateReferences}]];
+
+	const interestRateElement = document.getElementById("interestRate");
+	const currencyElement = document.getElementById("currency");
+	const periodElement = document.getElementById("period");
+
+	currencyAndPeriodOnChange();
+	currencyElement.onchange = currencyAndPeriodOnChange;
+	periodElement.onchange = currencyAndPeriodOnChange;
+
+	function currencyAndPeriodOnChange() {
+		const currency = currencyElement.value;
+		const period = parseInt(periodElement.value);
+
+		const interestRate = interestRateReferences.find(element => (element.currency === currency && element.period === period)).interestRate;
+		interestRateElement.innerText = (interestRate !== undefined) ? interestRate + " %/năm" : "Không hỗ trợ";
+	}
 	/*]]>*/
 </script>
+
+<th:block th:insert="~{/common/_layout::js-lib}"/>
 </body>
 
 </html>

@@ -1,68 +1,106 @@
-<div th:fragment="customer-input-form" xmlns:th="http://www.thymeleaf.org">
-	<div>
-		<label th:for="firstName">Tên</label><br>
-		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{firstName}" type="text" autofocus/>
-		<ul th:if="${#fields.hasErrors('firstName')}">
-			<li th:each="err : ${#fields.errors('firstName')}" th:text="${err}">Input is incorrect</li>
-		</ul>
-	</div>
+ <div xmlns:th="http://www.thymeleaf.org">
 
-	<div>
+<th:block th:fragment="customer-input-form">
+	<div class="d-flex row mb-4">
+		<div class="col-6">
+		<label th:for="firstName">Tên</label><br>
+		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{firstName}" type="text" autofocus class="form-control"/>
+		<ul th:if="${#fields.hasErrors('firstName')}">
+			<li th:each="err : ${#fields.errors('firstName')}" th:text="${err}" >Input is incorrect</li>
+		</ul>
+	</div >
+
+	<div class="col-6">
 		<label th:for="lastName">Họ</label><br>
-		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{lastName}" type="text"/>
+		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{lastName}" class="form-control" type="text"/>
 		<ul th:if="${#fields.hasErrors('lastName')}">
 			<li th:each="err : ${#fields.errors('lastName')}" th:text="${err}">Input is incorrect</li>
 		</ul>
-	</div>
+	</div >
+	</div >
 
-	<div>
+	<div class="d-flex row mb-4">
+		<div class="col-6">
 		<label th:for="gender">Giới tính</label><br>
-		<select th:field="*{gender}">
+		<select th:field="*{gender}" class="form-control">
 			<option th:value="false" th:default>Nam</option>
 			<option th:value="true">Nữ</option>
 		</select>
 		<ul th:if="${#fields.hasErrors('gender')}">
 			<li th:each="err : ${#fields.errors('gender')}" th:text="${err}">Input is incorrect</li>
 		</ul>
-	</div>
+	</div >
 
-	<div>
+	<div class="col-6">
 		<label th:for="birthday">Ngày sinh</label><br>
-		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{birthday}" type="date"/>
+		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{birthday}" class="form-control" type="date"/>
 		<ul th:if="${#fields.hasErrors('birthday')}">
 			<li th:each="err : ${#fields.errors('birthday')}" th:text="${err}">Input is incorrect</li>
 		</ul>
-	</div>
+	</div >
+	</div >
 
-	<div>
+	<div class="d-flex row mb-4">
+		<div class="col-6">
 		<label th:for="IDCard">CCCD</label><br>
-		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{IDCard}" type="number"/>
+		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{IDCard}" class="form-control" type="number"/>
 		<ul th:if="${#fields.hasErrors('IDCard')}">
 			<li th:each="err : ${#fields.errors('IDCard')}" th:text="${err}">Input is incorrect</li>
 		</ul>
-	</div>
+	</div >
 
-	<div>
+	<div class="col-6">
 		<label th:for="phone">Số điện thoại</label><br>
-		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{phone}" type="number"/>
+		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{phone}" class="form-control" type="number"/>
 		<ul th:if="${#fields.hasErrors('phone')}">
 			<li th:each="err : ${#fields.errors('phone')}" th:text="${err}">Input is incorrect</li>
 		</ul>
-	</div>
+	</div >
+	</div >
 
-	<div>
+	<div class="d-flex row mb-4">
+		<div class="col-6">
 		<label th:for="email">Email</label><br>
-		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{email}" type="email"/>
+		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{email}" class="form-control" type="email"/>
 		<ul th:if="${#fields.hasErrors('email')}">
 			<li th:each="err : ${#fields.errors('email')}" th:text="${err}">Input is incorrect</li>
 		</ul>
-	</div>
+	</div >
 
-	<div>
+	<div class="col-6">
 		<label th:for="address">Địa chỉ</label><br>
-		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{address}" type="text"/>
+		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{address}" class="form-control" type="text"/>
 		<ul th:if="${#fields.hasErrors('address')}">
 			<li th:each="err : ${#fields.errors('address')}" th:text="${err}">Input is incorrect</li>
 		</ul>
+	</div >
+	</div >
+</th:block>
+
+<th:block th:fragment="holder-info">
+	<h2>Thông tin chủ tài khoản</h2>
+
+	<input type="text" hidden readonly name="holderID" class="form-control" th:value="*{holder.id}" />
+
+	<div>
+		Mã khách hàng<br>
+		<p th:text="*{holder.id}"></p>
 	</div>
+
+	<div>
+		Tên khách hàng<br>
+		<p th:text="${depositAccount.holder.firstName + ' ' + depositAccount.holder.lastName}"></p>
+	</div>
+
+	<div>
+		CCCD<br>
+		<p th:text="*{holder.IDCard}"></p>
+	</div>
+
+	<div>
+		Địa chỉ<br>
+		<p th:text="*{holder.address}"></p>
+	</div>
+</th:block>
+
 </div>

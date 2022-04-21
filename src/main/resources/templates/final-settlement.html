@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+	<th:block th:insert="~{/common/_layout::metadata('Tất toán')}"/>
+	<style>
+		.border-table, .border-table th, .border-table td {
+			border: 1px solid black;
+		}
+	</style>
+</head>
+
+<body>
+<th:block th:insert="~{/common/_layout::navbar}"/>
+
+<h1>Tất toán</h1>
+<table class="border-table">
+	<thead>
+	<tr>
+		<th></th>
+		<th>Số ngày</th>
+		<th>Lãi suất (%/năm)</th>
+		<th>Công thức tiền lãi</th>
+		<th>Tiền lãi</th>
+		<th>Số dư mới</th>
+	</tr>
+	</thead>
+	<tbody >
+	<tr th:if="${period != 0}">
+		<th th:text="${'Lãi kép theo kì hạn ' + period + ' tháng (1 tháng = 30 ngày)'}"></th>
+		<td th:text="${timeDepositDays}"></td>
+		<td th:text="${timeDepositInterestRate}"></td>
+		<td></td>
+		<td th:text="${timeDepositInterestMoney}"></td>
+		<td th:text="${balance1}"></td>
+	</tr>
+	<tr>
+		<th>Lãi không kì hạn</th>
+		<td th:text="${demandDepositDays}"></td>
+		<td th:text="${demandDepositInterestRate}"></td>
+		<td></td>
+		<td th:text="${demandDepositInterestMoney}"></td>
+		<td th:text="${balance2}"></td>
+	</tr>
+	</tbody>
+</table>
+<br>
+<h4 th:text="${'Tổng số tiền được tất toán: ' + amountOfFinalSettlement}"></h4>
+
+<th:block th:insert="~{/common/_layout::js-lib}"/>
+</body>
+
+</html>

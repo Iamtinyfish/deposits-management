@@ -1,23 +1,25 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Customer</title>
+	<th:block th:insert="~{/common/_layout::metadata('Khách hàng')}"/>
 </head>
 
 <body>
-	<th:block th:include="/dropdown"/>
-	<br>
-	<br>
-	<h1>Customer</h1>
+<th:block th:insert="~{/common/_layout::navbar}"/>
 
-	<a th:href="@{'/user/customer/add'}">New customer</a><br><br>
+<div class="frames">
+	<h1 class='title'>Khách hàng</h1 >
 
-	<form th:action="@{/user/customer/detail}" method="get">
-		<input name="IDCard" type="number"/>
-		<input type="submit" value="go">
-	</form>
+<a th:href="@{'/user/customer/add'}" class="btn btn-success btn-add item">Khách hàng mới</a><br><br>
 
-</body>
+<form th:action="@{/user/customer/detail}" method="get" class="d-flex">
+	<input autofocus name="IDCard" class="form-control col-3 CardID" type="number" placeholder="Số CCCD"/>
+	<input type="submit" value="Đến" class="btn btn-info ml-4">
+</form>
+</div >
+
+<th:block th:insert="~{/common/_layout::js-lib}"/>
+
+</body >
 
 </html>

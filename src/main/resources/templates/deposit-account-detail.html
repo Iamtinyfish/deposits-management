@@ -1,93 +1,71 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title>New Deposit Account</title>
+	<th:block th:insert="~{/common/_layout::metadata('Chi tiết tài khoản tiền gửi')}"/>
 </head>
 
 <body>
-<th:block th:include="/dropdown"/>
+<th:block th:insert="~{/common/_layout::navbar}"/>
 
-<h1>New Deposit Account</h1>
+<h1>Chi tiết tài khoản tiền gửi</h1>
 <div th:object="${depositAccount}">
+
+	<th:block th:insert="~{/common/_customer::holder-info}"/>
+
+	<h2>Thông tin tài khoản</h2>
+
 	<div>
-		Deposit Account ID<br>
+		Số tài khoản<br>
 		<p th:text="*{id}"></p>
 	</div>
 
-	<h2>Holder Information</h2>
-
 	<div>
-		Customer ID<br>
-		<p th:text="*{holder.id}"></p>
+		Loai tiền tệ<br>
+		<p th:text="*{currency}"></p>
 	</div>
 
 	<div>
-		Name<br>
-		<p th:text="${depositAccount.holder.firstName + ' ' + depositAccount.holder.lastName}"></p>
+		Kì hạn<br>
+		<p th:text="${depositAccount.period + ' tháng'} "></p>
 	</div>
 
 	<div>
-		ID Card<br>
-		<p th:text="*{holder.IDCard}"></p>
+		Lãi suất<br>
+		<p th:text="${depositAccount.interestRate + ' %/năm'}"></p>
 	</div>
 
 	<div>
-		Address<br>
-		<p th:text="*{holder.address}"></p>
-	</div>
-
-	<h2>Account Information</h2>
-
-	<div>
-		Interest money<br>
-		<p th:text="*{period}"></p>
-	</div>
-
-	<div>
-		Interest rate<br>
-		<p th:text="*{interestRate}"></p>
-	</div>
-
-	<!--		<div>-->
-	<!--			<label th:for="period">Period</label><br>-->
-	<!--			<input th:errorClass="error-input" th:field="*{period}" type="text" />-->
-	<!--			<ul th:if="${#fields.hasErrors('period')}">-->
-	<!--				<li th:each="err : ${#fields.errors('period')}" th:text="#{err}">Input is incorrect</li>-->
-	<!--			</ul>-->
-	<!--		</div>-->
-
-	<!--		<div>-->
-	<!--			Interest rate<br>-->
-	<!--			<p th:text="${}"></p>-->
-	<!--		</div>-->
-
-	<div>
-		Interest money<br>
+		Tiền gốc<br>
 		<p th:text="*{balance}"></p>
 	</div>
 
 	<div>
-		Interest money<br>
+		Tiền lãi<br>
 		<p th:text="*{interestMoney}"></p>
 	</div>
 
 	<div>
-		Number of day<br>
+		Số ngày gửi thực<br>
 		<p th:text="*{numberOfDay}"></p>
 	</div>
 
 	<div>
-		Create at<br>
+		Ngày tạo<br>
 		<p th:text="*{createdAt}"></p>
 	</div>
 
 	<div>
-		Create by<br>
-		<p th:text="*{createBy}"></p>
+		Tạo bởi<br>
+		<p th:text="*{createBy.id}"></p>
 	</div>
 	<!--	<th:block th:include="/common/_deposit-account-form"/>-->
 </div>
+
+<a th:href="@{'/user/deposit-account/final-settlement?depositAccountID=' + ${depositAccount.id}}">Tất toán</a>
+<a th:if="${depositAccount.period == 0}" th:href="@{'/user/deposit-account/withdraw-part?depositAccountID=' + ${depositAccount.id}}">Rút tiền</a>
+<a th:if="${depositAccount.period == 0}" th:href="@{'/user/deposit-account/deposit-extra?depositAccountID=' + ${depositAccount.id}}">Gửi thêm tiền</a>
+
+<th:block th:insert="~{/common/_layout::js-lib}"/>
 </body>
 
 </html>

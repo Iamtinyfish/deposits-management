@@ -21,7 +21,7 @@ public class DepositsManagementApplication {
 //
 //		return args -> {
 ////			InitData.createUser(userRepository,employeeRepository);
-////			InitData.createInterestRateReference(interestRateReferenceRepository);
+//			InitData.createInterestRateReference(interestRateReferenceRepository);
 //		};
 //	}
 

@@ -1,16 +1,15 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Admin</title>
+	<th:block th:insert="~{/common/_layout::metadata('Admin')}"/>
 </head>
 
 <body>
-<th:block th:include="/common/_menu"/>
-<br>
-<th:block th:include="/common/_admin-sidebar"/>
-<br>
+<th:block th:insert="~{/common/_layout::navbar}"/>
+
 <h1>Admin</h1>
+
+<th:block th:insert="~{/common/_layout::js-lib}"/>
 </body>
 
 </html>
