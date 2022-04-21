@@ -1,20 +1,20 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title>New Customer</title>
+	<th:block th:insert="~{common/_layout::metadata('Khách hàng mới')}"/>
 </head>
 
 <body>
-<th:block th:include="/dropdown"/>
+<th:block th:insert="~{/common/_layout::navbar}"/>
 
-<h1>New Customer</h1>
+<h1>Khách hàng mới</h1>
 
 <form method="post" th:action="@{/user/customer/add}" th:object="${customer}">
-	<th:block th:include="/common/_customer-input-form"/>
-	<input type="submit" value="Submit"/>
+	<th:block th:insert="~{/common/_customer::customer-input-form}"/>
+	<input type="submit" value="Gửi"/>
 </form>
 
+<th:block th:insert="~{common/_layout::js-lib}"/>
 </body>
 
 </html>

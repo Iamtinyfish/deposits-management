@@ -1,4 +1,6 @@
-<div th:fragment="customer-input-form" xmlns:th="http://www.thymeleaf.org">
+<div xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="customer-input-form">
 	<div>
 		<label th:for="firstName">Tên</label><br>
 		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{firstName}" type="text" autofocus/>
@@ -65,4 +67,32 @@
 			<li th:each="err : ${#fields.errors('address')}" th:text="${err}">Input is incorrect</li>
 		</ul>
 	</div>
+</th:block>
+
+<th:block th:fragment="holder-info">
+	<h2>Thông tin chủ tài khoản</h2>
+
+	<input type="text" hidden readonly name="holderID" th:value="*{holder.id}" />
+
+	<div>
+		Mã khách hàng<br>
+		<p th:text="*{holder.id}"></p>
+	</div>
+
+	<div>
+		Tên khách hàng<br>
+		<p th:text="${depositAccount.holder.firstName + ' ' + depositAccount.holder.lastName}"></p>
+	</div>
+
+	<div>
+		CCCD<br>
+		<p th:text="*{holder.IDCard}"></p>
+	</div>
+
+	<div>
+		Địa chỉ<br>
+		<p th:text="*{holder.address}"></p>
+	</div>
+</th:block>
+
 </div>

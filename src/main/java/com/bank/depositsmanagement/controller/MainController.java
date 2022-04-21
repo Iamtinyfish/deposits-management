@@ -22,10 +22,6 @@ public class MainController {
     public String loginPage(Model model, Principal principal, HttpSession session) {
 
         if (principal != null) {
-            Employee employee = userRepository.findByUsername(principal.getName()).getEmployee();
-
-            session.setAttribute("myProfile", employee);
-
             return "my-profile";
         }
 
@@ -39,18 +35,20 @@ public class MainController {
     }
 
     @GetMapping("/my-profile")
-    public String myProfilePage(Model model, HttpSession session) {
+    public String myProfilePage(Model model, Principal principal) {
 
-        model.addAttribute("myProfile", session.getAttribute("myProfile"));
+        Employee employee = userRepository.findByUsername(principal.getName()).getEmployee();
+
+        model.addAttribute("myProfile", employee.toString());
 
         return "my-profile";
     }
 
-    @GetMapping("/user")
-    public String userPage(Model model) {
-
-        return "user";
-    }
+//    @GetMapping("/user")
+//    public String userPage(Model model) {
+//
+//        return "user";
+//    }
 
     @GetMapping("/403")
     public String accessDenied(Model model, Principal principal) {

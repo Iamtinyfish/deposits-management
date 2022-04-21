@@ -3,18 +3,16 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>My Profile</title>
+	<th:block th:insert="~{/common/_layout::metadata('Hồ sơ của tôi')}"/>
 </head>
 <body>
-    <th:block th:include="/dropdown"/>
+<th:block th:insert="~{/common/_layout::navbar}"/>
 
-    <h1>My Profile</h1>
-    <h3>Welcome : <span th:utext="${#request.userPrincipal.name}"></span></h3>
-    <b>This is protected page!</b>
+<h1>Hồ sơ của tôi</h1>
+<h3>Xin chào <span th:utext="${#request.userPrincipal.name}"></span></h3>
 
-    <br/><br/>
+<p th:text="${myProfile}"></p>
 
-    <div th:utext="${#request.userPrincipal}"></div>
+<th:block th:insert="~{/common/_layout::js-lib}"/>
 </body>
 </html>
