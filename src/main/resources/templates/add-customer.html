@@ -7,12 +7,15 @@
 <body>
 <th:block th:insert="~{/common/_layout::navbar}"/>
 
-<h1>Khách hàng mới</h1>
-
-<form method="post" th:action="@{/user/customer/add}" th:object="${customer}">
+<div class="frames">
+<h1 class="title">Khách hàng mới</h1 >
+<div class="create-form">
+<form method="post" class="form-group" th:action="@{/user/customer/add}" th:object="${customer}">
 	<th:block th:insert="~{/common/_customer::customer-input-form}"/>
-	<input type="submit" value="Gửi"/>
+	<input type="submit" value="Gửi" class="btn btn-success"/>
 </form>
+</div>
+</div>
 
 <th:block th:insert="~{common/_layout::js-lib}"/>
 </body>

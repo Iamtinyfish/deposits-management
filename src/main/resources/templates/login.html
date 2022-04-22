@@ -12,9 +12,10 @@
 <body>
     <div class="background"></div>
 	<div  class="text"><span>Welcome Back</span></div >
-    <div  th:if="${#request.getParameter('error') == 'true'}" class="text">
-	Đăng nhập thất bại!!!<br/>
-	Nguyên nhân:
+
+    <div  th:if="${#request.getParameter('error') == 'true'}" class="text-error text ">
+	<span>Đăng nhập thất bại!!!</span><br/>
+	<span>Nguyên nhân:</span>
 	<span th:if="${#session!= null and #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}">
 <!--	      th:utext="${#session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').message}">-->
 		Tài khoản hoặc mật khẩu không chính xác hãy sửa lại
