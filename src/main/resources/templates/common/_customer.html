@@ -1,8 +1,10 @@
+
  <div xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:fragment="customer-input-form">
 	<div class="d-flex row mb-4">
 		<div class="col-6">
+
 		<label th:for="firstName">Tên</label><br>
 		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{firstName}" type="text" autofocus class="form-control"/>
 		<ul th:if="${#fields.hasErrors('firstName')}">
