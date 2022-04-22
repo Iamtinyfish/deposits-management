@@ -10,5 +10,36 @@ td {
 }
 
 .title {
-    color: gray;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: rgba(128, 128, 128, 0.597);
+}
+
+.frames{
+	margin-left: 4rem;
+}
+
+.CardID{
+	cursor: auto !important;
+}
+
+.create-form{
+    width: 40rem;
+    /* height: 35rem; */
+    box-shadow: 1px 4px 10px 2px rgba(128, 128, 128, 0.23);
+    padding: 2rem;
+    border-radius: 8px;
+}	
+
+.create-form ul{
+	padding: 0;
+	margin-bottom: 5px;
+}
+
+.create-form li{
+	list-style: none;
+	color: red;
+	margin-top: 5px;
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	font-style: initial;
+	font-size: 12px;
 }

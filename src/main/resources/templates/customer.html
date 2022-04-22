@@ -7,17 +7,20 @@
 <body>
 <th:block th:insert="~{/common/_layout::navbar}"/>
 
-<h1>Khách hàng</h1>
+<div class="frames">
+	<h1 class='title'>Khách hàng</h1 >
 
-<a th:href="@{'/user/customer/add'}">Khách hàng mới</a><br><br>
+<a th:href="@{'/user/customer/add'}" class="btn btn-success btn-add item">Khách hàng mới</a><br><br>
 
-<form th:action="@{/user/customer/detail}" method="get">
-	<input autofocus name="IDCard" type="number" placeholder="Số CCCD"/>
-	<input type="submit" value="Đến">
+
+<form th:action="@{/user/customer/detail}" method="get" class="d-flex">
+	<input autofocus name="IDCard" class="form-control col-3 CardID" type="number" placeholder="Số CCCD"/>
+	<input type="submit" value="Đến" class="btn btn-info ml-4">
 </form>
+</div >
 
 <th:block th:insert="~{/common/_layout::js-lib}"/>
 
-</body>
+</body >
 
 </html>
