@@ -147,8 +147,6 @@ public class DepositAccountController {
             model.addAttribute("amountOfFinalSettlement", finalBalance.divide(BigDecimal.valueOf(1000),0,RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(1000)).toPlainString() + depositAccount.getCurrency());
         }
 
-
-
         return "final-settlement";
     }
 }
