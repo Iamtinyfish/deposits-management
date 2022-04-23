@@ -1,94 +1,133 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
-	<th:block th:insert="~{/common/_layout::metadata('Hồ sơ khách hàng')}"/>
+	<th:block th:insert="~{/common/_layout::metadata('Hồ sơ khách hàng')}" />
 	<style>
-		.border-table, .border-table th, .border-table td {
+		.border-table,
+		.border-table th,
+		.border-table td {
 			border: 1px solid black;
 		}
 	</style>
 </head>
 
 <body>
-<th:block th:insert="~{/common/_layout::navbar}"/>
+	<th:block th:insert="~{/common/_layout::navbar}" />
+	<div class="background"></div>
+	<div class="frames d-flex mt-4">
+
+		<div class="create-form mr-4">
+			<h2 class="title mb-4">Hồ sơ khách hàng</h2>
+			<form method="post" th:action="@{/user/customer/update}" th:object="${customer}">
+
+				<input hidden th:field="*{id}">
+
+				<div class="title d-flex">
+					Mã khách hàng :
+					<p th:text="*{id}" class="ml-1"></p>
+				</div>
+
+				<th:block th:insert="~{/common/_customer::customer-input-form}" />
 
 
-<h1 class="title">Hồ sơ khách hàng</h1 >
 
+				<div class="title d-flex text-center ">
+					<div class="d-flex" style="margin-right: 11.5rem;">
+						<p  id="create-date"><input th:value="*{createdAt}" id="create-at" class="btn" type="hidden" />
+						</p>
+					</div>
+					<div class="d-flex mr-4">
+						<p  id="update-date"><input type="hidden" th:value="*{lastModifiedAt}" id="edit-at" class="btn"
+								disabled /></p>
+					</div>
 
-<form method="post" th:action="@{/user/customer/update}" th:object="${customer}">
+				</div>
 
-	<input hidden th:field="*{id}">
+				<div class="title d-flex ">
+					Sửa lần cuối bởi nhân viên có mã :
+					<p th:text="*{ lastModifiedBy.id}" class="ml-1"></p>
+				</div>
 
-	<div>
-		Mã khách hàng<br>
-		<p th:text="*{id}"></p>
+				<input id="updateBtn" th:hidden="${readOnly == true}" type="submit" class="btn btn-success"
+					value="Update" />
+
+				<button id="cancelBtn" th:hidden="${readOnly == true}" type="button" class="btn btn-secondary ml-4"
+					value="Cancel">Cancel</button>
+
+				<button id="editBtn" th:hidden="${readOnly == false}" type="button"
+					class="btn btn-warning">Edit</button>
+
+			</form>
+		</div>
+
+		<div class="create-form ml-4">
+			<h2 class="title mb-4">Tài khoản tiền gửi</h2>
+			<a th:href="@{'/user/deposit-account/add?customerID=' + ${customer.id}}" class="btn btn-success mb-4">Thêm
+				tài khoản tiền gửi mới</a>
+
+			<table class="table-bordered table table-hover title title-table">
+				<thead>
+					<tr class="table-active">
+						<th scope="col">Số tài khoản</th>
+						<th scope="col">Số dư</th>
+						<th scope="col">Loại</th>
+						<th scope="col"></th>
+					</tr >
+				</thead>
+				<tbody>
+					<tr th:each="depositAccount : ${customer.depositAccountSet}">
+						<td th:text="${depositAccount.id}"></td>
+						<td th:text="${depositAccount.balance}"></td>
+						<td
+							th:text="${depositAccount.period == 0 ? 'Không kì hạn' : ('Có kì hạn: ' + depositAccount.period + ' tháng')}">
+						</td>
+						<td><a th:href="@{'/user/deposit-account/detail?depositAccountID=' + ${depositAccount.id}}">Chi
+								tiết</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-
-	<th:block th:insert="~{/common/_customer::customer-input-form}"/>
-
-	<div>
-		Ngày tạo<br>
-		<p th:text="*{createdAt}"></p>
 	</div>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		const allInputElements = document.getElementsByTagName("input");
+		const editBtn = document.getElementById("editBtn");
+		const updateBtn = document.getElementById("updateBtn");
+		const cancelBtn = document.getElementById("cancelBtn");
+		const createInput = document.getElementById("create-at");
+		const updateInput = document.getElementById("edit-at");
+		const createText = document.getElementById("create-date");
+		const updateText = document.getElementById("update-date");
 
-	<div>
-		Ngày sửa lần cuối<br>
-		<p th:text="*{lastModifiedAt}"></p>
-	</div>
+		createText.innerHTML = 'Ngày tạo : ' +  new Date(createInput.value).toLocaleDateString("vn-VN")
+		
+		updateText.innerHTML = 'Ngày sửa lần cuối : ' +  new Date(updateInput.value).toLocaleDateString("vn-VN")
+		
+	
+		editBtn.onclick = () => {
+			for (const inputElement of allInputElements) {
+				inputElement.readOnly = false;
+				updateBtn.hidden = false;
+				cancelBtn.hidden = false;
+				editBtn.hidden = true;
+			}
+		};
 
-	<div>
-		Sửa lần cuối bởi nhân viên có mã<br>
-		<p th:text="*{lastModifiedBy.id}"></p>
-	</div>
+		cancelBtn.onclick = () => {
+			for (const inputElement of allInputElements) {
+				inputElement.readOnly = true;
+				updateBtn.hidden = true;
+				cancelBtn.hidden = true;
+				editBtn.hidden = false;
+			}
+		};
 
-	<input id="updateBtn" th:hidden="${readOnly == true}" type="submit" value="Update"/>
+		/*]]>*/
+	</script>
 
-	<button id="editBtn" th:hidden="${readOnly == false}" type="button">Edit</button>
-
-</form>
-
-<h2>Tài khoản tiền gửi</h2>
-
-<a th:href="@{'/user/deposit-account/add?customerID=' + ${customer.id}}">Thêm tài khoản tiền gửi mới</a>
-
-<table class="border-table">
-	<thead>
-	<tr>
-		<th>Số tài khoản</th>
-		<th>Số dư</th>
-		<th>Loại</th>
-		<th></th>
-	</tr>
-	</thead>
-	<tbody>
-	<tr th:each="depositAccount : ${customer.depositAccountSet}">
-		<td th:text="${depositAccount.id}"></td>
-		<td th:text="${depositAccount.balance}"></td>
-		<td th:text="${depositAccount.period == 0 ? 'Không kì hạn' : ('Có kì hạn: ' + depositAccount.period + ' tháng')}"></td>
-		<td><a th:href="@{'/user/deposit-account/detail?depositAccountID=' + ${depositAccount.id}}">Chi tiết</a></td>
-	</tr>
-	</tbody>
-</table>
-
-<script th:inline="javascript">
-	/*<![CDATA[*/
-	const allInputElements = document.getElementsByTagName("input");
-	const editBtn = document.getElementById("editBtn");
-	const updateBtn = document.getElementById("updateBtn");
-
-	editBtn.onclick = () => {
-		for (const inputElement of allInputElements) {
-			inputElement.readOnly = false;
-			updateBtn.hidden = false;
-			editBtn.hidden = true;
-		}
-	};
-
-	/*]]>*/
-</script>
-
-<th:block th:insert="~{/common/_layout::js-lib}"/>
+	<th:block th:insert="~{/common/_layout::js-lib}" />
 </body>
 
 </html>

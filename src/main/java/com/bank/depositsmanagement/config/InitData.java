@@ -7,6 +7,7 @@ import com.bank.depositsmanagement.entity.*;
 import com.bank.depositsmanagement.utils.EncryptedPasswordUtils;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InitData {
@@ -59,31 +60,22 @@ public class InitData {
                     .build()
         );
     }
-
-    public static void createInterestRateReference(InterestRateReferenceRepository interestRateReferenceRepository) {
-        List<InterestRateReference> interestRateReferences = List.of(
-                new InterestRateReference(null,2.3f,0, CurrencyType.VND),
-                new InterestRateReference(null,2.9f,1, CurrencyType.VND),
-                new InterestRateReference(null,3.6f,3, CurrencyType.VND),
-                new InterestRateReference(null,4.55f,6, CurrencyType.VND),
-                new InterestRateReference(null,5.7f,12, CurrencyType.VND),
-                new InterestRateReference(null,5.9f,18, CurrencyType.VND),
-                new InterestRateReference(null,6.4f,24, CurrencyType.VND),
-                new InterestRateReference(null,6.6f,36, CurrencyType.VND),
-                new InterestRateReference(null,6.6f,48, CurrencyType.VND),
-                new InterestRateReference(null,6.6f,60, CurrencyType.VND),
-                new InterestRateReference(null,2.0f,0, CurrencyType.USD),
-                new InterestRateReference(null,2.6f,1, CurrencyType.USD),
-                new InterestRateReference(null,3.3f,3, CurrencyType.USD),
-                new InterestRateReference(null,4.25f,6, CurrencyType.USD),
-                new InterestRateReference(null,5.4f,12, CurrencyType.USD),
-                new InterestRateReference(null,5.6f,18, CurrencyType.USD),
-                new InterestRateReference(null,6.1f,24, CurrencyType.USD),
-                new InterestRateReference(null,6.3f,36, CurrencyType.USD),
-                new InterestRateReference(null,6.3f,48, CurrencyType.USD),
-                new InterestRateReference(null,6.3f,60, CurrencyType.USD)
-        );
-
-        interestRateReferenceRepository.saveAll(interestRateReferences);
-    }
+//
+//    public static void createInterestRateReference(InterestRateReferenceRepository interestRateReferenceRepository) {
+//        List<InterestRateReference> interestRateReferences = new ArrayList<>();
+//        interestRateReferenceRepository.add(new InterestRateReference(null,2.3f,0, CurrencyType.VND));
+//        interestRateReferenceRepository.add(new InterestRateReference(null,2.9f,1, CurrencyType.VND));
+//        interestRateReferenceRepository.add(new InterestRateReference(null,3.6f,3, CurrencyType.VND));
+//        interestRateReferenceRepository.add(new InterestRateReference(null,4.55f,6, CurrencyType.VND));
+//        interestRateReferenceRepository.add(new InterestRateReference(null,2.3f,0, CurrencyType.VND));
+//        interestRateReferenceRepository.add(new InterestRateReference(null,2.3f,0, CurrencyType.VND));
+//        interestRateReferenceRepository.add(new InterestRateReference(null,2.3f,0, CurrencyType.VND));
+//        interestRateReferenceRepository.add(new InterestRateReference(null,2.3f,0, CurrencyType.VND));
+//        interestRateReferenceRepository.add(new InterestRateReference(null,2.3f,0, CurrencyType.VND));
+//        interestRateReferenceRepository.add(new InterestRateReference(null,2.3f,0, CurrencyType.VND));
+//                
+//
+//
+//        interestRateReferenceRepository.saveAll(interestRateReferences);
+//    }
 }

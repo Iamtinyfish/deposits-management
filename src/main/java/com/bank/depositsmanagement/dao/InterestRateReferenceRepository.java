@@ -6,4 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface InterestRateReferenceRepository extends CrudRepository<InterestRateReference, Long> {
     InterestRateReference findByPeriodAndCurrency(int period, CurrencyType currency);
+
+
 }
