@@ -1,76 +1,102 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-	<th:block th:insert="~{/common/_layout::metadata('Chi tiết tài khoản tiền gửi')}"/>
+	<th:block th:insert="~{/common/_layout::metadata('Chi tiết tài khoản tiền gửi')}" />
 </head>
 
 <body>
-<th:block th:insert="~{/common/_layout::navbar}"/>
+	<th:block th:insert="~{/common/_layout::navbar}" />
+	<div class="background"></div>
+	<div class="frames mt-4">
+		<div class="create-form">
+			<h2 class="title mb-4">Chi tiết tài khoản tiền gửi</h2>
+			<div th:object="${depositAccount}">
 
-<h1>Chi tiết tài khoản tiền gửi</h1>
-<div th:object="${depositAccount}">
+				<th:block th:insert="~{/common/_customer::holder-info}" />
 
-	<th:block th:insert="~{/common/_customer::holder-info}"/>
+				<h4 class="title mb-4">Thông tin tài khoản</h4>
+				<div class="d-flex title justify-content-between ">
+					<div class="d-flex" >
+						Số tài khoản :
+						<p class="ml-1 " th:text="*{id}"></p>
+					</div>
 
-	<h2>Thông tin tài khoản</h2>
+					<div class="d-flex" >
+						Loai tiền tệ :
+						<p class="ml-1 " style="margin-right: 10.3rem;" th:text="*{currency}"></p >
+					</div>
+				</div>
+				<div class="d-flex title justify-content-between ">
+					<div class="d-flex">
+						Kì hạn :
+						<p class="ml-1 " th:text="${depositAccount.period + ' tháng'} "></p>
+					</div>
+					<div class="d-flex " style="margin-right: 9.6rem;">
+						Lãi suất :
+						<p class="ml-1" th:text="${depositAccount.interestRate + ' %/năm'}"></p>
+					</div>
+				</div>
+				<div class="d-flex title justify-content-between ">
 
-	<div>
-		Số tài khoản<br>
-		<p th:text="*{id}"></p>
+					<div class="d-flex">
+						Tiền gốc :
+						<p class="ml-1 " th:text="*{balance}"></p>
+					</div>
+
+					<div class="d-flex" style="margin-right:10.3rem;">
+						Tiền lãi :
+						<p class="ml-1 " th:text="*{interest}"></p>
+					</div>
+					<div>
+						Ngày đáo hạn<br>
+						<p class="ml-1 " th:text="*{dateOfMaturity}"></p>
+					</div>
+
+				</div>
+				<div class="d-flex title justify-content-between ">
+					<div class="d-flex" >
+						Số ngày gửi thực :
+						<p class="ml-1 " th:text="*{numberOfDay}"></p>
+					</div>
+					<div class="d-flex"  style="margin-right: 13.2rem;">
+						Tạo bởi :
+						<p class="ml-1 " th:text="*{createBy.id}"></p>
+					</div>
+				</div>
+				<div class="d-flex mb-4 title" >
+						<p  style="max-width: 140px;" id="create-date-deposit"><input type="hidden" th:value="*{createdAt}" id="create-at-deposit" class="btn"
+								disabled /></p>
+				</div>
+				<!--	<th:block th:include="/common/_deposit-account-form"/>-->
+			</div>
+
+			<a th:href="@{'/user/deposit-account/final-settlement?depositAccountID=' + ${depositAccount.id}}"  class="btn btn-info ">Tất
+				toán</a>
+			<a th:if="${depositAccount.period == 0}"
+				th:href="@{'/user/deposit-account/withdraw-part?depositAccountID=' + ${depositAccount.id}}" class="btn btn-info ml-2">Rút tiền</a>
+			<a th:if="${depositAccount.period == 0}"
+				th:href="@{'/user/deposit-account/deposit-extra?depositAccountID=' + ${depositAccount.id}}" class="btn btn-info ml-2">Gửi thêm
+				tiền</a>
+			<button id='return-profile' onclick="handleProfile()" type="button" class="btn btn-info ml-2">Hồ sơ khách hàng</button>
+		</div>
 	</div>
 
-	<div>
-		Loai tiền tệ<br>
-		<p th:text="*{currency}"></p>
-	</div>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		const createInput = document.getElementById("create-at-deposit");
+		const createText = document.getElementById("create-date-deposit");
+		const cccd = document.getElementById("_cccd");
+		
+		function handleProfile(){
+			window.location.href = '/user/customer/detail?IDCard=' + cccd.innerText
+		}
+		createText.innerHTML = 'Ngày tạo : ' +  new Date(createInput.value).toLocaleDateString("vn-VN")
+		
+		/*]]>*/
+	</script>
+	<th:block th:insert="~{/common/_layout::js-lib}" />
 
-	<div>
-		Kì hạn<br>
-		<p th:text="${depositAccount.period + ' tháng'} "></p>
-	</div>
-
-	<div>
-		Lãi suất<br>
-		<p th:text="${depositAccount.interestRate + ' %/năm'}"></p>
-	</div>
-
-	<div>
-		Tiền gốc<br>
-		<p th:text="*{balance}"></p>
-	</div>
-
-	<div>
-		Tiền lãi<br>
-		<p th:text="*{interest}"></p>
-	</div>
-
-	<div>
-		Số ngày gửi thực<br>
-		<p th:text="*{numberOfDay}"></p>
-	</div>
-
-	<div>
-		Ngày đáo hạn<br>
-		<p th:text="*{dateOfMaturity}"></p>
-	</div>
-
-	<div>
-		Ngày tạo<br>
-		<p th:text="*{createdAt}"></p>
-	</div>
-
-	<div>
-		Tạo bởi<br>
-		<p th:text="*{createBy.id}"></p>
-	</div>
-	<!--	<th:block th:include="/common/_deposit-account-form"/>-->
-</div>
-
-<a th:href="@{'/user/deposit-account/final-settlement?depositAccountID=' + ${depositAccount.id}}">Tất toán</a>
-<a th:if="${depositAccount.period == 0}" th:href="@{'/user/deposit-account/withdraw-part?depositAccountID=' + ${depositAccount.id}}">Rút tiền</a>
-<a th:if="${depositAccount.period == 0}" th:href="@{'/user/deposit-account/deposit-extra?depositAccountID=' + ${depositAccount.id}}">Gửi thêm tiền</a>
-
-<th:block th:insert="~{/common/_layout::js-lib}"/>
 </body>
 
 </html>

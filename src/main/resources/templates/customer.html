@@ -1,26 +1,30 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
-	<th:block th:insert="~{/common/_layout::metadata('Khách hàng')}"/>
+	<th:block th:insert="~{/common/_layout::metadata('Khách hàng')}" />
 </head>
 
 <body>
-<th:block th:insert="~{/common/_layout::navbar}"/>
+	<th:block th:insert="~{/common/_layout::navbar}" />
+	<div class="background"></div>
+	<div class="frames mt-4">
+		<div class="create-form">
+			<h2 class='title mb-4'>Khách hàng</h2>
 
-<div class="frames">
-	<h1 class='title'>Khách hàng</h1 >
-
-<a th:href="@{'/user/customer/add'}" class="btn btn-success btn-add item">Khách hàng mới</a><br><br>
+			<a th:href="@{'/user/customer/add'}" class="btn btn-success btn-add item">Khách hàng mới</a><br><br>
 
 
-<form th:action="@{/user/customer/detail}" method="get" class="d-flex">
-	<input autofocus name="IDCard" class="form-control col-3 CardID" type="number" placeholder="Số CCCD"/>
-	<input type="submit" value="Đến" class="btn btn-info ml-4">
-</form>
-</div >
+			<form th:action="@{/user/customer/detail}" method="get" class="d-flex">
+				<input autofocus name="IDCard" class="form-control col-6 CardID" type="number" required
+					placeholder="Số CCCD" />
+				<input type="submit" value="Tìm khách hàng" class="btn btn-info ml-4">
+			</form>
+		</div>
+	</div>
 
-<th:block th:insert="~{/common/_layout::js-lib}"/>
+	<th:block th:insert="~{/common/_layout::js-lib}" />
 
-</body >
+</body>
 
 </html>

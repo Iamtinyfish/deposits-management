@@ -5,6 +5,20 @@ body {
     font-size: 100%;
 }
 
+
+.background {
+    background-image: linear-gradient(to right, #0000005c, #0000005c),
+    url("../image/bg.jpg");
+    background-repeat: no-repeat;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    z-index: -2;
+}
+
 td {
     color: red;
 }
@@ -14,8 +28,13 @@ td {
     color: rgba(128, 128, 128, 0.597);
 }
 
+.title-table{
+	color: rgb(74, 74, 74) !important;
+}
+
 .frames{
-	margin-left: 4rem;
+	width: 100%;
+	
 }
 
 .CardID{
@@ -23,16 +42,19 @@ td {
 }
 
 .create-form{
-    width: 40rem;
+    width: 42rem;
     /* height: 35rem; */
-    box-shadow: 1px 4px 10px 2px rgba(128, 128, 128, 0.23);
+    /*box-shadow: 3px 2px 2px 3px hsl(220deg 60% 50% / 0.333);*/
     padding: 2rem;
     border-radius: 8px;
+    margin: 1px auto;
+     background: linear-gradient(to right, #ece9e6, #ffffff);
 }	
 
 .create-form ul{
 	padding: 0;
 	margin-bottom: 5px;
+	position: relative;
 }
 
 .create-form li{
@@ -42,4 +64,8 @@ td {
 	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 	font-style: initial;
 	font-size: 12px;
+	position: absolute;
+}
+.create-form li:nth-child(2){
+	display: none;
 }
