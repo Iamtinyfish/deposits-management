@@ -25,12 +25,12 @@
 	</tr>
 	</thead>
 	<tbody >
-	<tr th:if="${period != 0}">
-		<th th:text="${'Lãi kép theo kì hạn ' + period + ' tháng (1 tháng = 30 ngày)'}"></th>
+	<tr th:if="${depositAccount.period != 0}">
+		<th th:text="${'Lãi kép theo kì hạn ' + depositAccount.period + ' tháng (1 tháng = 30 ngày)'}"></th>
 		<td th:text="${timeDepositDays}"></td>
 		<td th:text="${timeDepositInterestRate}"></td>
 		<td></td>
-		<td th:text="${timeDepositInterestMoney}"></td>
+		<td th:text="${timeDepositInterest}"></td>
 		<td th:text="${balance1}"></td>
 	</tr>
 	<tr>
@@ -38,8 +38,8 @@
 		<td th:text="${demandDepositDays}"></td>
 		<td th:text="${demandDepositInterestRate}"></td>
 		<td></td>
-		<td th:text="${demandDepositInterestMoney}"></td>
-		<td th:text="${balance2}"></td>
+		<td th:text="${demandDepositInterest}"></td>
+		<td th:text="${finalBalance}"></td>
 	</tr>
 	</tbody>
 </table>

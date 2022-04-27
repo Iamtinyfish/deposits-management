@@ -30,7 +30,7 @@
 		<select th:field="*{period}">
 			<option th:each="period : ${periods}"
 			        th:value="${period}"
-			        th:text="${period + ' tháng'}">Wireframe
+			        th:text="${(period != 0) ? period + ' tháng' : 'Không kì hạn'}">Wireframe
 			</option>
 		</select>
 		<ul th:if="${#fields.hasErrors('period')}">

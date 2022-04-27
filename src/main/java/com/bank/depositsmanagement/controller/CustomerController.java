@@ -40,8 +40,13 @@ public class CustomerController {
 
     @PostMapping("user/customer/add")
     public String addCustomer(Model model, @ModelAttribute("customer") @Valid Customer customer, BindingResult bindingResult, Principal principal) {
+        //check unique fields
+        boolean doesIDCardExist = customerRepository.existsByIDCard(customer.getIDCard());
+        if (doesIDCardExist) model.addAttribute("errorIDCard", "Số CCCD đã tồn tại");
+        boolean doesEmailExist = customerRepository.existsByEmail(customer.getEmail());
+        if (doesEmailExist) model.addAttribute("errorEmail", "Email đã tồn tại");
 
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors() || doesEmailExist || doesIDCardExist) {
             model.addAttribute("customer", customer);
             return "add-customer";
         }
@@ -57,7 +62,11 @@ public class CustomerController {
 
     @GetMapping("user/customer/detail")
     public String customerDetail(Model model, @RequestParam(value = "IDCard") String IDCard) {
-        Customer customer = customerRepository.findByIDCard(IDCard);
+        Customer customer = customerRepository.findByIDCard(IDCard).orElse(null);
+        if (customer == null) {
+            model.addAttribute("message", "Không tìm thấy khách hàng với mã ID " + customer.getId());
+            return "404";
+        }
         model.addAttribute("customer", customer);
         model.addAttribute("readOnly", true);
         return "customer-detail";
@@ -69,11 +78,17 @@ public class CustomerController {
         Customer oldCustomer = customerRepository.findById(customer.getId()).orElse(null);
 
         if (oldCustomer == null) {
-            model.addAttribute("message", "Not found customer with ID " + customer.getId());
+            model.addAttribute("message", "Không tìm thấy khách hàng với mã ID " + customer.getId());
             return "404";
         }
 
-        if (bindingResult.hasErrors()) {
+        //check unique fields
+        boolean doesIDCardExist = customerRepository.existsByIDCard(customer.getIDCard());
+        if (doesIDCardExist) model.addAttribute("error", "Số CCCD đã tồn tại");
+        boolean doesEmailExist = customerRepository.existsByEmail(customer.getEmail());
+        if (doesEmailExist) model.addAttribute("error", "Email đã tồn tại");
+
+        if (bindingResult.hasErrors() || doesEmailExist || doesIDCardExist) {
             customer.setCreatedAt(oldCustomer.getCreatedAt());
             customer.setLastModifiedAt(oldCustomer.getLastModifiedAt());
             customer.setLastModifiedBy(oldCustomer.getLastModifiedBy());

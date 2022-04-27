@@ -24,7 +24,7 @@
 	<div class="d-flex row mb-4">
 		<div class="col-6">
 		<label th:for="gender">Giới tính</label><br>
-		<select th:field="*{gender}" class="form-control">
+		<select th:disabled="${readOnly == true}" th:field="*{gender}" class="form-control">
 			<option th:value="false" th:default>Nam</option>
 			<option th:value="true">Nữ</option>
 		</select>
@@ -46,7 +46,8 @@
 		<div class="col-6">
 		<label th:for="IDCard">CCCD</label><br>
 		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{IDCard}" class="form-control" type="number"/>
-		<ul th:if="${#fields.hasErrors('IDCard')}">
+		<ul th:if="${#fields.hasErrors('IDCard') || errorIDCard != null}">
+			<li th:if="${errorIDCard != null}" th:text="${errorIDCard}"></li>
 			<li th:each="err : ${#fields.errors('IDCard')}" th:text="${err}">Input is incorrect</li>
 		</ul>
 	</div >
@@ -64,7 +65,8 @@
 		<div class="col-6">
 		<label th:for="email">Email</label><br>
 		<input th:readonly="${readOnly == true}" th:errorClass="error-input" th:field="*{email}" class="form-control" type="email"/>
-		<ul th:if="${#fields.hasErrors('email')}">
+		<ul th:if="${#fields.hasErrors('email') || errorEmail != null}">
+			<li th:if="${errorEmail != null}" th:text="${errorEmail}"></li>
 			<li th:each="err : ${#fields.errors('email')}" th:text="${err}">Input is incorrect</li>
 		</ul>
 	</div >

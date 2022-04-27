@@ -21,11 +21,10 @@ public class InterestRateReference {
     @Column(nullable = false)
     private float interestRate;
 
-    @PositiveOrZero
+    @PositiveOrZero(message = "Phải là số nguyên dương")
     @Column(nullable = false)
     private int period;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CurrencyType currency;
