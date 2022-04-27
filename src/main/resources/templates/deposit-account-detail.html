@@ -38,15 +38,18 @@
 					</div>
 				</div>
 				<div class="d-flex title justify-content-between ">
-
-					<div class="d-flex" s>
+					<div class="d-flex">
 						Tiền gốc :
 						<p class="ml-1 " th:text="*{balance}"></p>
 					</div>
 
 					<div class="d-flex" style="margin-right:10.3rem;">
 						Tiền lãi :
-						<p class="ml-1 " th:text="*{interestMoney}"></p>
+						<p class="ml-1 " th:text="*{interest}"></p>
+					</div>
+					<div>
+						Ngày đáo hạn<br>
+						<p class="ml-1 " th:text="*{dateOfMaturity}"></p>
 					</div>
 
 				</div>
@@ -75,8 +78,9 @@
 				th:href="@{'/user/deposit-account/deposit-extra?depositAccountID=' + ${depositAccount.id}}" class="btn btn-info ml-2">Gửi thêm
 				tiền</a>
 			<button id='return-profile' onclick="handleProfile()" type="button" class="btn btn-info ml-2">Hồ sơ khách hàng</button>
-		<e=feurhdiv>
+		</div>
 	</div>
+  
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 		const createInput = document.getElementById("create-at-deposit");

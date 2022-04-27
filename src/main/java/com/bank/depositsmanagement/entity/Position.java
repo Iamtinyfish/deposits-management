@@ -17,7 +17,7 @@ public class Position {
 	@GeneratedValue
 	private Long id;
 	
-	@NotBlank
+	@NotBlank(message = "Không được bỏ trống trường này")
 	@Column(nullable = false)
 	private String name;
 

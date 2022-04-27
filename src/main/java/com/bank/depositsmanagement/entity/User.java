@@ -22,12 +22,10 @@ public class User {
 	private String username;
 
 	@Pattern(message = "Mật khẩu phải có ít nhất 8 kí tự và không chứa khoảng trắng", regexp = "[^\\s\\n]{8,}")
-	@NotBlank
 	@Column(nullable = false)
 	private String password;
 
 	@Column(nullable = false)
-	@NotBlank
 	private String role;
 
 	@Column(nullable = false)

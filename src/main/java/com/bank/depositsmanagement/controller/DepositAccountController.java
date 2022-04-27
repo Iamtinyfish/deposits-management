@@ -8,6 +8,7 @@ import com.bank.depositsmanagement.entity.Customer;
 import com.bank.depositsmanagement.entity.DepositAccount;
 import com.bank.depositsmanagement.entity.Employee;
 import com.bank.depositsmanagement.entity.InterestRateReference;
+import com.bank.depositsmanagement.utils.TimeConstant;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -116,37 +117,44 @@ public class DepositAccountController {
             return "404";
         }
 
+        model.addAttribute("depositAccount", depositAccount);
+
         int period = depositAccount.getPeriod();
-        model.addAttribute("period", period);
+
+        BigDecimal finalBalance;
 
         if (period > 0) {
-            int timeDepositDays = (depositAccount.getNumberOfDay() / (depositAccount.getPeriod() * 30)) * 30 * depositAccount.getPeriod();
+            int dayOfPeriod = period * TimeConstant.DAY_OF_MONTH;
+            int timeDepositDays = (depositAccount.getNumberOfDay() / dayOfPeriod) * dayOfPeriod;
             model.addAttribute("timeDepositDays", timeDepositDays);
             model.addAttribute("timeDepositInterestRate", depositAccount.getInterestRate());
-            model.addAttribute("timeDepositInterestMoney", depositAccount.getInterestMoney().setScale(2, RoundingMode.HALF_UP));
-            BigDecimal balance1 = depositAccount.getBalance().add(depositAccount.getInterestMoney()).setScale(2, RoundingMode.HALF_UP);
+            model.addAttribute("timeDepositInterest", depositAccount.getInterest());
+            BigDecimal balance1 = depositAccount.getBalance().add(depositAccount.getInterest()).setScale(2, RoundingMode.HALF_UP);
             model.addAttribute("balance1", balance1);
 
             int demandDepositDays = depositAccount.getNumberOfDay() - timeDepositDays;
             model.addAttribute("demandDepositDays", demandDepositDays);
             float demandDepositInterestRate = interestRateReferenceRepository.findByPeriodAndCurrency(0,depositAccount.getCurrency()).getInterestRate();
             model.addAttribute("demandDepositInterestRate", demandDepositInterestRate);
-            BigDecimal demandDepositInterestMoney = balance1.multiply(BigDecimal.valueOf(demandDepositDays * demandDepositInterestRate * 0.01 / 360)).setScale(2, RoundingMode.HALF_UP);
-            model.addAttribute("demandDepositInterestMoney", demandDepositInterestMoney);
-            BigDecimal balance2 = balance1.add(demandDepositInterestMoney).setScale(2, RoundingMode.HALF_UP);
-            model.addAttribute("balance2", balance2);
-
-            model.addAttribute("amountOfFinalSettlement", balance2.divide(BigDecimal.valueOf(1000),0,RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(1000)).toPlainString() + depositAccount.getCurrency());
+            BigDecimal demandDepositInterest = balance1.multiply(
+                    BigDecimal.valueOf(
+                            demandDepositDays * demandDepositInterestRate * 0.01 / 360
+                    )
+            ).setScale(2, RoundingMode.HALF_UP);
+            model.addAttribute("demandDepositInterest", demandDepositInterest);
+            finalBalance = balance1.add(
+                    demandDepositInterest
+            ).setScale(2, RoundingMode.HALF_UP);
         } else {
             model.addAttribute("demandDepositDays", depositAccount.getNumberOfDay());
             model.addAttribute("demandDepositInterestRate", depositAccount.getInterestRate());
-            model.addAttribute("demandDepositInterestMoney", depositAccount.getInterestMoney());
-            BigDecimal finalBalance = depositAccount.getBalance().add(depositAccount.getInterestMoney()).setScale(2,RoundingMode.HALF_UP);
-            model.addAttribute("balance2", finalBalance);
-
-            model.addAttribute("amountOfFinalSettlement", finalBalance.divide(BigDecimal.valueOf(1000),0,RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(1000)).toPlainString() + depositAccount.getCurrency());
+            model.addAttribute("demandDepositInterest", depositAccount.getInterest());
+            finalBalance = depositAccount.getBalance().add(
+                    depositAccount.getInterest()
+            ).setScale(2,RoundingMode.HALF_UP);
         }
-
+        model.addAttribute("finalBalance", finalBalance);
+        model.addAttribute("amountOfFinalSettlement", finalBalance.divide(BigDecimal.valueOf(1000),0,RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(1000)).toPlainString() + depositAccount.getCurrency());
         return "final-settlement";
     }
 }

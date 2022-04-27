@@ -26,53 +26,49 @@ public class Employee implements Serializable {
 	@GeneratedValue
 	private Long id;
 	
-	@NotBlank
+	@NotBlank(message = "Không được bỏ trống trường này")
 	@Column(nullable = false)
 	private String firstName;
 	
-	@NotBlank
+	@NotBlank(message = "Không được bỏ trống trường này")
 	@Column(nullable = false)
 	private String lastName;
 
 	@Column(nullable = false)
 	private boolean gender;
 
-	@NotNull
+	@NotNull(message = "Không được bỏ trống trường này")
 	@Column(nullable = false)
-	@PastOrPresent
+	@PastOrPresent(message = "Phải là thời gian trong quá khứ")
 	private LocalDate birthday;
 	
-	@Length(min = 10, max = 12)
-	@NotBlank
+	@Length(message = "CCCD phải có 12 số", min = 12, max = 12)
+	@NotBlank(message = "Không được bỏ trống trường này")
 	@Column(nullable = false, unique = true, length = 12)
 	private String IDCard;
 
 	@Length(max = 20)
-	@NotBlank
+	@NotBlank(message = "Không được bỏ trống trường này")
 	@Column(nullable = false, length = 20)
 	private String phone;
 
+	@NotBlank(message = "Không được bỏ trống trường này")
 	@Column(nullable = false, unique = true)
-	@Email
+	@Email(message = "Không phải là email")
 	private String email;
 
 	@Column(nullable = false)
-	@NotBlank
+	@NotBlank(message = "Không được bỏ trống trường này")
 	private String address;
 
-	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, columnDefinition = "varchar(255) default 'WORKING'")
 	private EmployeeStatus status;
 
-	@NotNull
 	@Column(nullable = false)
-	@PastOrPresent
 	private LocalDateTime createdAt;
 
-	@NotNull
 	@Column(nullable = false)
-	@PastOrPresent
 	private LocalDateTime lastModifiedAt;
 
 	//Foreign Key

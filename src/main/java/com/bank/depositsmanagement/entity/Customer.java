@@ -28,47 +28,44 @@ public class Customer {
 	private Long id;
 
 	@Column(nullable = false)
-	@NotBlank
+	@NotBlank(message = "Không được bỏ trống trường này")
 	private String firstName;
 
 	@Column(nullable = false)
-	@NotBlank
+	@NotBlank(message = "Không được bỏ trống trường này")
 	private String lastName;
 
 	@Column(nullable = false)
 	private boolean gender;
 
-	@NotNull
+	@NotNull(message = "Không được bỏ trống trường này")
 	@Column(nullable = false)
-	@PastOrPresent
+	@PastOrPresent(message = "Phải là thời gian trong quá khứ")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthday;
 	
-	@NotBlank
-	@Length(min = 12, max = 12)
+	@NotBlank(message = "Không được bỏ trống trường này")
+	@Length(message = "CCCD phải có 12 số", min = 12, max = 12)
 	@Column(nullable = false, unique = true, length = 12)
 	private String IDCard;
 
 	@Length(max = 20)
-	@NotBlank
+	@NotBlank(message = "Không được bỏ trống trường này")
 	@Column(nullable = false, length = 20)
 	private String phone;
 
-	@NotBlank
 	@Column(unique = true)
 	@Email
 	private String email;
 	
 	@Column(nullable = false)
-	@NotBlank
+	@NotBlank(message = "Không được bỏ trống trường này")
 	private String address;
 
 	@Column(nullable = false)
-	@PastOrPresent
 	private LocalDateTime createdAt;
 
 	@Column(nullable = false)
-	@PastOrPresent
 	private LocalDateTime lastModifiedAt;
 
 	@ManyToOne(optional = false)
