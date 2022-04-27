@@ -1,47 +1,52 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-	<th:block th:insert="~{/common/_layout::metadata('Đăng nhập')}"/>
+	<th:block th:insert="~{/common/_layout::metadata('Đăng nhập')}" />
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300&family=Roboto:wght@100;300&display=swap" rel="stylesheet">
-    <link th:href="@{/css/login.css}" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300&family=Roboto:wght@100;300&display=swap"
+		rel="stylesheet">
+	<link th:href="@{/css/login.css}" rel="stylesheet">
 </head>
+
 <body>
-    <div class="background"></div>
-	<div  class="text"><span>Welcome Back</span></div >
+	<div class="background"></div>
+	<div class="text"><span>Xin chào người dùng</span></div>
 
-    <div  th:if="${#request.getParameter('error') == 'true'}" class="text-error text ">
-	<span>Đăng nhập thất bại!!!</span><br/>
-	<span>Nguyên nhân:</span>
-	<span th:if="${#session!= null and #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}">
-<!--	      th:utext="${#session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').message}">-->
-		Tài khoản hoặc mật khẩu không chính xác hãy sửa lại
-	</span>
+	<div th:if="${#request.getParameter('error') == 'true'}" class="text-error text ">
+		<span>Đăng nhập thất bại!!!</span><br />
+		<span>Nguyên nhân:</span>
+		<span th:if="${#session!= null and #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}">
+			<!--	      th:utext="${#session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').message}">-->
+			Tài khoản hoặc mật khẩu không chính xác,hãy sửa lại
+		</span>
 	</div>
-    <div class="account">
-        <div class="account__sign-up">
-            <h4>Ngân hàng</h4>
-<!--            <p>Bạn chưa có tài khoản? Tạo ngay!</p>-->
-           <!-- <button onclick=handleSignIn()>Đăng ký</button>-->
-        </div>
-        <div class="account__form animaltion-right right "  id="sign-up">
-              <form name='loginForm' th:action="@{/j_spring_security_check}" method='POST' class="login sign-up d-block" id="form-login">
-                <h3>Đăng nhập</h3>
-                <input type="text" name="username" autofocus required class="btn" placeholder="Tên tài khoản"><br>
-                <input type="password" name="password" class="btn" required placeholder="Mật khẩu"><br><br>
-                <div class="action">
-                	<input type="submit" value="Đăng nhập" name="submit" class="button"/>
-                	<label for="remember">Ghi nhớ tôi?<input type="checkbox" id="remember" name="remember-me"/></label >
-                </div >
-              </form>  
-        </div>
-        <div class="account__login account__sign-up">
+	<div class="account">
+		<div class="account__sign-up">
+			<h4>Ngân hàng</h4>
+			<!--            <p>Bạn chưa có tài khoản? Tạo ngay!</p>-->
+			<!-- <button onclick=handleSignIn()>Đăng ký</button>-->
+		</div>
+		<div class="account__form animaltion-right right " id="sign-up">
+			<form name='loginForm' th:action="@{/j_spring_security_check}" method='POST' class="login sign-up d-block"
+				id="form-login">
+				<h3>Đăng nhập</h3>
+				<input type="text" name="username" autofocus required class="btn" placeholder="Tên tài khoản"><br>
+				<input type="password" name="password" class="btn" required placeholder="Mật khẩu"><br><br>
+				<div class="action">
+					<input type="submit" value="Đăng nhập" name="submit" class="button"  />
+					<label for="remember">Ghi nhớ tôi?<input type="checkbox" id="remember" name="remember-me" /></label>
+				</div>
+			</form>
+		</div>
+		<div class="account__login account__sign-up">
 
-        </div>
-    </div>
-    <th:block th:insert="~{/common/_layout::js-lib}"/>
+		</div>
+	</div>
+	<th:block th:insert="~{/common/_layout::js-lib}" />
 </body>
+
 </html>

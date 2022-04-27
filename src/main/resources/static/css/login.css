@@ -1,6 +1,6 @@
 .background {
     background-image: linear-gradient(to right, #0000005c, #0000005c),
-    url("https://images.foody.vn/images/101988395(3).jpg");
+    url("https://i.pinimg.com/736x/cf/67/cc/cf67ccd10368dba875dabc37b18d2516.jpg");
     background-repeat: no-repeat;
     position: fixed;
     top: 0;
@@ -20,7 +20,7 @@
     box-shadow: 1px 1px 15px 2px;
     position: fixed;
     left: 50%;
-    top: -12%;
+    top: -15%;
     animation: alert 4s;
     transform: translateX(-50%);
 }	
@@ -69,7 +69,6 @@
 
 .account__sign-up button {
     text-align: center;
-    outline: none;
     cursor: pointer;
     background-color: #00000085;
     border-radius: 0.4rem;
@@ -149,7 +148,6 @@
     border-radius: 0.4rem;
     color: white;
     font-weight: 400;
-    outline: none;
     border: 1px solid #ffff006e;
     width: 12rem;
     cursor: pointer !important;
