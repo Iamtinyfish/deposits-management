@@ -91,23 +91,23 @@
 		<input type="text" hidden readonly name="holderID" class="form-control " th:value="*{holder.id}" />
 
 		<div class="d-flex title text-start">
-			<div class="d-flex " style="margin-right: 13rem;">
+			<div class="d-flex " style="width: 50%;">
 				Mã khách hàng :
 				<p class="ml-1" th:text="*{holder.id}"></p >
 			</div >
 
-			<div class="d-flex ">
+			<div class="d-flex " style="width: 50%;">
 				Tên khách hàng :
 				<p class="ml-1" th:text="${depositAccount.holder.firstName + ' ' + depositAccount.holder.lastName}"></p>
 			</div >
 		</div>
 		<div class="d-flex title text-start mb-4">
-		<div  class="d-flex" style="margin-right: 10.7rem;">
+		<div  class="d-flex" style="width: 50%;">
 			CCCD :
 			<p id="_cccd" class="ml-1" th:text="*{holder.IDCard}"></p  >
 		</div  >
 
-		<div class="d-flex">
+		<div class="d-flex" style="width: 50%;">
 			Địa chỉ : 
 			<p class="ml-1" th:text="*{holder.address}"></p>
 		</div >

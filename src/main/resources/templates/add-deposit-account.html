@@ -55,6 +55,7 @@
 			</div >
 
 			<input type="submit" class="btn btn-success" value="Gửi" />
+			<button  onclick="handleProfile_1()" type="button" class="btn btn-secondary ml-2">Trở về</button>
 		</form>
 	</div>
 </div>
@@ -65,7 +66,7 @@
 		const interestRateElement = document.getElementById("interestRate");
 		const currencyElement = document.getElementById("currency");
 		const periodElement = document.getElementById("period");
-
+		const cccd = document.getElementById("_cccd");
 		currencyAndPeriodOnChange();
 		currencyElement.onchange = currencyAndPeriodOnChange;
 		periodElement.onchange = currencyAndPeriodOnChange;
@@ -73,9 +74,14 @@
 		function currencyAndPeriodOnChange() {
 			const currency = currencyElement.value;
 			const period = parseInt(periodElement.value);
-
+				
 			const interestRate = interestRateReferences.find(element => (element.currency === currency && element.period === period)).interestRate;
 			interestRateElement.innerText = (interestRate !== undefined) ? interestRate + " %/năm" : "Không hỗ trợ";
+			
+		}
+		function handleProfile_1(){
+			window.location.href = '/user/customer/detail?IDCard=' + cccd.innerText
+			
 		}
 	/*]]>*/
 	</script>

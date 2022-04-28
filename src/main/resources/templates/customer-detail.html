@@ -77,8 +77,8 @@
 				</thead>
 				<tbody>
 					<tr th:each="depositAccount : ${customer.depositAccountSet}">
-						<td th:text="${depositAccount.id}"></td>
-						<td th:text="${depositAccount.balance}"></td>
+						<td  th:text="${depositAccount.id}"></td >
+						<td id="surplus" th:text="${depositAccount.balance}"></td >
 						<td
 							th:text="${depositAccount.period == 0 ? 'Không kì hạn' : ('Có kì hạn: ' + depositAccount.period + ' tháng')}">
 						</td>
@@ -100,11 +100,16 @@
 		const updateInput = document.getElementById("edit-at");
 		const createText = document.getElementById("create-date");
 		const updateText = document.getElementById("update-date");
+		const surplus = document.getElementById("surplus");
+		console.log(surplus.innerText)
 
 		createText.innerHTML = 'Ngày tạo : ' +  new Date(createInput.value).toLocaleDateString("vn-VN")
 		
 		updateText.innerHTML = 'Ngày sửa lần cuối : ' +  new Date(updateInput.value).toLocaleDateString("vn-VN")
 		
+		surplus.innerHTML = Number(surplus.innerText).toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+	
+	
 	
 		editBtn.onclick = () => {
 			for (const inputElement of allInputElements) {
