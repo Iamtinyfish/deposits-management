@@ -18,54 +18,54 @@
 
 				<h4 class="title mb-4">Thông tin tài khoản</h4>
 				<div class="d-flex title justify-content-between ">
-					<div class="d-flex" >
+					<div class="d-flex" style="width: 50%;" >
 						Số tài khoản :
 						<p class="ml-1 " th:text="*{id}"></p>
 					</div>
 
-					<div class="d-flex" >
+					<div class="d-flex" style="width: 50%;" >
 						Loai tiền tệ :
-						<p class="ml-1 " style="margin-right: 10.3rem;" th:text="*{currency}"></p >
+						<p class="ml-1 "  th:text="*{currency}"></p >
 					</div>
 				</div>
 				<div class="d-flex title justify-content-between ">
-					<div class="d-flex">
+					<div class="d-flex" style="width: 50%;">
 						Kì hạn :
 						<p class="ml-1 " th:text="${depositAccount.period > 0 ? depositAccount.period+' tháng' : 'Không kì hạn'} "></p>
 					</div>
-					<div class="d-flex " style="margin-right: 9.6rem;">
+					<div class="d-flex " style="width: 50%;">
 						Lãi suất :
 						<p class="ml-1" th:text="${depositAccount.interestRate + ' %/năm'}"></p>
 					</div>
 				</div>
 				<div class="d-flex title justify-content-between ">
-					<div class="d-flex">
+					<div class="d-flex" style="width: 50%;">
 						Tiền gốc :
 						<p class="ml-1 " th:text="*{balance}"></p>
 					</div>
-
-					<div class="d-flex" style="margin-right:10.3rem;">
-						Tiền lãi :
+					<div class="d-flex" style="width: 50%;">
+						Tiền lãi có kì hạn:
 						<p class="ml-1 " th:text="*{interest}"></p>
+
 					</div>
 				</div>
 
 				<div class="d-flex title justify-content-between ">
-					<div class="d-flex" >
+					<div class="d-flex" style="width: 50%;" >
 						Số ngày gửi thực :
 						<p class="ml-1 " th:text="*{numberOfDay}"></p>
 					</div>
-					<div class="d-flex" style="margin-right:7.6rem;">
+					<div class="d-flex" style="width: 50%;">
 						Ngày đáo hạn :
 						<p class="ml-1 " th:text="${depositAccount.dateOfMaturity != null ? depositAccount.dateOfMaturity.format(dateFormatter) : 'Không có'}"></p>
 					</div>
 				</div>
 				<div class="d-flex title justify-content-between ">
-					<div class="d-flex mb-4 title">
+					<div class="d-flex mb-4 title" style="width: 50%;">
 						Ngày tạo :
 						<p th:text="${depositAccount.createdAt.format(dateFormatter)}"></p>
 					</div>
-					<div class="d-flex"  style="margin-right: 13.2rem;">
+					<div class="d-flex"  style="width: 50%;">
 						Tạo bởi nhân viên có mã :
 						<p class="ml-1 " th:text="*{createBy.id}"></p>
 					</div>

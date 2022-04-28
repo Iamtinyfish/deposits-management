@@ -25,8 +25,10 @@ td {
 
 .title {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    color: rgba(128, 128, 128, 0.597);
+    color: gray;
 }
+
+
 
 .title-table{
 	color: rgb(74, 74, 74) !important;

@@ -72,7 +72,7 @@
 				<tbody>
 					<tr th:each="depositAccount : ${customer.depositAccountSet}">
 						<td th:text="${depositAccount.id}"></td>
-						<td th:text="${depositAccount.balance + depositAccount.interest + ' ' + depositAccount.currency}"></td>
+						<td id="surplus" th:text="${depositAccount.balance + depositAccount.interest + ' ' + depositAccount.currency}"></td>
 						<td
 							th:text="${depositAccount.period == 0 ? 'Không kì hạn' : ('Có kì hạn: ' + depositAccount.period + ' tháng')}">
 						</td>
@@ -90,6 +90,10 @@
 		const editBtn = document.getElementById("editBtn");
 		const updateBtn = document.getElementById("updateBtn");
 		const cancelBtn = document.getElementById("cancelBtn");
+
+		const surplus = document.getElementById("surplus");
+		console.log(surplus.innerText)
+		surplus.innerHTML = Number(surplus.innerText).toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
 	
 		editBtn.onclick = () => {
 			for (const inputElement of allInputElements) {
