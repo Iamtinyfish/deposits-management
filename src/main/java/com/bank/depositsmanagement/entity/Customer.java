@@ -81,4 +81,9 @@ public class Customer {
 		this.createdAt = now;
 		this.lastModifiedAt = now;
 	}
+
+	@PreUpdate
+	public void lastModifiedAt() {
+		this.lastModifiedAt = LocalDateTime.now();
+	}
 }

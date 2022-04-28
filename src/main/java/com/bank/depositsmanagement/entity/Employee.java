@@ -1,6 +1,7 @@
 package com.bank.depositsmanagement.entity;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -13,6 +14,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import static com.bank.depositsmanagement.entity.EmployeeStatus.WORKING;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,7 +23,6 @@ import java.util.Set;
 @Table(name = "employee")
 @Getter
 @Setter
-@ToString
 public class Employee implements Serializable {
 	@Id
 	@GeneratedValue
@@ -62,7 +64,8 @@ public class Employee implements Serializable {
 	private String address;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, columnDefinition = "varchar(255) default 'WORKING'")
+	@Column(nullable = false)
+	@ColumnDefault("WORKING")
 	private EmployeeStatus status;
 
 	@Column(nullable = false)
@@ -72,7 +75,7 @@ public class Employee implements Serializable {
 	private LocalDateTime lastModifiedAt;
 
 	//Foreign Key
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
 
@@ -88,9 +91,33 @@ public class Employee implements Serializable {
 	private Set<Transaction> transactionSet;
 
 	@PrePersist
-	public void setTimeInfo() {
+	public void creatAt() {
 		LocalDateTime now = LocalDateTime.now();
 		this.createdAt = now;
 		this.lastModifiedAt = now;
+	}
+
+	@PreUpdate
+	public void lastModifiedAt() {
+		this.lastModifiedAt = LocalDateTime.now();
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "(" +
+				"id = " + id + ", " +
+				"firstName = " + firstName + ", " +
+				"lastName = " + lastName + ", " +
+				"gender = " + gender + ", " +
+				"birthday = " + birthday + ", " +
+				"IDCard = " + IDCard + ", " +
+				"phone = " + phone + ", " +
+				"email = " + email + ", " +
+				"address = " + address + ", " +
+				"status = " + status + ", " +
+				"createdAt = " + createdAt + ", " +
+				"lastModifiedAt = " + lastModifiedAt + ", " +
+				"user = " + user + ", " +
+				"position = " + position + ")";
 	}
 }

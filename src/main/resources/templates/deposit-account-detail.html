@@ -11,6 +11,7 @@
 	<div class="frames mt-4">
 		<div class="create-form">
 			<h2 class="title mb-4">Chi tiết tài khoản tiền gửi</h2>
+			<h5 th:if="${depositAccount.finalSettlement}" class="mb-4" style="color: red">* Tài khoản này đã được tất toán</h5>
 			<div th:object="${depositAccount}">
 
 				<th:block th:insert="~{/common/_customer::holder-info}" />
@@ -30,7 +31,7 @@
 				<div class="d-flex title justify-content-between ">
 					<div class="d-flex">
 						Kì hạn :
-						<p class="ml-1 " th:text="${depositAccount.period + ' tháng'} "></p>
+						<p class="ml-1 " th:text="${depositAccount.period > 0 ? depositAccount.period+' tháng' : 'Không kì hạn'} "></p>
 					</div>
 					<div class="d-flex " style="margin-right: 9.6rem;">
 						Lãi suất :
@@ -47,53 +48,66 @@
 						Tiền lãi :
 						<p class="ml-1 " th:text="*{interest}"></p>
 					</div>
-					<div>
-						Ngày đáo hạn<br>
-						<p class="ml-1 " th:text="*{dateOfMaturity}"></p>
-					</div>
-
 				</div>
+
 				<div class="d-flex title justify-content-between ">
 					<div class="d-flex" >
 						Số ngày gửi thực :
 						<p class="ml-1 " th:text="*{numberOfDay}"></p>
 					</div>
-					<div class="d-flex"  style="margin-right: 13.2rem;">
-						Tạo bởi :
-						<p class="ml-1 " th:text="*{createBy.id}"></p>
+					<div class="d-flex" style="margin-right:7.6rem;">
+						Ngày đáo hạn :
+						<p class="ml-1 " th:text="${depositAccount.dateOfMaturity != null ? depositAccount.dateOfMaturity.format(dateFormatter) : 'Không có'}"></p>
 					</div>
 				</div>
-				<div class="d-flex mb-4 title" >
-						<p  style="max-width: 140px;" id="create-date-deposit"><input type="hidden" th:value="*{createdAt}" id="create-at-deposit" class="btn"
-								disabled /></p>
+				<div class="d-flex title justify-content-between ">
+					<div class="d-flex mb-4 title">
+						Ngày tạo :
+						<p th:text="${depositAccount.createdAt.format(dateFormatter)}"></p>
+					</div>
+					<div class="d-flex"  style="margin-right: 13.2rem;">
+						Tạo bởi nhân viên có mã :
+						<p class="ml-1 " th:text="*{createBy.id}"></p>
+					</div>
 				</div>
 				<!--	<th:block th:include="/common/_deposit-account-form"/>-->
 			</div>
 
-			<a th:href="@{'/user/deposit-account/final-settlement?depositAccountID=' + ${depositAccount.id}}"  class="btn btn-info ">Tất
+			<a th:if="${!depositAccount.finalSettlement}" th:href="@{'/user/deposit-account/final-settlement?depositAccountID=' + ${depositAccount.id}}"  class="btn btn-info ">Tất
 				toán</a>
-			<a th:if="${depositAccount.period == 0}"
+			<a th:if="${depositAccount.period == 0 && !depositAccount.finalSettlement}"
 				th:href="@{'/user/deposit-account/withdraw-part?depositAccountID=' + ${depositAccount.id}}" class="btn btn-info ml-2">Rút tiền</a>
-			<a th:if="${depositAccount.period == 0}"
+			<a th:if="${depositAccount.period == 0 && !depositAccount.finalSettlement}"
 				th:href="@{'/user/deposit-account/deposit-extra?depositAccountID=' + ${depositAccount.id}}" class="btn btn-info ml-2">Gửi thêm
 				tiền</a>
-			<button id='return-profile' onclick="handleProfile()" type="button" class="btn btn-info ml-2">Hồ sơ khách hàng</button>
+			<a th:href="@{'/user/customer/detail?IDCard=' + ${depositAccount.holder.IDCard}}" class="btn btn-info ml-2">Quay lại</a>
+
+			<div class="mt-3">
+				<table class="table-bordered table table-hover title title-table">
+					<thead>
+					<tr class="table-active">
+						<th scope="col">Mã giao dịch</th>
+						<th scope="col">Số tài khoản</th>
+						<th scope="col" th:text="${'Số tiền giao dịch (' + depositAccount.currency + ')'}"></th>
+						<th scope="col">Mô tả</th>
+						<th scope="col">Thời gian</th>
+						<th scope="col">Mã nhân viên giao dịch</th>
+					</tr>
+					</thead>
+					<tbody >
+					<tr th:each="transaction : ${depositAccount.transactionSet}">
+						<th th:text="${transaction.id}"></th>
+						<td th:text="${transaction.depositAccount.id}"></td>
+						<td th:text="${transaction.amount}"></td>
+						<td th:text="${transaction.description}"></td>
+						<td th:text="${transaction.time.format(dateTimeFormatter)}"></td>
+						<td th:text="${transaction.employee.id}"></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
-  
-	<script th:inline="javascript">
-		/*<![CDATA[*/
-		const createInput = document.getElementById("create-at-deposit");
-		const createText = document.getElementById("create-date-deposit");
-		const cccd = document.getElementById("_cccd");
-		
-		function handleProfile(){
-			window.location.href = '/user/customer/detail?IDCard=' + cccd.innerText
-		}
-		createText.innerHTML = 'Ngày tạo : ' +  new Date(createInput.value).toLocaleDateString("vn-VN")
-		
-		/*]]>*/
-	</script>
 	<th:block th:insert="~{/common/_layout::js-lib}" />
 </body>
 

@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+	<th:block th:insert="~{/common/_layout::metadata('Kết quả giao dịch')}"/>
+	<style>
+		.border-table, .border-table th, .border-table td {
+			border: 1px solid black;
+		}
+	</style>
+</head>
+
+<body>
+<th:block th:insert="~{/common/_layout::navbar}"/>
+
+<table class="border-table">
+	<thead>
+	<tr>
+		<th>Mã giao dịch</th>
+		<th>Số tài khoản</th>
+		<th th:text="${'Số tiền giao dịch (' + transaction.depositAccount.currency + ')'}"></th>
+		<th>Mô tả</th>
+		<th>Thời gian</th>
+		<th>Mã nhân viên giao dịch</th>
+	</tr>
+	</thead>
+	<tbody >
+	<tr>
+		<th th:text="${transaction.id}"></th>
+		<td th:text="${transaction.depositAccount.id}"></td>
+		<td th:text="${transaction.amount}"></td>
+		<td th:text="${transaction.description}"></td>
+		<td th:text="${transaction.time.format(timeFormatter)}"></td>
+		<td th:text="${transaction.employee.id}"></td>
+	</tr>
+	</tbody>
+</table>
+
+<button class="btn btn-info" type="button">Xuất hóa đơn</button>
+<a th:href="@{'/user/deposit-account/detail?depositAccountID=' + ${transaction.depositAccount.id}}" class="btn btn-info ml-2">Quay lại</a>
+
+
+<th:block th:insert="~{/common/_layout::js-lib}"/>
+</body>
+
+</html>

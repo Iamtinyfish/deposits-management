@@ -2,6 +2,7 @@ package com.bank.depositsmanagement.entity;
 
 import com.bank.depositsmanagement.utils.TimeConstant;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
@@ -17,6 +18,9 @@ import java.util.Set;
 @Table(name = "deposit_account")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class DepositAccount {
     @Id
     @GeneratedValue
@@ -57,6 +61,9 @@ public class DepositAccount {
     @ManyToOne(optional = false)
     @JoinColumn(name = "create_by", nullable = false)
     private Employee createBy;
+
+    @ColumnDefault("false")
+    private boolean finalSettlement;
 
     @OneToMany(mappedBy = "depositAccount")
     private Set<Transaction> transactionSet = new java.util.LinkedHashSet<>();

@@ -20,8 +20,8 @@
 		<th>Số ngày</th>
 		<th>Lãi suất (%/năm)</th>
 		<th>Công thức tiền lãi</th>
-		<th>Tiền lãi</th>
-		<th>Số dư mới</th>
+		<th th:text="${'Tiền lãi (' + depositAccount.currency + ')'}"></th>
+		<th th:text="${'Số dư mới (' + depositAccount.currency + ')'}"></th>
 	</tr>
 	</thead>
 	<tbody >
@@ -44,7 +44,14 @@
 	</tbody>
 </table>
 <br>
-<h4 th:text="${'Tổng số tiền được tất toán: ' + amountOfFinalSettlement}"></h4>
+<h4 th:text="${'Tổng số tiền được tất toán: ' + amount}"></h4>
+
+<a class="btn btn-success" href="javascript: document.verifyForm.submit()">Xác nhận</a>
+<form name="verifyForm" method="post" th:action="@{/user/deposit-account/final-settlement}" hidden>
+	<input name="depositAccountID" type="number" th:value="${depositAccount.id}"/>
+</form>
+
+<a th:href="@{'/user/deposit-account/detail?depositAccountID=' + ${depositAccount.id}}" class="btn btn-secondary ml-2">Hủy</a>
 
 <th:block th:insert="~{/common/_layout::js-lib}"/>
 </body>
