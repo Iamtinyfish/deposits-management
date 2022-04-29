@@ -1,6 +1,5 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="en">
 <head>
 	<th:block th:insert="~{/common/_layout::metadata('Hồ sơ của tôi')}"/>
@@ -9,12 +8,101 @@
 <th:block th:insert="~{/common/_layout::navbar}"/>
 
 <div class="frames">
-	<h1 class='title'>Hồ sơ của tôi</h1 >
-	<h3>Xin chào <span th:utext="${#request.userPrincipal.name}"></span></h3>
+	<div class="background"></div>
+	<div class="frames d-flex mt-2">
+		<div class="create-form mx-auto">
+			<h3>Xin chào <span th:utext="${#request.userPrincipal.name}"></span></h3>
+			<h2 class="mb-4">Hồ sơ của tôi</h2>
+			<form method="post" th:action="@{/my-profile/update}" th:object="${employee}">
+				<div class="row">
+					<div class="col">
+						<h6>
+							Mã nhân viên :
+						</h6>
+						<p th:text="*{id}"></p>
+					</div>
+				</div>
 
-	<p th:text="${myProfile}"></p>
-</div >
+				<th:block th:insert="~{/common/_employee::employee-input-form}"/>
 
+				<div class="row">
+					<div class="col">
+						<h6>
+							Chức vụ :
+						</h6>
+						<p th:text="${employee.position != null ? employee.position.name : 'Không'}"></p>
+					</div>
+					<div class="col">
+						<h6>
+							Trạng thái :
+						</h6>
+						<th:block th:switch="${employee.status.toString()}">
+							<p class="text-success" th:case="WORKING">Đang làm việc</p>
+							<p class="text-warning" th:case="ON_LEAVE">Nghỉ phép</p>
+							<p class="text-danger" th:case="QUIT">Nghỉ việc</p>
+						</th:block>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col">
+						<h6>
+							Ngày tạo :
+						</h6>
+						<p th:text="${employee.createdAt.format(dateFormatter)}"></p>
+					</div>
+					<div class="col">
+						<h6>
+							Ngày sửa lần cuối :
+						</h6>
+						<p th:text="${employee.getLastModifiedAt().format(dateFormatter)}"></p>
+					</div>
+				</div>
+
+				<input id="updateBtn" th:hidden="${readOnly}" type="submit" class="btn btn-success"
+				       value="Cập nhật">
+
+				<button id="cancelBtn" th:hidden="${readOnly}" type="button" class="btn btn-secondary ml-2">Hủy</button>
+
+				<button id="editBtn" th:hidden="${readOnly == false}" type="button"
+				        class="btn btn-warning">Sửa
+				</button>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	const allInputElements = document.getElementsByTagName("input");
+	const genderSelect = document.getElementById("gender");
+	const editBtn = document.getElementById("editBtn");
+	const updateBtn = document.getElementById("updateBtn");
+	const cancelBtn = document.getElementById("cancelBtn");
+
+	editBtn.onclick = () => {
+		for (const inputElement of allInputElements) {
+			inputElement.readOnly = false;
+		}
+		genderSelect.toggleAttribute("disabled");
+		updateBtn.hidden = false;
+		cancelBtn.hidden = false;
+		editBtn.hidden = true;
+	};
+
+	cancelBtn.onclick = () => {
+		for (const inputElement of allInputElements) {
+			inputElement.readOnly = true;
+		}
+		genderSelect.toggleAttribute("disabled");
+		updateBtn.hidden = true;
+		cancelBtn.hidden = true;
+		editBtn.hidden = false;
+	};
+
+	/*]]>*/
+</script>
 <th:block th:insert="~{/common/_layout::js-lib}"/>
 </body>
 </html>

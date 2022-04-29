@@ -3,7 +3,6 @@ package com.bank.depositsmanagement.service;
 import com.bank.depositsmanagement.dao.UserRepository;
 import com.bank.depositsmanagement.entity.User;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +24,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username).orElse(null);
 
         if (user == null || !user.isActive()) {
             throw new UsernameNotFoundException("User not found! " + username);
@@ -33,7 +32,7 @@ public class UserService implements UserDetailsService {
 
         String role = user.getRole();
 
-        List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
+        List<GrantedAuthority> grantList = new ArrayList<>();
 
         GrantedAuthority authority = new SimpleGrantedAuthority(role);
         grantList.add(authority);

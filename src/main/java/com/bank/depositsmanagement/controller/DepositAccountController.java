@@ -18,6 +18,8 @@ import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.bank.depositsmanagement.entity.CurrencyType.USD;
+
 @Controller
 public class DepositAccountController {
 
@@ -42,7 +44,7 @@ public class DepositAccountController {
         Customer customer = customerRepository.findById(customerID).orElse(null);
 
         if (customer == null) {
-            model.addAttribute("message", "Not found customer with ID " + customerID);
+            model.addAttribute("message", "Không tìm thấy khách hàng với mã là " + customerID);
             return "404";
         }
 
@@ -66,20 +68,51 @@ public class DepositAccountController {
         Customer customer = customerRepository.findById(Long.parseLong(holderID)).orElse(null);
 
         if (customer == null) {
-            model.addAttribute("message", "Not found customer with ID " + holderID);
+            model.addAttribute("message", "Không tìm thấy khách hàng với mã là " + holderID);
             return "404";
         }
 
         depositAccount.setHolder(customer);
 
-        if (bindingResult.hasErrors()) {
+        BigDecimal balance = depositAccount.getBalance();
+        int period = depositAccount.getPeriod();
+        String errorBalance = null;
+
+        if (balance != null) {
+            switch (depositAccount.getCurrency()) {
+                case VND:
+                    if (period > 0 && balance.compareTo(BigDecimal.valueOf(1000000)) < 0)
+                        errorBalance = "Số tiền gửi có kì hạn với VND tối thiểu là 1,000,000đ";
+                    else if (period == 0 && balance.compareTo(BigDecimal.valueOf(500000)) < 0)
+                        errorBalance = "Số tiền gửi không kì hạn với VND tối thiểu là 500,000đ";
+                    break;
+                case USD:
+                    if (period > 0 && balance.compareTo(BigDecimal.valueOf(100)) < 0)
+                        errorBalance = "Số tiền gửi có kì hạn với USD tối thiểu là 100$";
+                    else if (period == 0 && balance.compareTo(BigDecimal.valueOf(50)) < 0)
+                        errorBalance = "Số tiền gửi không kì hạn với USD tối thiểu là 50$";
+                    break;
+            }
+        }
+
+        if (bindingResult.hasErrors() || errorBalance != null) {
             model.addAttribute("depositAccount", depositAccount);
+            model.addAttribute("errorBalance", errorBalance);
             return "add-deposit-account";
         }
 
         float interestRate = interestRateReferenceRepository.findByPeriodAndCurrency(depositAccount.getPeriod(), depositAccount.getCurrency()).getInterestRate();
 
-        depositAccount.setCreateBy(this.userRepository.findByUsername(principal.getName()).getEmployee());
+        User user = userRepository.findByUsername(principal.getName()).orElse(null);
+
+        if (user == null || user.getEmployee() == null) {
+            model.addAttribute("message", "Không xác định được thông tin của bạn");
+            return "404";
+        }
+
+        Employee employee = user.getEmployee();
+
+        depositAccount.setCreateBy(employee);
         depositAccount.setInterestRate(interestRate);
 
         Long depositAccountID = depositAccountRepository.save(depositAccount).getId();
@@ -92,7 +125,7 @@ public class DepositAccountController {
         DepositAccount depositAccount = depositAccountRepository.findById(depositAccountID).orElse(null);
 
         if (depositAccount == null) {
-            model.addAttribute("message", "Not found deposit account with ID " + depositAccountID);
+            model.addAttribute("message", "Không tìm thấy tài khoản tiền gửi với mã là " + depositAccountID);
             return "404";
         }
 
@@ -106,7 +139,7 @@ public class DepositAccountController {
     public String finalSettlementPage(Model model,@RequestParam(value = "depositAccountID") Long depositAccountID) {
         DepositAccount depositAccount = depositAccountRepository.findById(depositAccountID).orElse(null);
         if (depositAccount == null) {
-            model.addAttribute("message", "Not found deposit account with ID " + depositAccountID);
+            model.addAttribute("message", "Không tìm thấy tài khoản tiền gửi với mã là " + depositAccountID);
             return "404";
         }
 
@@ -134,7 +167,7 @@ public class DepositAccountController {
         }
 
         model.addAttribute("finalBalance", result.get("finalBalance"));
-        model.addAttribute("amount", ((BigDecimal) result.get("finalBalance")).setScale(0, RoundingMode.HALF_UP).toPlainString() + " " + depositAccount.getCurrency());
+        model.addAttribute("amount", ((BigDecimal) result.get("finalBalance")).toPlainString() + " " + depositAccount.getCurrency());
         return "final-settlement";
     }
 
@@ -142,7 +175,7 @@ public class DepositAccountController {
     public String finalSettlment(Model model, @RequestParam(value = "depositAccountID") Long depositAccountID, Principal principal) {
         DepositAccount depositAccount = depositAccountRepository.findById(depositAccountID).orElse(null);
         if (depositAccount == null) {
-            model.addAttribute("message", "Not found deposit account with ID " + depositAccountID);
+            model.addAttribute("message", "Không tìm thấy tài khoản tiền gửi với mã là " + depositAccountID);
             return "404";
         }
 
@@ -153,12 +186,21 @@ public class DepositAccountController {
         //round to decision = 0
         BigDecimal amount = ((BigDecimal) calculateInterest(depositAccount).get("finalBalance")).setScale(0, RoundingMode.HALF_UP);
 
+        User user = userRepository.findByUsername(principal.getName()).orElse(null);
+
+        if (user == null || user.getEmployee() == null) {
+            model.addAttribute("message", "Không xác định được thông tin của bạn");
+            return "404";
+        }
+
+        Employee employee = user.getEmployee();
+
         Transaction transaction = transactionRepository.save(
                 Transaction.builder()
                         .depositAccount(depositAccount)
                         .amount(amount)
                         .description("Tất toán tài khoản")
-                        .employee(this.userRepository.findByUsername(principal.getName()).getEmployee())
+                        .employee(employee)
                         .build()
         );
 
@@ -184,7 +226,7 @@ public class DepositAccountController {
             int dayOfPeriod = period * TimeConstant.DAY_OF_MONTH;
             int timeDepositDays = (depositAccount.getNumberOfDay() / dayOfPeriod) * dayOfPeriod;
             result.put("timeDepositDays", timeDepositDays);
-            BigDecimal balance1 = depositAccount.getBalance().add(depositAccount.getInterest()).setScale(2, RoundingMode.HALF_UP);
+            BigDecimal balance1 = depositAccount.getBalance().add(depositAccount.getInterest()).setScale(0, RoundingMode.HALF_UP);
             result.put("balance1", balance1);
 
             int demandDepositDays = depositAccount.getNumberOfDay() - timeDepositDays;
@@ -195,15 +237,15 @@ public class DepositAccountController {
                     BigDecimal.valueOf(
                             demandDepositDays * demandDepositInterestRate * 0.01 / 360
                     )
-            ).setScale(2, RoundingMode.HALF_UP);
+            ).setScale(0, RoundingMode.HALF_UP);
             result.put("demandDepositInterest", demandDepositInterest);
             finalBalance = balance1.add(
                     demandDepositInterest
-            ).setScale(2, RoundingMode.HALF_UP);
+            ).setScale(0, RoundingMode.HALF_UP);
         } else {
             finalBalance = depositAccount.getBalance().add(
                     depositAccount.getInterest()
-            ).setScale(2,RoundingMode.HALF_UP);
+            ).setScale(0,RoundingMode.HALF_UP);
         }
         result.put("finalBalance", finalBalance);
         return result;

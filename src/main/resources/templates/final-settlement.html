@@ -24,7 +24,7 @@
 		<th th:text="${'Số dư mới (' + depositAccount.currency + ')'}"></th>
 	</tr>
 	</thead>
-	<tbody >
+	<tbody>
 	<tr th:if="${depositAccount.period != 0}">
 		<th th:text="${'Lãi kép theo kì hạn ' + depositAccount.period + ' tháng (1 tháng = 30 ngày)'}"></th>
 		<td th:text="${timeDepositDays}"></td>

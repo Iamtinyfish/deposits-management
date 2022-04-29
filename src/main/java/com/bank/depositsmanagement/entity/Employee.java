@@ -3,6 +3,8 @@ package com.bank.depositsmanagement.entity;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Indexed;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -21,6 +23,7 @@ import static com.bank.depositsmanagement.entity.EmployeeStatus.WORKING;
 @NoArgsConstructor
 @Entity
 @Table(name = "employee")
+@Indexed
 @Getter
 @Setter
 public class Employee implements Serializable {
@@ -42,6 +45,7 @@ public class Employee implements Serializable {
 	@NotNull(message = "Không được bỏ trống trường này")
 	@Column(nullable = false)
 	@PastOrPresent(message = "Phải là thời gian trong quá khứ")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthday;
 	
 	@Length(message = "CCCD phải có 12 số", min = 12, max = 12)
@@ -49,7 +53,7 @@ public class Employee implements Serializable {
 	@Column(nullable = false, unique = true, length = 12)
 	private String IDCard;
 
-	@Length(max = 20)
+	@Length(message = "Độ dài từ  7 - 20 số", min = 7, max = 20)
 	@NotBlank(message = "Không được bỏ trống trường này")
 	@Column(nullable = false, length = 20)
 	private String phone;
@@ -65,7 +69,7 @@ public class Employee implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	@ColumnDefault("WORKING")
+//	@ColumnDefault("WORKING")
 	private EmployeeStatus status;
 
 	@Column(nullable = false)
@@ -75,7 +79,7 @@ public class Employee implements Serializable {
 	private LocalDateTime lastModifiedAt;
 
 	//Foreign Key
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;
 

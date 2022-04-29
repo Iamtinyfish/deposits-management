@@ -14,14 +14,14 @@
 
 <body>
 	<div class="background"></div>
-	<div class="text"><span>Xin chào người dùng</span></div>
+	<div class="text"><span>Xin chào!</span></div>
 
 	<div th:if="${#request.getParameter('error') == 'true'}" class="text-error text ">
 		<span>Đăng nhập thất bại!!!</span><br />
 		<span>Nguyên nhân:</span>
 		<span th:if="${#session!= null and #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}">
 			<!--	      th:utext="${#session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').message}">-->
-			Tài khoản hoặc mật khẩu không chính xác,hãy sửa lại
+			Tài khoản hoặc mật khẩu không chính xác
 		</span>
 	</div>
 	<div class="account">
@@ -31,11 +31,12 @@
 			<!-- <button onclick=handleSignIn()>Đăng ký</button>-->
 		</div>
 		<div class="account__form animaltion-right right " id="sign-up">
-			<form name='loginForm' th:action="@{/j_spring_security_check}" method='POST' class="login sign-up d-block"
-				id="form-login">
+			<form id="form-login" th:action="@{/j_spring_security_check}" method='POST' class="login sign-up d-block">
 				<h3>Đăng nhập</h3>
-				<input type="text" name="username" autofocus required class="btn" placeholder="Tên tài khoản"><br>
-				<input type="password" name="password" class="btn" required placeholder="Mật khẩu"><br><br>
+				<input type="text" name="username" autofocus required class="btn" placeholder="Tên tài khoản"/>
+				<br>
+				<input type="password" name="password" class="btn" required placeholder="Mật khẩu"/>
+				<br><br>
 				<div class="action">
 					<input type="submit" value="Đăng nhập" name="submit" class="button"  />
 					<label for="remember">Ghi nhớ tôi?<input type="checkbox" id="remember" name="remember-me" /></label>

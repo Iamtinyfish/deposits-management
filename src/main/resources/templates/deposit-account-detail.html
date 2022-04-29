@@ -2,113 +2,136 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<th:block th:insert="~{/common/_layout::metadata('Chi tiết tài khoản tiền gửi')}" />
+	<th:block th:insert="~{/common/_layout::metadata('Chi tiết tài khoản tiền gửi')}"/>
 </head>
 
 <body>
-	<th:block th:insert="~{/common/_layout::navbar}" />
-	<div class="background"></div>
-	<div class="frames mt-4">
-		<div class="create-form">
-			<h2 class="title mb-4">Chi tiết tài khoản tiền gửi</h2>
-			<h5 th:if="${depositAccount.finalSettlement}" class="mb-4" style="color: red">* Tài khoản này đã được tất toán</h5>
-			<div th:object="${depositAccount}">
+<th:block th:insert="~{/common/_layout::navbar}"/>
+<div class="background"></div>
+<div class="frames mt-4">
+	<div class="create-form">
+		<h2 class="mb-4">Chi tiết tài khoản tiền gửi</h2>
+		<h6 th:if="${depositAccount.finalSettlement}" class="mb-4 text-danger">* Tài khoản này đã được tất toán</h6>
+		<div th:object="${depositAccount}">
 
-				<th:block th:insert="~{/common/_customer::holder-info}" />
+			<th:block th:insert="~{/common/_customer::holder-info}"/>
 
-				<h4 class="title mb-4">Thông tin tài khoản</h4>
-				<div class="d-flex title justify-content-between ">
-					<div class="d-flex" style="width: 50%;" >
+			<h4>Thông tin tài khoản</h4>
+			<div class="row">
+				<div class="col">
+					<h6>
 						Số tài khoản :
-						<p class="ml-1 " th:text="*{id}"></p>
-					</div>
-
-					<div class="d-flex" style="width: 50%;" >
+					</h6>
+					<p th:text="*{id}"></p>
+				</div>
+				<div class="col">
+					<h6>
 						Loai tiền tệ :
-						<p class="ml-1 "  th:text="*{currency}"></p >
-					</div>
+					</h6>
+					<p th:text="*{currency}"></p>
 				</div>
-				<div class="d-flex title justify-content-between ">
-					<div class="d-flex" style="width: 50%;">
+			</div>
+			<div class="row">
+				<div class="col">
+					<h6>
 						Kì hạn :
-						<p class="ml-1 " th:text="${depositAccount.period > 0 ? depositAccount.period+' tháng' : 'Không kì hạn'} "></p>
-					</div>
-					<div class="d-flex " style="width: 50%;">
+					</h6>
+					<p th:text="${depositAccount.period > 0 ? depositAccount.period+' tháng' : 'Không kì hạn'} "></p>
+				</div>
+				<div class="col">
+					<h6>
 						Lãi suất :
-						<p class="ml-1" th:text="${depositAccount.interestRate + ' %/năm'}"></p>
-					</div>
+					</h6>
+					<p th:text="${depositAccount.interestRate + ' %/năm'}"></p>
 				</div>
-				<div class="d-flex title justify-content-between ">
-					<div class="d-flex" style="width: 50%;">
+			</div>
+			<div class="row">
+				<div class="col">
+					<h6>
 						Tiền gốc :
-						<p class="ml-1 " th:text="*{balance}"></p>
-					</div>
-					<div class="d-flex" style="width: 50%;">
-						Tiền lãi có kì hạn:
-						<p class="ml-1 " th:text="*{interest}"></p>
-
-					</div>
+					</h6>
+					<p th:text="*{balance}"></p>
 				</div>
+				<div class="col">
+					<h6>
+						Tiền lãi có kì hạn :
+					</h6>
+					<p th:text="*{interest}"></p>
+				</div>
+			</div>
 
-				<div class="d-flex title justify-content-between ">
-					<div class="d-flex" style="width: 50%;" >
+			<div class="row">
+				<div class="col">
+					<h6>
 						Số ngày gửi thực :
-						<p class="ml-1 " th:text="*{numberOfDay}"></p>
-					</div>
-					<div class="d-flex" style="width: 50%;">
+					</h6>
+					<p th:text="*{numberOfDay}"></p>
+				</div>
+				<div class="col">
+					<h6>
 						Ngày đáo hạn :
-						<p class="ml-1 " th:text="${depositAccount.dateOfMaturity != null ? depositAccount.dateOfMaturity.format(dateFormatter) : 'Không có'}"></p>
-					</div>
+					</h6>
+					<p th:text="${depositAccount.dateOfMaturity != null ? depositAccount.dateOfMaturity.format(dateFormatter) : 'Không có'}"></p>
 				</div>
-				<div class="d-flex title justify-content-between ">
-					<div class="d-flex mb-4 title" style="width: 50%;">
+			</div>
+			<div class="row">
+				<div class="col">
+					<h6>
 						Ngày tạo :
-						<p th:text="${depositAccount.createdAt.format(dateFormatter)}"></p>
-					</div>
-					<div class="d-flex"  style="width: 50%;">
-						Tạo bởi nhân viên có mã :
-						<p class="ml-1 " th:text="*{createBy.id}"></p>
-					</div>
+					</h6>
+					<p th:text="${depositAccount.createdAt.format(dateFormatter)}"></p>
 				</div>
-				<!--	<th:block th:include="/common/_deposit-account-form"/>-->
+				<div class="col">
+					<h6>
+						Tạo bởi nhân viên có mã :
+					</h6>
+					<p th:text="*{createBy.id}"></p>
+				</div>
 			</div>
+			<!--	<th:block th:include="/common/_deposit-account-form"/>-->
+		</div>
 
-			<a th:if="${!depositAccount.finalSettlement}" th:href="@{'/user/deposit-account/final-settlement?depositAccountID=' + ${depositAccount.id}}"  class="btn btn-info ">Tất
-				toán</a>
-			<a th:if="${depositAccount.period == 0 && !depositAccount.finalSettlement}"
-				th:href="@{'/user/deposit-account/withdraw-part?depositAccountID=' + ${depositAccount.id}}" class="btn btn-info ml-2">Rút tiền</a>
-			<a th:if="${depositAccount.period == 0 && !depositAccount.finalSettlement}"
-				th:href="@{'/user/deposit-account/deposit-extra?depositAccountID=' + ${depositAccount.id}}" class="btn btn-info ml-2">Gửi thêm
-				tiền</a>
-			<a th:href="@{'/user/customer/detail?IDCard=' + ${depositAccount.holder.IDCard}}" class="btn btn-info ml-2">Quay lại</a>
+		<a th:if="${!depositAccount.finalSettlement}"
+		   th:href="@{'/user/deposit-account/final-settlement?depositAccountID=' + ${depositAccount.id}}"
+		   class="btn btn-info ">Tất
+			toán</a>
+		<a th:if="${depositAccount.period == 0 && !depositAccount.finalSettlement}"
+		   th:href="@{'/user/deposit-account/withdraw-part?depositAccountID=' + ${depositAccount.id}}"
+		   class="btn btn-info ml-2">Rút tiền</a>
+		<a th:if="${depositAccount.period == 0 && !depositAccount.finalSettlement}"
+		   th:href="@{'/user/deposit-account/deposit-extra?depositAccountID=' + ${depositAccount.id}}"
+		   class="btn btn-info ml-2">Gửi thêm
+			tiền</a>
+		<a th:href="@{'/user/customer/detail?IDCard=' + ${depositAccount.holder.IDCard}}" class="btn btn-info ml-2">Quay
+			lại</a>
 
-			<div class="mt-3">
-				<table class="table-bordered table table-hover title title-table">
-					<thead>
-					<tr class="table-active">
-						<th scope="col">Mã giao dịch</th>
-						<th scope="col">Số tài khoản</th>
-						<th scope="col" th:text="${'Số tiền giao dịch (' + depositAccount.currency + ')'}"></th>
-						<th scope="col">Mô tả</th>
-						<th scope="col">Thời gian</th>
-						<th scope="col">Mã nhân viên giao dịch</th>
-					</tr>
-					</thead>
-					<tbody >
-					<tr th:each="transaction : ${depositAccount.transactionSet}">
-						<th th:text="${transaction.id}"></th>
-						<td th:text="${transaction.depositAccount.id}"></td>
-						<td th:text="${transaction.amount}"></td>
-						<td th:text="${transaction.description}"></td>
-						<td th:text="${transaction.time.format(dateTimeFormatter)}"></td>
-						<td th:text="${transaction.employee.id}"></td>
-					</tr>
-					</tbody>
-				</table>
-			</div>
+		<div class="mt-3">
+			<table class="table-bordered table table-hover title title-table">
+				<thead>
+				<tr class="table-active">
+					<th scope="col">Mã giao dịch</th>
+					<th scope="col">Số tài khoản</th>
+					<th scope="col" th:text="${'Số tiền giao dịch (' + depositAccount.currency + ')'}"></th>
+					<th scope="col">Mô tả</th>
+					<th scope="col">Thời gian</th>
+					<th scope="col">Mã nhân viên giao dịch</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr th:each="transaction : ${depositAccount.transactionSet}">
+					<th th:text="${transaction.id}"></th>
+					<td th:text="${transaction.depositAccount.id}"></td>
+					<td th:text="${transaction.amount}"></td>
+					<td th:text="${transaction.description}"></td>
+					<td th:text="${transaction.time.format(dateTimeFormatter)}"></td>
+					<td th:text="${transaction.employee.id}"></td>
+				</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
-	<th:block th:insert="~{/common/_layout::js-lib}" />
+</div>
+<th:block th:insert="~{/common/_layout::js-lib}"/>
 </body>
 
 </html>

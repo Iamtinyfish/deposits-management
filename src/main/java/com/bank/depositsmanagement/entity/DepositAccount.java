@@ -6,6 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
@@ -39,7 +40,7 @@ public class DepositAccount {
     @PositiveOrZero(message = "Không thể là số âm")
     @NotNull(message = "Không được bỏ trống")
     @Column(nullable = false)
-    @NumberFormat(pattern = "#,###,###,###.##", style = NumberFormat.Style.CURRENCY)
+    @NumberFormat(pattern = "#,###,###,###", style = NumberFormat.Style.CURRENCY)
     private BigDecimal balance;
 
     @Enumerated(EnumType.STRING)
@@ -85,14 +86,14 @@ public class DepositAccount {
                     BigDecimal.valueOf(
                             Math.pow(1d + interestRatePerPeriod, numberOfPeriod) - 1d
                     )
-            ).setScale(2, RoundingMode.HALF_UP);
+            ).setScale(0, RoundingMode.HALF_UP);
             this.dateOfMaturity = LocalDate.now().plusDays(dayOfPeriod - (numberOfDay - ((long) numberOfPeriod * dayOfPeriod)));
         } else {
             this.interest = this.balance.multiply(
                     BigDecimal.valueOf(
                             this.numberOfDay * this.interestRate * 0.01 / TimeConstant.DAY_OF_YEAR
                     )
-            ).setScale(2, RoundingMode.HALF_UP);
+            ).setScale(0, RoundingMode.HALF_UP);
         }
     }
 }

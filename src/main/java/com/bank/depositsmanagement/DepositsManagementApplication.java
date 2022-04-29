@@ -20,7 +20,7 @@ public class DepositsManagementApplication {
 //	public CommandLineRunner loadData(UserRepository userRepository, EmployeeRepository employeeRepository, InterestRateReferenceRepository interestRateReferenceRepository) {
 //
 //		return args -> {
-////			InitData.createUser(userRepository,employeeRepository);
+//			InitData.createUser(userRepository,employeeRepository);
 //			InitData.createInterestRateReference(interestRateReferenceRepository);
 //		};
 //	}

@@ -8,14 +8,14 @@
 <th:block th:insert="~{/common/_layout::navbar}"/>
 <div class="background"></div>
 <div class="frames mt-4">
-<div class="create-form">
-<h2 class="title mb-4">Khách hàng mới</h2>
-<form method="post" class="form-group" th:action="@{/user/customer/add}" th:object="${customer}">
-	<th:block th:insert="~{/common/_customer::customer-input-form}"/>
-	<input type="submit" value="Tạo khách hàng" class="btn btn-success"/>
-	<a th:href="@{'/user/customer'}"  class="btn btn-secondary">Trở về</a>
-</form>
-</div>
+	<div class="create-form">
+		<h2 class="mb-4">Khách hàng mới</h2>
+		<form method="post" class="form-group" th:action="@{/user/customer/add}" th:object="${customer}">
+			<th:block th:insert="~{/common/_customer::customer-input-form}"/>
+			<input type="submit" value="Tạo khách hàng" class="btn btn-success"/>
+			<a th:href="@{/user/customer}" class="btn btn-secondary">Hủy</a>
+		</form>
+	</div>
 </div>
 
 <th:block th:insert="~{common/_layout::js-lib}"/>

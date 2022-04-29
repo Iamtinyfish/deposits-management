@@ -2,93 +2,90 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<th:block th:insert="~{common/_layout::metadata('Tài khoản tiền gửi mới')}" />
+	<th:block th:insert="~{common/_layout::metadata('Tài khoản tiền gửi mới')}"/>
 </head>
 
 <body>
-	<th:block th:insert="~{/common/_layout::navbar}" />
-	<div class="background"></div>
+<th:block th:insert="~{/common/_layout::navbar}"/>
+<div class="background"></div>
 <div class="frames mt-4">
 
 	<div class="create-form">
-			<h2 class="title mb-4">Tài khoản tiền gửi mới</h2>
+		<h2 class="title mb-4">Tài khoản tiền gửi mới</h2>
 		<form method="post" th:action="@{/user/deposit-account/add}" th:object="${depositAccount}">
-			<th:block th:insert="~{common/_customer::holder-info}" />
+			<th:block th:insert="~{common/_customer::holder-info}"/>
 
-			<h4 class="title mb-4">Thông tin tài khoản</h4 >
+			<h4 class="title mb-4">Thông tin tài khoản</h4>
 
 			<div class="row mb-4">
 				<div class="title col-6">
-          <label th:for="currency">Loại tiền tệ</label><br>
-          <select th:field="*{currency}" class="form-control">
-            <option th:value="VND">VND</option>
-            <option th:value="USD">USD</option>
-          </select>
-          <ul th:if="${#fields.hasErrors('currency')}">
-            <li th:each="err : ${#fields.errors('currency')}" th:text="${err}">Input is incorrect</li>
-          </ul>
-			  </div>
+					<label th:for="currency">Loại tiền tệ</label><br>
+					<select th:field="*{currency}" class="form-control">
+						<option th:value="VND">VND</option>
+						<option th:value="USD">USD</option>
+					</select>
+					<ul th:if="${#fields.hasErrors('currency')}">
+						<li th:each="err : ${#fields.errors('currency')}" th:text="${err}">Input is incorrect</li>
+					</ul>
+				</div>
 
-        <div>
-          <label th:for="period">Kì hạn</label><br>
-          <select th:field="*{period}">
-            <option th:each="period : ${periods}"
-                    th:value="${period}"
-                    th:text="${(period != 0) ? period + ' tháng' : 'Không kì hạn'}">Wireframe
-            </option>
-          </select>
-          <ul th:if="${#fields.hasErrors('period')}">
-            <li th:each="err : ${#fields.errors('period')}" th:text="${err}">Input is incorrect</li>
-          </ul>
-        </div>
+				<div>
+					<label th:for="period">Kì hạn</label><br>
+					<select th:field="*{period}" class="form-control">
+						<option th:each="period : ${periods}"
+						        th:value="${period}"
+						        th:text="${(period != 0) ? period + ' tháng' : 'Không kì hạn'}">Wireframe
+						</option>
+					</select>
+					<ul th:if="${#fields.hasErrors('period')}">
+						<li th:each="err : ${#fields.errors('period')}" th:text="${err}">Input is incorrect</li>
+					</ul>
+				</div>
 			</div>
 
 			<div class="title d-flex mb-4">
-				Lãi suất : 
-				<p class="ml-1" id="interestRate"></p> 
- 			</div >
+				Lãi suất :
+				<p class="ml-1" id="interestRate"></p>
+			</div>
 
 			<div class="title mb-4">
 				<label th:for="balance">Số tiền gửi</label><br>
-				<input th:errorClass="error-input" th:field="*{balance}" class="form-control" type="number" />
-				<ul th:if="${#fields.hasErrors('balance')}">
+				<input th:errorClass="error-input" th:field="*{balance}" class="form-control" type="number"/>
+				<ul th:if="${#fields.hasErrors('balance') || errorBalance != null}">
 					<li th:each="err : ${#fields.errors('balance')}" th:text="${err}">Input is incorrect</li>
+					<li th:if="${errorBalance != null}" th:text="${errorBalance}"></li>
 				</ul>
-			</div >
+			</div>
 
-			<input type="submit" class="btn btn-success" value="Gửi" />
-			<button  onclick="handleProfile_1()" type="button" class="btn btn-secondary ml-2">Trở về</button>
+			<input type="submit" class="btn btn-success" value="Gửi"/>
+			<a th:href="@{'/user/customer/detail?IDCard=' + ${depositAccount.holder.IDCard}}" class="btn btn-secondary ml-2">Hủy</a>
 		</form>
 	</div>
 </div>
-	<script th:inline="javascript">
-		/*<![CDATA[*/
-		const interestRateReferences = [[${interestRateReferences}]];
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	const interestRateReferences = [[${interestRateReferences}]];
 
-		const interestRateElement = document.getElementById("interestRate");
-		const currencyElement = document.getElementById("currency");
-		const periodElement = document.getElementById("period");
-		const cccd = document.getElementById("_cccd");
-		currencyAndPeriodOnChange();
-		currencyElement.onchange = currencyAndPeriodOnChange;
-		periodElement.onchange = currencyAndPeriodOnChange;
+	const interestRateElement = document.getElementById("interestRate");
+	const currencyElement = document.getElementById("currency");
+	const periodElement = document.getElementById("period");
 
-		function currencyAndPeriodOnChange() {
-			const currency = currencyElement.value;
-			const period = parseInt(periodElement.value);
-				
-			const interestRate = interestRateReferences.find(element => (element.currency === currency && element.period === period)).interestRate;
-			interestRateElement.innerText = (interestRate !== undefined) ? interestRate + " %/năm" : "Không hỗ trợ";
-			
-		}
-		function handleProfile_1(){
-			window.location.href = '/user/customer/detail?IDCard=' + cccd.innerText
-			
-		}
+	currencyAndPeriodOnChange();
+	currencyElement.onchange = currencyAndPeriodOnChange;
+	periodElement.onchange = currencyAndPeriodOnChange;
+
+	function currencyAndPeriodOnChange() {
+		const currency = currencyElement.value;
+		const period = parseInt(periodElement.value);
+
+		const interestRate = interestRateReferences.find(element => (element.currency === currency && element.period === period)).interestRate;
+		interestRateElement.innerText = (interestRate !== undefined) ? interestRate + " %/năm" : "Không hỗ trợ";
+	}
+
 	/*]]>*/
-	</script>
+</script>
 
-	<th:block th:insert="~{/common/_layout::js-lib}" />
+<th:block th:insert="~{/common/_layout::js-lib}"/>
 </body>
 
 </html>

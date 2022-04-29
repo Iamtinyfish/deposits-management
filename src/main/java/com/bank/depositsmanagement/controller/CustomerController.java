@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.time.LocalDateTime;
 
 @Controller
 public class CustomerController {
@@ -52,7 +51,14 @@ public class CustomerController {
             return "add-customer";
         }
 
-        Employee employee = userRepository.findByUsername(principal.getName()).getEmployee();
+        User user = userRepository.findByUsername(principal.getName()).orElse(null);
+
+        if (user == null || user.getEmployee() == null) {
+            model.addAttribute("message", "Không xác định được thông tin của bạn");
+            return "404";
+        }
+
+        Employee employee = user.getEmployee();
 
         customer.setLastModifiedBy(employee);
 
@@ -65,7 +71,7 @@ public class CustomerController {
     public String customerDetail(Model model, @RequestParam(value = "IDCard") String IDCard) {
         Customer customer = customerRepository.findByIDCard(IDCard).orElse(null);
         if (customer == null) {
-            model.addAttribute("message", "Không tìm thấy khách hàng với mã ID " + IDCard);
+            model.addAttribute("message", "Không tìm thấy khách hàng với số CCCD là " + IDCard);
             return "404";
         }
         model.addAttribute("customer", customer);
@@ -76,22 +82,23 @@ public class CustomerController {
 
     @PostMapping("user/customer/update")
     public String updateCustomer(Model model, @ModelAttribute("customer") @Valid Customer customer, BindingResult bindingResult, Principal principal) {
-
+        model.addAttribute("dateFormatter", TimeConstant.DATE_FORMATTER);
         Customer oldCustomer = customerRepository.findById(customer.getId()).orElse(null);
 
         if (oldCustomer == null) {
-            model.addAttribute("message", "Không tìm thấy khách hàng với mã ID " + customer.getId());
+            model.addAttribute("message", "Không tìm thấy khách hàng với mã là " + customer.getId());
             return "404";
         }
 
+        customer.setCreatedAt(oldCustomer.getCreatedAt());
+
         //check unique fields
         boolean doesIDCardExist = !customer.getIDCard().equals(oldCustomer.getIDCard()) && customerRepository.existsByIDCard(customer.getIDCard());
-        if (doesIDCardExist) model.addAttribute("error", "Số CCCD đã tồn tại");
+        if (doesIDCardExist) model.addAttribute("errorIDCard", "Số CCCD đã tồn tại");
         boolean doesEmailExist = !customer.getEmail().equals(oldCustomer.getEmail()) && customerRepository.existsByEmail(customer.getEmail());
-        if (doesEmailExist) model.addAttribute("error", "Email đã tồn tại");
+        if (doesEmailExist) model.addAttribute("errorEmail", "Email đã tồn tại");
 
         if (bindingResult.hasErrors() || doesEmailExist || doesIDCardExist) {
-            customer.setCreatedAt(oldCustomer.getCreatedAt());
             customer.setLastModifiedAt(oldCustomer.getLastModifiedAt());
             customer.setLastModifiedBy(oldCustomer.getLastModifiedBy());
             model.addAttribute("customer", customer);
@@ -99,9 +106,15 @@ public class CustomerController {
             return "customer-detail";
         }
 
-        Employee employee = userRepository.findByUsername(principal.getName()).getEmployee();
+        User user = userRepository.findByUsername(principal.getName()).orElse(null);
 
-        customer.setCreatedAt(oldCustomer.getCreatedAt());
+        if (user == null || user.getEmployee() == null) {
+            model.addAttribute("message", "Không xác định được thông tin của bạn");
+            return "404";
+        }
+
+        Employee employee = user.getEmployee();
+
         customer.setLastModifiedBy(employee);
 
         customerRepository.save(customer);
