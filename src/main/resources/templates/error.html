@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+	<th:block th:insert="~{common/_layout::metadata('Error')}"/>
+</head>
+
+<body>
+<th:block th:insert="~{/common/_layout::navbar}"/>
+
+<h1>Error</h1>
+<div th:utext="${message}"></div>
+
+<th:block th:insert="~{/common/_layout::js-lib}"/>
+</body>
+
+</html>

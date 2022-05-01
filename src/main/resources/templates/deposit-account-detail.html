@@ -50,22 +50,22 @@
 					<h6>
 						Tiền gốc :
 					</h6>
-					<p th:text="*{balance}"></p>
+					<p th:text="${currencyFormatter.format(depositAccount.balance)}"></p>
 				</div>
 				<div class="col">
 					<h6>
-						Tiền lãi có kì hạn :
+						Tiền lãi:
 					</h6>
-					<p th:text="*{interest}"></p>
+					<p th:text="${currencyFormatter.format(depositAccount.interest)}"></p>
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col">
 					<h6>
-						Số ngày gửi thực :
+						Ngày bắt đầu :
 					</h6>
-					<p th:text="*{numberOfDay}"></p>
+					<p th:text="${depositAccount.periodStartAt.format(dateFormatter)}"></p>
 				</div>
 				<div class="col">
 					<h6>
@@ -77,10 +77,18 @@
 			<div class="row">
 				<div class="col">
 					<h6>
+						Số ngày gửi thực :
+					</h6>
+					<p th:text="*{numberOfDay}"></p>
+				</div>
+				<div class="col">
+					<h6>
 						Ngày tạo :
 					</h6>
 					<p th:text="${depositAccount.createdAt.format(dateFormatter)}"></p>
 				</div>
+			</div>
+			<div class="row">
 				<div class="col">
 					<h6>
 						Tạo bởi nhân viên có mã :
@@ -111,7 +119,7 @@
 				<tr class="table-active">
 					<th scope="col">Mã giao dịch</th>
 					<th scope="col">Số tài khoản</th>
-					<th scope="col" th:text="${'Số tiền giao dịch (' + depositAccount.currency + ')'}"></th>
+					<th scope="col">Số tiền giao dịch</th>
 					<th scope="col">Mô tả</th>
 					<th scope="col">Thời gian</th>
 					<th scope="col">Mã nhân viên giao dịch</th>
@@ -121,7 +129,7 @@
 				<tr th:each="transaction : ${depositAccount.transactionSet}">
 					<th th:text="${transaction.id}"></th>
 					<td th:text="${transaction.depositAccount.id}"></td>
-					<td th:text="${transaction.amount}"></td>
+					<td th:text="${currencyFormatter.format(transaction.amount)}"></td>
 					<td th:text="${transaction.description}"></td>
 					<td th:text="${transaction.time.format(dateTimeFormatter)}"></td>
 					<td th:text="${transaction.employee.id}"></td>

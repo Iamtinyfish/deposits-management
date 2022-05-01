@@ -57,7 +57,7 @@
 			<input id="updateBtn" th:hidden="${readOnly}" type="submit" class="btn btn-success"
 			       value="Cập nhật">
 
-			<button id="cancelBtn" th:hidden="${readOnly}" type="button" class="btn btn-secondary ml-2">Hủy</button>
+			<a id="cancelBtn" th:hidden="${readOnly}" th:href="@{'/user/customer/detail?IDCard=' + *{IDCard}}" class="btn btn-secondary ml-2">Hủy</a>
 
 			<a th:href="@{/user/customer}" class="btn btn-info ml-2">Quay lại</a>
 
@@ -82,12 +82,10 @@
 			<tbody>
 			<tr th:each="depositAccount : ${customer.depositAccountSet}">
 				<td th:text="${depositAccount.id}"></td>
-				<td id="surplus"
-				    th:text="${depositAccount.balance + depositAccount.interest + ' ' + depositAccount.currency}"></td>
-				<td
-							th:text="${depositAccount.period == 0 ? 'Không kì hạn' : ('Có kì hạn: ' + depositAccount.period + ' tháng')}">
+				<td th:text="${(depositAccount.currency.toString() == 'VND') ? vndFormatter.format(depositAccount.balance + depositAccount.interest) : usdFormatter.format(depositAccount.balance + depositAccount.interest)}"></td>
+				<td th:text="${depositAccount.period == 0 ? 'Không kì hạn' : ('Có kì hạn: ' + depositAccount.period + ' tháng')}">
 				</td>
-				<td th:text="${depositAccount.finalSettlement ? 'Đã tất toán' : 'Đang hoạt động'}"></td>
+				<td th:class="${depositAccount.finalSettlement ? 'text-danger' : 'text-success'}" th:text="${depositAccount.finalSettlement ? 'Đã tất toán' : 'Đang hoạt động'}"></td>
 				<td><a class="btn btn-info"
 				       th:href="@{'/user/deposit-account/detail?depositAccountID=' + ${depositAccount.id}}">Chi
 					tiết</a></td>
@@ -98,15 +96,10 @@
 </div>
 <script th:inline="javascript">
 	/*<![CDATA[*/
-	const allInputElements = document.getElementsByTagName("input");
 	const genderSelect = document.getElementById("gender");
 	const editBtn = document.getElementById("editBtn");
 	const updateBtn = document.getElementById("updateBtn");
 	const cancelBtn = document.getElementById("cancelBtn");
-
-	// const surplus = document.getElementById("surplus");
-	// console.log(surplus.innerText)
-	// surplus.innerHTML = Number(surplus.innerText).toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
 
 	editBtn.onclick = () => {
 		for (const inputElement of allInputElements) {
@@ -117,17 +110,6 @@
 		cancelBtn.hidden = false;
 		editBtn.hidden = true;
 	};
-
-	cancelBtn.onclick = () => {
-		for (const inputElement of allInputElements) {
-			inputElement.readOnly = true;
-		}
-		genderSelect.toggleAttribute("disabled");
-		updateBtn.hidden = true;
-		cancelBtn.hidden = true;
-		editBtn.hidden = false;
-	};
-
 	/*]]>*/
 </script>
 

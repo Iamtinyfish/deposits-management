@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+	<th:block th:insert="~{/common/_layout::metadata('Tất toán')}"/>
+	<style>
+		.border-table, .border-table th, .border-table td {
+			border: 1px solid black;
+		}
+	</style>
+</head>
+
+<body>
+<th:block th:insert="~{/common/_layout::navbar}"/>
+
+<h1>Rút một phần tiền</h1>
+<br>
+<h4 th:text="${'Số dư khả dụng: ' + currencyFormatter.format(balance)}"></h4>
+
+<form method="post" th:action="@{/user/deposit-account/withdraw-part}" >
+	<input hidden name="depositAccountID" type="number" th:value="${depositAccountID}"/>
+	<p>Số tiền phải là bội số của 100 000 &#8363; đối với VND</p>
+	<p>Số tiền phải là bội số của $5 đối với USD</p>
+
+	<label class="h6" for="amount">Số tiền muốn rút:</label>
+	<p class="d-inline-block" id="amountOutput"></p><br>
+	<input id="amount" name="amount" type="number" placeholder="Nhập số tiền muốn rút" required/>
+	<input type="submit" value="Rút"/>
+	<p class="text-danger" th:if="${error != null}" th:utext="${error}"></p>
+</form>
+
+<a th:href="@{'/user/deposit-account/detail?depositAccountID=' + ${depositAccountID}}" class="btn btn-secondary">Hủy</a>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	/* Format Currency */
+	const amountInput = document.getElementById("amount");
+	const amountOutput = document.getElementById("amountOutput");
+	amountInput.oninput = formatCurrency;
+
+	function formatCurrency(){
+		let amountValue = parseInt(amountInput.value);
+		if (isNaN(amountValue)) amountValue = 0;
+		const currencyType = [[${currency}]];
+		const locale = (currencyType === "VND") ? "vi-VN" : "en-US";
+		const options = {style: 'currency', currency: currencyType, maximumFractionDigits: 0};
+		amountOutput.innerText = amountValue.toLocaleString(locale, options);
+	}
+	/* Format Currency */
+	/*]]>*/
+</script>
+<th:block th:insert="~{/common/_layout::js-lib}"/>
+</body>
+
+</html>

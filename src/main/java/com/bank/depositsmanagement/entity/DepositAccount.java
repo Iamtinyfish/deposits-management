@@ -38,9 +38,9 @@ public class DepositAccount {
     private int period;
 
     @PositiveOrZero(message = "Không thể là số âm")
-    @NotNull(message = "Không được bỏ trống")
+//    @NotNull(message = "Không được bỏ trống")
     @Column(nullable = false)
-    @NumberFormat(pattern = "#,###,###,###", style = NumberFormat.Style.CURRENCY)
+    @NumberFormat(pattern = "#,###", style = NumberFormat.Style.CURRENCY)
     private BigDecimal balance;
 
     @Enumerated(EnumType.STRING)
@@ -59,6 +59,9 @@ public class DepositAccount {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
+    private LocalDate periodStartAt;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "create_by", nullable = false)
     private Employee createBy;
@@ -72,11 +75,12 @@ public class DepositAccount {
     @PrePersist
     void createdAt() {
         this.createdAt = LocalDateTime.now();
+        this.periodStartAt = LocalDate.now();
     }
 
     @PostLoad
     void calculateTransientProperties() {
-//        this.numberOfDay = ((int) ChronoUnit.DAYS.between(this.createdAt, LocalDateTime.now()));
+//        this.numberOfDay = ((int) ChronoUnit.DAYS.between(this.periodStartAt, LocalDate.now()));
         this.numberOfDay = 100;
         if (period > 0) {
             int dayOfPeriod = this.period * TimeConstant.DAY_OF_MONTH;
@@ -86,14 +90,14 @@ public class DepositAccount {
                     BigDecimal.valueOf(
                             Math.pow(1d + interestRatePerPeriod, numberOfPeriod) - 1d
                     )
-            ).setScale(0, RoundingMode.HALF_UP);
+            ).setScale(2, RoundingMode.HALF_UP);
             this.dateOfMaturity = LocalDate.now().plusDays(dayOfPeriod - (numberOfDay - ((long) numberOfPeriod * dayOfPeriod)));
         } else {
             this.interest = this.balance.multiply(
                     BigDecimal.valueOf(
                             this.numberOfDay * this.interestRate * 0.01 / TimeConstant.DAY_OF_YEAR
                     )
-            ).setScale(0, RoundingMode.HALF_UP);
+            ).setScale(2, RoundingMode.HALF_UP);
         }
     }
 }

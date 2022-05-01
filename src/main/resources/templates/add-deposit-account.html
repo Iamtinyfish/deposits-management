@@ -11,15 +11,15 @@
 <div class="frames mt-4">
 
 	<div class="create-form">
-		<h2 class="title mb-4">Tài khoản tiền gửi mới</h2>
+		<h2 class="mb-4">Tài khoản tiền gửi mới</h2>
 		<form method="post" th:action="@{/user/deposit-account/add}" th:object="${depositAccount}">
 			<th:block th:insert="~{common/_customer::holder-info}"/>
 
-			<h4 class="title mb-4">Thông tin tài khoản</h4>
+			<h4>Thông tin tài khoản</h4>
 
-			<div class="row mb-4">
-				<div class="title col-6">
-					<label th:for="currency">Loại tiền tệ</label><br>
+			<div class="row mb-2">
+				<div class="col">
+					<label class="h6" th:for="currency">Loại tiền tệ :</label><br>
 					<select th:field="*{currency}" class="form-control">
 						<option th:value="VND">VND</option>
 						<option th:value="USD">USD</option>
@@ -29,8 +29,8 @@
 					</ul>
 				</div>
 
-				<div>
-					<label th:for="period">Kì hạn</label><br>
+				<div class="col">
+					<label class="h6" th:for="period">Kì hạn :</label><br>
 					<select th:field="*{period}" class="form-control">
 						<option th:each="period : ${periods}"
 						        th:value="${period}"
@@ -42,14 +42,17 @@
 					</ul>
 				</div>
 			</div>
+			<br><p th:if="${errorInterest != null}" th:text="${errorInterest}"></p>
 
-			<div class="title d-flex mb-4">
-				Lãi suất :
-				<p class="ml-1" id="interestRate"></p>
+			<div class="row mb-2">
+				<div class="col">
+					<h6>Lãi suất :</h6>
+					<p class="ml-1" id="interestRate"></p>
+				</div>
 			</div>
 
-			<div class="title mb-4">
-				<label th:for="balance">Số tiền gửi</label><br>
+			<div class="mb-4">
+				<label class="h6" th:for="balance">Số tiền gửi :&nbsp&nbsp</label><p class="d-inline-block" id="balanceOutput"></p><br>
 				<input th:errorClass="error-input" th:field="*{balance}" class="form-control" type="number"/>
 				<ul th:if="${#fields.hasErrors('balance') || errorBalance != null}">
 					<li th:each="err : ${#fields.errors('balance')}" th:text="${err}">Input is incorrect</li>
@@ -64,8 +67,8 @@
 </div>
 <script th:inline="javascript">
 	/*<![CDATA[*/
+	/* Interest rate reference */
 	const interestRateReferences = [[${interestRateReferences}]];
-
 	const interestRateElement = document.getElementById("interestRate");
 	const currencyElement = document.getElementById("currency");
 	const periodElement = document.getElementById("period");
@@ -81,6 +84,23 @@
 		const interestRate = interestRateReferences.find(element => (element.currency === currency && element.period === period)).interestRate;
 		interestRateElement.innerText = (interestRate !== undefined) ? interestRate + " %/năm" : "Không hỗ trợ";
 	}
+	/* Interest rate reference */
+
+	/* Format Currency */
+	const balanceInput = document.getElementById("balance");
+	const balanceOutput = document.getElementById("balanceOutput");
+	balanceInput.oninput = formatCurrency;
+	currencyElement.onchange = formatCurrency;
+
+	function formatCurrency(){
+		let balanceValue = parseInt(balanceInput.value);
+		if (isNaN(balanceValue)) balanceValue = 0;
+		const currencyType = currencyElement.value;
+		const locale = (currencyType === "VND") ? "vi-VN" : "en-US";
+		const options = {style: 'currency', currency: currencyType, maximumFractionDigits: 0};
+		balanceOutput.innerText = balanceValue.toLocaleString(locale, options);
+	}
+	/* Format Currency */
 
 	/*]]>*/
 </script>

@@ -17,7 +17,7 @@
 	<tr>
 		<th>Mã giao dịch</th>
 		<th>Số tài khoản</th>
-		<th th:text="${'Số tiền giao dịch (' + transaction.depositAccount.currency + ')'}"></th>
+		<th>Số tiền giao dịch</th>
 		<th>Mô tả</th>
 		<th>Thời gian</th>
 		<th>Mã nhân viên giao dịch</th>
@@ -27,7 +27,7 @@
 	<tr>
 		<th th:text="${transaction.id}"></th>
 		<td th:text="${transaction.depositAccount.id}"></td>
-		<td th:text="${transaction.amount}"></td>
+		<td th:text="${currencyFormatter.format(transaction.amount)}"></td>
 		<td th:text="${transaction.description}"></td>
 		<td th:text="${transaction.time.format(timeFormatter)}"></td>
 		<td th:text="${transaction.employee.id}"></td>

@@ -62,7 +62,7 @@
 				<input id="updateBtn" th:hidden="${readOnly}" type="submit" class="btn btn-success"
 				       value="Cập nhật">
 
-				<button id="cancelBtn" th:hidden="${readOnly}" type="button" class="btn btn-secondary ml-2">Hủy</button>
+				<a id="cancelBtn" th:hidden="${readOnly}" th:href="@{/my-profile}" class="btn btn-secondary ml-2">Hủy</a>
 
 				<button id="editBtn" th:hidden="${readOnly == false}" type="button"
 				        class="btn btn-warning">Sửa
@@ -90,17 +90,6 @@
 		cancelBtn.hidden = false;
 		editBtn.hidden = true;
 	};
-
-	cancelBtn.onclick = () => {
-		for (const inputElement of allInputElements) {
-			inputElement.readOnly = true;
-		}
-		genderSelect.toggleAttribute("disabled");
-		updateBtn.hidden = true;
-		cancelBtn.hidden = true;
-		editBtn.hidden = false;
-	};
-
 	/*]]>*/
 </script>
 <th:block th:insert="~{/common/_layout::js-lib}"/>

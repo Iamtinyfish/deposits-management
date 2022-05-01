@@ -3,6 +3,7 @@ package com.bank.depositsmanagement.controller;
 import com.bank.depositsmanagement.dao.CustomerRepository;
 import com.bank.depositsmanagement.dao.UserRepository;
 import com.bank.depositsmanagement.entity.*;
+import com.bank.depositsmanagement.utils.CurrencyConstant;
 import com.bank.depositsmanagement.utils.TimeConstant;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.text.DecimalFormat;
 
 @Controller
 public class CustomerController {
@@ -77,6 +79,8 @@ public class CustomerController {
         model.addAttribute("customer", customer);
         model.addAttribute("readOnly", true);
         model.addAttribute("dateFormatter", TimeConstant.DATE_FORMATTER);
+        model.addAttribute("vndFormatter", CurrencyConstant.VND_FORMATTER);
+        model.addAttribute("usdFormatter", CurrencyConstant.USD_FORMATTER);
         return "customer-detail";
     }
 
@@ -103,6 +107,7 @@ public class CustomerController {
             customer.setLastModifiedBy(oldCustomer.getLastModifiedBy());
             model.addAttribute("customer", customer);
             model.addAttribute("readOnly", false);
+            model.addAttribute("currencyFormatter", new DecimalFormat("#,###"));
             return "customer-detail";
         }
 
