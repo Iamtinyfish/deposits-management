@@ -1,17 +1,21 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org"
-      lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
-	<th:block th:insert="~{common/_layout::metadata('Error')}"/>
+	<th:block th:insert="~{common/_layout::metadata('Error')}" />
 </head>
 
 <body>
-<th:block th:insert="~{/common/_layout::navbar}"/>
+	<th:block th:insert="~{/common/_layout::navbar}" />
+	<div class="background"></div>
+	<div class="frames d-flex mt-4">
 
-<h1>Error</h1>
-<div th:utext="${message}"></div>
-
-<th:block th:insert="~{/common/_layout::js-lib}"/>
+		<div class="create-form">
+			<h2>Error</h2>
+			<div class="title" th:utext="${message}"></div>
+		</div >
+		</div>
+			<th:block th:insert="~{/common/_layout::js-lib}" />
 </body>
 
 </html>
