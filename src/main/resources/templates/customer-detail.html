@@ -11,7 +11,7 @@
 <div class="frames d-flex mt-4">
 
 	<div class="create-form">
-		<h2 class="title mb-4">Hồ sơ khách hàng</h2>
+		<h2 class=" mb-4">Hồ sơ khách hàng</h2>
 		<form method="post" th:action="@{/user/customer/update}" th:object="${customer}">
 
 			<input hidden th:field="*{id}"/>
@@ -65,7 +65,7 @@
 	</div>
 
 	<div class="create-form ml-4">
-		<h2 class="title mb-4">Tài khoản tiền gửi</h2>
+		<h2 class=" mb-4">Tài khoản tiền gửi</h2>
 		<a th:href="@{'/user/deposit-account/add?customerID=' + ${customer.id}}" class="btn btn-success mb-4">Thêm
 			tài khoản tiền gửi mới</a>
 
@@ -73,10 +73,10 @@
 			<thead>
 			<tr class="table-active">
 				<th scope="col">Số tài khoản</th>
-				<th scope="col">Số dư</th>
+				<th scope="col" style="width: 20%;">Số dư</th>
 				<th scope="col">Loại</th>
-				<th scope="col">Trạng thái</th>
-				<th scope="col"></th>
+				<th scope="col" style="width: 20%;">Trạng thái</th>
+				<th scope="col" style="width: 20%"></th>
 			</tr>
 			</thead>
 			<tbody>
@@ -86,9 +86,9 @@
 				<td th:text="${depositAccount.period == 0 ? 'Không kì hạn' : ('Có kì hạn: ' + depositAccount.period + ' tháng')}">
 				</td>
 				<td th:class="${depositAccount.finalSettlement ? 'text-danger' : 'text-success'}" th:text="${depositAccount.finalSettlement ? 'Đã tất toán' : 'Đang hoạt động'}"></td>
-				<td><a class="btn btn-info"
+				<td ><a class="btn btn-info"
 				       th:href="@{'/user/deposit-account/detail?depositAccountID=' + ${depositAccount.id}}">Chi
-					tiết</a></td>
+					tiết</a></td >
 			</tr>
 			</tbody>
 		</table>

@@ -9,10 +9,10 @@
 
 <div class="frames">
 	<div class="background"></div>
-	<div class="frames d-flex mt-2">
+	<div class="frames d-flex mt-4">
 		<div class="create-form mx-auto">
-			<h3>Xin chào <span th:utext="${#request.userPrincipal.name}"></span></h3>
-			<h2 class="mb-4">Hồ sơ của tôi</h2>
+
+			<h2 class="mb-4 ">Hồ sơ của tôi</h2>
 			<form method="post" th:action="@{/my-profile/update}" th:object="${employee}">
 				<div class="row">
 					<div class="col">

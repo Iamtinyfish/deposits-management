@@ -11,17 +11,20 @@
 
 <body>
 <th:block th:insert="~{/common/_layout::navbar}"/>
+<div class="background"></div>
+<div class="frames d-flex mt-4">
 
-<table class="border-table">
+	<div class="create-form">
+<table class="table-bordered table table-hover title title-table">
 	<thead>
-	<tr>
-		<th>Mã giao dịch</th>
-		<th>Số tài khoản</th>
-		<th>Số tiền giao dịch</th>
-		<th>Mô tả</th>
-		<th>Thời gian</th>
-		<th>Mã nhân viên giao dịch</th>
-	</tr>
+	<tr class="table-active">
+		<th scope="col">Mã giao dịch</th >
+		<th scope="col">Số tài khoản</th >
+		<th scope="col">Số tiền giao dịch</th >
+		<th scope="col">Mô tả</th >
+		<th scope="col">Thời gian</th >
+		<th scope="col">Mã nhân viên giao dịch</th >
+	</tr >
 	</thead>
 	<tbody>
 	<tr>
@@ -38,8 +41,8 @@
 <button class="btn btn-info" type="button">Xuất hóa đơn</button>
 <a th:href="@{'/user/deposit-account/detail?depositAccountID=' + ${transaction.depositAccount.id}}"
    class="btn btn-info ml-2">Quay lại</a>
-
-
+	</div>
+</div>
 <th:block th:insert="~{/common/_layout::js-lib}"/>
 </body>
 

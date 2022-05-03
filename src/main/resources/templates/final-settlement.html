@@ -1,56 +1,65 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
-	<th:block th:insert="~{/common/_layout::metadata('Tất toán')}"/>
+	<th:block th:insert="~{/common/_layout::metadata('Tất toán')}" />
 	<style>
-		.border-table, .border-table th, .border-table td {
+		.border-table,
+		.border-table th,
+		.border-table td {
 			border: 1px solid black;
 		}
 	</style>
 </head>
 
 <body>
-<th:block th:insert="~{/common/_layout::navbar}"/>
+	<th:block th:insert="~{/common/_layout::navbar}" />
+	<div class="background"></div>
+	<div class="frames mt-4">
+		<div class="create-form" style="width: 800px;">
+			<h2 class='mb-4 '>Tất toán</h2 >
+			<table class="border-table table-bordered table table-hover title title-table">
+				<thead>
+					<tr class="table-active">
+						<th scope="col"></th >
+						<th style="width: 20%;" scope="col" >Số ngày</th  >
+						<th scope="col">Lãi suất (%/năm)</th >
+						<th style="width: 20%;" scope="col">Tiền lãi</th  >
+						<th  style="width: 25%;" scope="col">Số dư mới</th >
+					</tr >
+				</thead>
+				<tbody>
+					<tr th:if="${depositAccount.period != 0}">
+						<th th:text="${'Lãi kép theo kì hạn ' + depositAccount.period + ' tháng (1 tháng = 30 ngày)'}">
+						</th>
+						<td th:text="${timeDepositDays}"></td>
+						<td th:text="${timeDepositInterestRate}"></td>
+						<td th:text="${currencyFormatter.format(timeDepositInterest)}"></td>
+						<td th:text="${currencyFormatter.format(balance1)}"></td>
+					</tr>
+					<tr>
+						<th>Lãi không kì hạn</th>
+						<td th:text="${demandDepositDays}"></td>
+						<td th:text="${demandDepositInterestRate}"></td>
+						<td th:text="${currencyFormatter.format(demandDepositInterest)}"></td>
+						<td th:text="${currencyFormatter.format(finalBalance)}"></td>
+					</tr>
+				</tbody>
+			</table>
 
-<h1>Tất toán</h1>
-<table class="border-table">
-	<thead>
-	<tr>
-		<th></th>
-		<th>Số ngày</th>
-		<th>Lãi suất (%/năm)</th>
-		<th>Tiền lãi</th>
-		<th>Số dư mới</th>
-	</tr>
-	</thead>
-	<tbody>
-	<tr th:if="${depositAccount.period != 0}">
-		<th th:text="${'Lãi kép theo kì hạn ' + depositAccount.period + ' tháng (1 tháng = 30 ngày)'}"></th>
-		<td th:text="${timeDepositDays}"></td>
-		<td th:text="${timeDepositInterestRate}"></td>
-		<td th:text="${currencyFormatter.format(timeDepositInterest)}"></td>
-		<td th:text="${currencyFormatter.format(balance1)}"></td>
-	</tr>
-	<tr>
-		<th>Lãi không kì hạn</th>
-		<td th:text="${demandDepositDays}"></td>
-		<td th:text="${demandDepositInterestRate}"></td>
-		<td th:text="${currencyFormatter.format(demandDepositInterest)}"></td>
-		<td th:text="${currencyFormatter.format(finalBalance)}"></td>
-	</tr>
-	</tbody>
-</table>
-<br>
-<h4 th:text="${'Tổng số tiền được tất toán: ' + currencyFormatter.format(amount)}"></h4>
+			<br>
+			<h4 class="title mb-4" th:text="${'Tổng số tiền được tất toán: ' + currencyFormatter.format(amount)}"></h4 >
 
-<a class="btn btn-success" href="javascript: document.verifyForm.submit()">Xác nhận</a>
-<form name="verifyForm" method="post" th:action="@{/user/deposit-account/final-settlement}" hidden>
-	<input name="depositAccountID" type="number" th:value="${depositAccount.id}"/>
-</form>
+			<a class="btn btn-success" href="javascript: document.verifyForm.submit()">Xác nhận</a>
+			<form name="verifyForm" method="post" th:action="@{/user/deposit-account/final-settlement}" hidden>
+				<input name="depositAccountID" type="number" th:value="${depositAccount.id}" />
+			</form>
 
-<a th:href="@{'/user/deposit-account/detail?depositAccountID=' + ${depositAccount.id}}" class="btn btn-secondary ml-2">Hủy</a>
-
-<th:block th:insert="~{/common/_layout::js-lib}"/>
+			<a th:href="@{'/user/deposit-account/detail?depositAccountID=' + ${depositAccount.id}}"
+				class="btn btn-secondary ml-2">Hủy</a>
+		</div>
+	</div>
+	<th:block th:insert="~{/common/_layout::js-lib}" />
 </body>
 
 </html>
