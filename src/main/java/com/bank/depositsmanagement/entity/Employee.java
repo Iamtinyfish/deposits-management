@@ -42,7 +42,7 @@ public class Employee implements Serializable {
 	@NotNull(message = "Không được bỏ trống trường này")
 	@Column(nullable = false)
 	@PastOrPresent(message = "Phải là thời gian trong quá khứ")
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthday;
 	
 	@Length(message = "CCCD phải có 12 số", min = 12, max = 12)

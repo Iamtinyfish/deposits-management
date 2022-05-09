@@ -44,7 +44,7 @@ public class Customer {
 	@NotNull(message = "Không được bỏ trống trường này")
 	@Column(nullable = false)
 	@PastOrPresent(message = "Phải là thời gian trong quá khứ")
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthday;
 	
 	@NotBlank(message = "Không được bỏ trống trường này")
