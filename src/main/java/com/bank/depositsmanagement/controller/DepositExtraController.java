@@ -30,7 +30,7 @@ public class  DepositExtraController {
         this.accountRepository = accountRepository;
     }
 
-    @GetMapping("user/deposit-account/deposit-extra")
+    @GetMapping("employee/deposit-account/deposit-extra")
     public String depositExtraPage(Model model, @RequestParam(value = "depositAccountID") Long depositAccountID) {
         DepositAccount depositAccount = depositAccountRepository.findById(depositAccountID).orElse(null);
         if (depositAccount == null) {
@@ -48,7 +48,7 @@ public class  DepositExtraController {
         return "deposit-extra";
     }
 
-    @PostMapping("user/deposit-account/deposit-extra")
+    @PostMapping("employee/deposit-account/deposit-extra")
     @Transactional
     public String depositExtra(Model model, @RequestParam(value = "depositAccountID") Long depositAccountID,
                                @RequestParam(value = "amount") BigDecimal amount, Principal principal) {

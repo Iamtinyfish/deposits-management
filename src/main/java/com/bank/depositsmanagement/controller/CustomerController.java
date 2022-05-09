@@ -26,12 +26,12 @@ public class CustomerController {
         this.accountRepository = accountRepository;
     }
 
-    @GetMapping({"user/","user/customer"})
+    @GetMapping({"employee/","employee/customer"})
     public String customerPage() {
         return "customer";
     }
 
-    @GetMapping("user/customer/add")
+    @GetMapping("employee/customer/add")
     public String addCustomerPage(Model model) {
 
         Customer customer = new Customer();
@@ -40,7 +40,7 @@ public class CustomerController {
         return "add-customer";
     }
 
-    @PostMapping("user/customer/add")
+    @PostMapping("employee/customer/add")
     public String addCustomer(Model model, @ModelAttribute("customer") @Valid Customer customer, BindingResult bindingResult, Principal principal) {
         //check unique fields
         boolean doesIDCardExist = customerRepository.existsByIDCard(customer.getIDCard());
@@ -66,10 +66,10 @@ public class CustomerController {
 
         customerRepository.save(customer);
 
-        return "redirect:/user/customer/detail?IDCard="+customer.getIDCard();
+        return "redirect:/employee/customer/detail?IDCard="+customer.getIDCard();
     }
 
-    @GetMapping("user/customer/detail")
+    @GetMapping("employee/customer/detail")
     public String customerDetail(Model model, @RequestParam(value = "IDCard") String IDCard) {
         Customer customer = customerRepository.findByIDCard(IDCard).orElse(null);
         if (customer == null) {
@@ -84,7 +84,7 @@ public class CustomerController {
         return "customer-detail";
     }
 
-    @PostMapping("user/customer/update")
+    @PostMapping("employee/customer/update")
     public String updateCustomer(Model model, @ModelAttribute("customer") @Valid Customer customer, BindingResult bindingResult, Principal principal) {
         model.addAttribute("dateFormatter", TimeConstant.DATE_FORMATTER);
         Customer oldCustomer = customerRepository.findById(customer.getId()).orElse(null);
@@ -124,6 +124,6 @@ public class CustomerController {
 
         customerRepository.save(customer);
 
-        return "redirect:/user/customer/detail?IDCard="+customer.getIDCard();
+        return "redirect:/employee/customer/detail?IDCard="+customer.getIDCard();
     }
 }

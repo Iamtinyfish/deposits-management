@@ -30,7 +30,7 @@ public class WithdrawPartController {
         this.accountRepository = accountRepository;
     }
 
-    @GetMapping("user/deposit-account/withdraw-part")
+    @GetMapping("employee/deposit-account/withdraw-part")
     public String withdrawPartPage(Model model, @RequestParam(value = "depositAccountID") Long depositAccountID) {
         DepositAccount depositAccount = depositAccountRepository.findById(depositAccountID).orElse(null);
         if (depositAccount == null) {
@@ -50,7 +50,7 @@ public class WithdrawPartController {
         return "withdraw-part";
     }
 
-    @PostMapping("user/deposit-account/withdraw-part")
+    @PostMapping("employee/deposit-account/withdraw-part")
     @Transactional
     public String withdrawPart(Model model, @RequestParam(value = "depositAccountID") Long depositAccountID,
                                @RequestParam(value = "amount") BigDecimal amount, Principal principal) {

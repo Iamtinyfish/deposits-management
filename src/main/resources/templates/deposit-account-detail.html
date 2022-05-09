@@ -15,7 +15,7 @@
 		<h6 th:if="${depositAccount.finalSettlement}" class="mb-4 text-danger">* Tài khoản này đã được tất toán</h6>
 		<div th:object="${depositAccount}">
 
-			<th:block th:insert="~{/common/_customer::holder-info}"/>
+			<th:block th:insert="~{common/_customer::holder-info}"/>
 
 			<h4>Thông tin tài khoản</h4>
 			<div class="row">
@@ -93,17 +93,17 @@
 		</div>
 
 		<a th:if="${!depositAccount.finalSettlement}"
-		   th:href="@{'/account/deposit-account/final-settlement?depositAccountID=' + ${depositAccount.id}}"
+		   th:href="@{'/employee/deposit-account/final-settlement?depositAccountID=' + ${depositAccount.id}}"
 		   class="btn btn-info ">Tất
 			toán</a>
 		<a th:if="${depositAccount.period == 0 && !depositAccount.finalSettlement}"
-		   th:href="@{'/account/deposit-account/withdraw-part?depositAccountID=' + ${depositAccount.id}}"
+		   th:href="@{'/employee/deposit-account/withdraw-part?depositAccountID=' + ${depositAccount.id}}"
 		   class="btn btn-info ml-2">Rút tiền</a>
 		<a th:if="${depositAccount.period == 0 && !depositAccount.finalSettlement}"
-		   th:href="@{'/account/deposit-account/deposit-extra?depositAccountID=' + ${depositAccount.id}}"
+		   th:href="@{'/employee/deposit-account/deposit-extra?depositAccountID=' + ${depositAccount.id}}"
 		   class="btn btn-info ml-2">Gửi thêm
 			tiền</a>
-		<a th:href="@{'/account/customer/detail?IDCard=' + ${depositAccount.holder.IDCard}}" class="btn btn-info ml-2">Quay
+		<a th:href="@{'/employee/customer/detail?IDCard=' + ${depositAccount.holder.IDCard}}" class="btn btn-info ml-2">Quay
 			lại</a>
 
 		

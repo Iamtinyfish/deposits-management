@@ -51,11 +51,11 @@
 			<h4 class="title mb-4" th:text="${'Tổng số tiền được tất toán: ' + currencyFormatter.format(amount)}"></h4 >
 
 			<a class="btn btn-success" href="javascript: document.verifyForm.submit()">Xác nhận</a>
-			<form name="verifyForm" method="post" th:action="@{/account/deposit-account/final-settlement}" hidden>
+			<form name="verifyForm" method="post" th:action="@{/employee/deposit-account/final-settlement}" hidden>
 				<input name="depositAccountID" type="number" th:value="${depositAccount.id}" />
 			</form>
 
-			<a th:href="@{'/account/deposit-account/detail?depositAccountID=' + ${depositAccount.id}}"
+			<a th:href="@{'/employee/deposit-account/detail?depositAccountID=' + ${depositAccount.id}}"
 				class="btn btn-secondary ml-2">Hủy</a>
 		</div>
 	</div>

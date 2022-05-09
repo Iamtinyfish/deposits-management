@@ -12,9 +12,9 @@
 	<div class="create-form">
 		<h2 class='mb-4'>Khách hàng</h2>
 
-		<a th:href="@{'/account/customer/add'}" class="btn btn-success btn-add item">Khách hàng mới</a><br><br>
+		<a th:href="@{'/employee/customer/add'}" class="btn btn-success btn-add item">Khách hàng mới</a><br><br>
 
-		<form th:action="@{/account/customer/detail}" method="get" class="d-flex">
+		<form th:action="@{/employee/customer/detail}" method="get" class="d-flex">
 			<input autofocus name="IDCard" class="form-control col-6 CardID" type="number" required
 			       placeholder="Số CCCD"/>
 			<input type="submit" value="Tìm khách hàng" class="btn btn-info ml-4">

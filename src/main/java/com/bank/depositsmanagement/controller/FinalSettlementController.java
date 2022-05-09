@@ -33,7 +33,7 @@ public class FinalSettlementController {
         this.accountRepository = accountRepository;
     }
 
-    @GetMapping("user/deposit-account/final-settlement")
+    @GetMapping("employee/deposit-account/final-settlement")
     public String finalSettlementPage(Model model, @RequestParam(value = "depositAccountID") Long depositAccountID) {
         DepositAccount depositAccount = depositAccountRepository.findById(depositAccountID).orElse(null);
         if (depositAccount == null) {
@@ -42,7 +42,7 @@ public class FinalSettlementController {
         }
 
         if (depositAccount.isFinalSettlement()) {
-            return "redirect:/user/deposit-account/detail?depositAccountID="+depositAccountID;
+            return "redirect:/employee/deposit-account/detail?depositAccountID="+depositAccountID;
         }
 
         model.addAttribute("depositAccount", depositAccount);
@@ -75,7 +75,7 @@ public class FinalSettlementController {
         return "final-settlement";
     }
 
-    @PostMapping("user/deposit-account/final-settlement")
+    @PostMapping("employee/deposit-account/final-settlement")
     @Transactional
     public String finalSettlment(Model model, @RequestParam(value = "depositAccountID") Long depositAccountID, Principal principal) {
         DepositAccount depositAccount = depositAccountRepository.findById(depositAccountID).orElse(null);
@@ -85,7 +85,7 @@ public class FinalSettlementController {
         }
 
         if (depositAccount.isFinalSettlement()) {
-            return "redirect:/user/deposit-account/detail?depositAccountID="+depositAccountID;
+            return "redirect:/employee/deposit-account/detail?depositAccountID="+depositAccountID;
         }
 
         //round final balance with VND

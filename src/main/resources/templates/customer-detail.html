@@ -12,7 +12,7 @@
 
 	<div class="create-form">
 		<h2 class=" mb-4">Hồ sơ khách hàng</h2>
-		<form method="post" th:action="@{/account/customer/update}" th:object="${customer}">
+		<form method="post" th:action="@{/employee/customer/update}" th:object="${customer}">
 
 			<input hidden th:field="*{id}"/>
 
@@ -23,7 +23,7 @@
 				<p th:text="*{id}"></p>
 			</div>
 
-			<th:block th:insert="~{/common/_customer::customer-input-form}"/>
+			<th:block th:insert="~{common/_customer::customer-input-form}"/>
 
 			<div class="row">
 				<div class="col">
@@ -57,16 +57,16 @@
 			<input id="updateBtn" th:hidden="${readOnly}" type="submit" class="btn btn-success"
 			       value="Cập nhật">
 
-			<a id="cancelBtn" th:hidden="${readOnly}" th:href="@{'/account/customer/detail?IDCard=' + *{IDCard}}" class="btn btn-secondary ml-2">Hủy</a>
+			<a id="cancelBtn" th:hidden="${readOnly}" th:href="@{'/employee/customer/detail?IDCard=' + *{IDCard}}" class="btn btn-secondary ml-2">Hủy</a>
 
-			<a th:href="@{/account/customer}" class="btn btn-info ml-2">Quay lại</a>
+			<a th:href="@{/employee/customer}" class="btn btn-info ml-2">Quay lại</a>
 
 		</form>
 	</div>
 
 	<div class="create-form ml-4">
 		<h2 class=" mb-4">Tài khoản tiền gửi</h2>
-		<a th:href="@{'/account/deposit-account/add?customerID=' + ${customer.id}}" class="btn btn-success mb-4">Thêm
+		<a th:href="@{'/employee/deposit-account/add?customerID=' + ${customer.id}}" class="btn btn-success mb-4">Thêm
 			tài khoản tiền gửi mới</a>
 
 		<table class="table-bordered table table-hover title title-table">
@@ -87,7 +87,7 @@
 				</td>
 				<td th:class="${depositAccount.finalSettlement ? 'text-danger' : 'text-success'}" th:text="${depositAccount.finalSettlement ? 'Đã tất toán' : 'Đang hoạt động'}"></td>
 				<td ><a class="btn btn-info"
-				       th:href="@{'/account/deposit-account/detail?depositAccountID=' + ${depositAccount.id}}">Chi
+				       th:href="@{'/employee/deposit-account/detail?depositAccountID=' + ${depositAccount.id}}">Chi
 					tiết</a></td >
 			</tr>
 			</tbody>

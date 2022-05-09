@@ -33,7 +33,7 @@ public class DepositAccountController {
         this.depositAccountRepository = depositAccountRepository;
     }
 
-    @GetMapping("user/deposit-account/add")
+    @GetMapping("employee/deposit-account/add")
     public String addDepositAccountPage(Model model, @RequestParam(value = "customerID") Long customerID) {
 
         DepositAccount depositAccount = new DepositAccount();
@@ -57,7 +57,7 @@ public class DepositAccountController {
         return "add-deposit-account";
     }
 
-    @PostMapping("user/deposit-account/add")
+    @PostMapping("employee/deposit-account/add")
     public String addDepositAccount(Model model, @ModelAttribute("depositAccount") @Valid DepositAccount depositAccount,
                                     @RequestParam(value = "holderID") String holderID,BindingResult bindingResult, Principal principal) {
 
@@ -120,10 +120,10 @@ public class DepositAccountController {
 
         Long depositAccountID = depositAccountRepository.save(depositAccount).getId();
 
-        return "redirect:/user/deposit-account/detail?depositAccountID="+depositAccountID;
+        return "redirect:/employee/deposit-account/detail?depositAccountID="+depositAccountID;
     }
 
-    @GetMapping("user/deposit-account/detail")
+    @GetMapping("employee/deposit-account/detail")
     public String depositAccountDetail(Model model,@RequestParam(value = "depositAccountID") Long depositAccountID) {
         DepositAccount depositAccount = depositAccountRepository.findById(depositAccountID).orElse(null);
 
