@@ -16,15 +16,15 @@ public class DepositsManagementApplication {
 		SpringApplication.run(DepositsManagementApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner loadData(UserRepository userRepository, EmployeeRepository employeeRepository, InterestRateReferenceRepository interestRateReferenceRepository) {
-
-		return args -> {
-			if (!userRepository.existsById(1L)) {
-				InitData.createUser(userRepository,employeeRepository);
-				InitData.createInterestRateReference(interestRateReferenceRepository);
-			}
-		};
-	}
+//	@Bean
+//	public CommandLineRunner loadData(UserRepository userRepository, EmployeeRepository employeeRepository, InterestRateReferenceRepository interestRateReferenceRepository) {
+//
+//		return args -> {
+//			if (!userRepository.existsById(1L)) {
+//				InitData.createUser(userRepository,employeeRepository);
+//				InitData.createInterestRateReference(interestRateReferenceRepository);
+//			}
+//		};
+//	}
 
 }
