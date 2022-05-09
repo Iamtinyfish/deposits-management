@@ -77,7 +77,7 @@ public class Employee implements Serializable {
 
 	//Foreign Key
 	@OneToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "account_id")
 	private Account account;
 
 	@ManyToOne
