@@ -5,7 +5,6 @@ import com.bank.depositsmanagement.entity.*;
 import com.bank.depositsmanagement.utils.CurrencyConstant;
 import com.bank.depositsmanagement.utils.TimeConstant;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,27 +14,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.security.Principal;
-import java.text.DecimalFormat;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static com.bank.depositsmanagement.entity.CurrencyType.USD;
 
 @Controller
 public class DepositAccountController {
 
     private final CustomerRepository customerRepository;
     private final InterestRateReferenceRepository interestRateReferenceRepository;
-    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
     private final DepositAccountRepository depositAccountRepository;
 
-    public DepositAccountController(CustomerRepository customerRepository, InterestRateReferenceRepository interestRateReferenceRepository, UserRepository userRepository, DepositAccountRepository depositAccountRepository) {
+    public DepositAccountController(CustomerRepository customerRepository, InterestRateReferenceRepository interestRateReferenceRepository, AccountRepository accountRepository, DepositAccountRepository depositAccountRepository) {
         this.customerRepository = customerRepository;
         this.interestRateReferenceRepository = interestRateReferenceRepository;
-        this.userRepository = userRepository;
+        this.accountRepository = accountRepository;
         this.depositAccountRepository = depositAccountRepository;
     }
 
@@ -116,12 +110,12 @@ public class DepositAccountController {
             return "add-deposit-account";
         }
 
-        User user = userRepository.findByUsername(principal.getName()).orElse(null);
-        if (user == null || user.getEmployee() == null) {
+        Account account = accountRepository.findByUsername(principal.getName()).orElse(null);
+        if (account == null || account.getEmployee() == null) {
             model.addAttribute("message", "Không xác định được thông tin của bạn");
             return "404";
         }
-        Employee employee = user.getEmployee();
+        Employee employee = account.getEmployee();
         depositAccount.setCreateBy(employee);
 
         Long depositAccountID = depositAccountRepository.save(depositAccount).getId();

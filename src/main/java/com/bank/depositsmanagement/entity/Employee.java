@@ -1,7 +1,6 @@
 package com.bank.depositsmanagement.entity;
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Indexed;
@@ -15,8 +14,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
-
-import static com.bank.depositsmanagement.entity.EmployeeStatus.WORKING;
 
 @Builder
 @AllArgsConstructor
@@ -81,7 +78,7 @@ public class Employee implements Serializable {
 	//Foreign Key
 	@OneToOne
 	@JoinColumn(name = "user_id")
-	private User user;
+	private Account account;
 
 	@ManyToOne
 	@JoinColumn(name = "position_id")
@@ -121,7 +118,7 @@ public class Employee implements Serializable {
 				"status = " + status + ", " +
 				"createdAt = " + createdAt + ", " +
 				"lastModifiedAt = " + lastModifiedAt + ", " +
-				"user = " + user + ", " +
+				"account = " + account + ", " +
 				"position = " + position + ")";
 	}
 }

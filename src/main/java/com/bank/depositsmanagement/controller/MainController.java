@@ -1,11 +1,10 @@
 package com.bank.depositsmanagement.controller;
 
+import com.bank.depositsmanagement.dao.AccountRepository;
 import com.bank.depositsmanagement.dao.EmployeeRepository;
-import com.bank.depositsmanagement.dao.UserRepository;
+import com.bank.depositsmanagement.entity.Account;
 import com.bank.depositsmanagement.entity.Employee;
-import com.bank.depositsmanagement.entity.User;
 import com.bank.depositsmanagement.utils.TimeConstant;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,11 +18,11 @@ import java.security.Principal;
 @Controller
 public class MainController {
 
-    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
     private final EmployeeRepository employeeRepository;
 
-    public MainController(UserRepository userRepository, EmployeeRepository employeeRepository) {
-        this.userRepository = userRepository;
+    public MainController(AccountRepository accountRepository, EmployeeRepository employeeRepository) {
+        this.accountRepository = accountRepository;
         this.employeeRepository = employeeRepository;
     }
 
@@ -46,14 +45,14 @@ public class MainController {
     @GetMapping("/my-profile")
     public String employeePage(Model model, Principal principal) {
 
-        User user = userRepository.findByUsername(principal.getName()).orElse(null);
+        Account account = accountRepository.findByUsername(principal.getName()).orElse(null);
 
-        if (user == null || user.getEmployee() == null) {
+        if (account == null || account.getEmployee() == null) {
             model.addAttribute("message", "Không tìm thấy thông tin của bạn");
             return "404";
         }
 
-        Employee employee = user.getEmployee();
+        Employee employee = account.getEmployee();
 
         model.addAttribute("employee", employee);
         model.addAttribute("dateFormatter", TimeConstant.DATE_FORMATTER);
@@ -65,14 +64,14 @@ public class MainController {
     @PostMapping("/my-profile/update")
     public String updateMyProfile(Model model,@ModelAttribute("employee") @Valid Employee employee, BindingResult bindingResult, Principal principal) {
         model.addAttribute("dateFormatter", TimeConstant.DATE_FORMATTER);
-        User user = userRepository.findByUsername(principal.getName()).orElse(null);
+        Account account = accountRepository.findByUsername(principal.getName()).orElse(null);
 
-        if (user == null || user.getEmployee() == null) {
+        if (account == null || account.getEmployee() == null) {
             model.addAttribute("message", "Không tìm thấy thông tin của bạn");
             return "404";
         }
 
-        Employee oldEmployee = user.getEmployee();
+        Employee oldEmployee = account.getEmployee();
 
         employee.setId(oldEmployee.getId());
         employee.setCreatedAt(oldEmployee.getCreatedAt());
@@ -92,16 +91,16 @@ public class MainController {
             return "my-profile";
         }
 
-        employee.setUser(oldEmployee.getUser());
+        employee.setAccount(oldEmployee.getAccount());
         employeeRepository.save(employee);
 
         return "redirect:/my-profile";
     }
 
-//    @GetMapping("/user")
+//    @GetMapping("/account")
 //    public String userPage(Model model) {
 //
-//        return "user";
+//        return "account";
 //    }
 
     @GetMapping("/403")

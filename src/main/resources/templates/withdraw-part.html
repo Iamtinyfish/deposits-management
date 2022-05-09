@@ -15,7 +15,7 @@
 	<br>
 	<h4 class="title mb-4" th:text="${'Số dư khả dụng: ' + currencyFormatter.format(balance)}"></h4  >
 
-	<form method="post" th:action="@{/user/deposit-account/withdraw-part}">
+	<form method="post" th:action="@{/account/deposit-account/withdraw-part}">
 		<input hidden name="depositAccountID" type="number" th:value="${depositAccountID}" />
 		<p class="text-danger">Số tiền phải là bội số của 100 000 &#8363; đối với VND</p >
 		<p class="text-danger">Số tiền phải là bội số của $5 đối với USD</p >
@@ -29,7 +29,7 @@
 		<p class="text-danger" style="height: 2rem;"  th:if="${error != null}" th:utext="${error}"></p>
 	</form>
 
-	<a th:href="@{'/user/deposit-account/detail?depositAccountID=' + ${depositAccountID}}"
+	<a th:href="@{'/account/deposit-account/detail?depositAccountID=' + ${depositAccountID}}"
 		class="btn btn-secondary mt-4">Hủy</a>
 	</div>
 </div>

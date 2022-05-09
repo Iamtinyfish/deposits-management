@@ -1,8 +1,8 @@
 package com.bank.depositsmanagement.controller;
 
+import com.bank.depositsmanagement.dao.AccountRepository;
 import com.bank.depositsmanagement.dao.DepositAccountRepository;
 import com.bank.depositsmanagement.dao.TransactionRepository;
-import com.bank.depositsmanagement.dao.UserRepository;
 import com.bank.depositsmanagement.entity.*;
 import com.bank.depositsmanagement.utils.CurrencyConstant;
 import com.bank.depositsmanagement.utils.TimeConstant;
@@ -22,12 +22,12 @@ import java.time.LocalDate;
 public class WithdrawPartController {
     private final DepositAccountRepository depositAccountRepository;
     private final TransactionRepository transactionRepository;
-    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
 
-    public WithdrawPartController(DepositAccountRepository depositAccountRepository, TransactionRepository transactionRepository, UserRepository userRepository) {
+    public WithdrawPartController(DepositAccountRepository depositAccountRepository, TransactionRepository transactionRepository, AccountRepository accountRepository) {
         this.depositAccountRepository = depositAccountRepository;
         this.transactionRepository = transactionRepository;
-        this.userRepository = userRepository;
+        this.accountRepository = accountRepository;
     }
 
     @GetMapping("user/deposit-account/withdraw-part")
@@ -95,14 +95,14 @@ public class WithdrawPartController {
         }
         //=================================//
 
-        User user = userRepository.findByUsername(principal.getName()).orElse(null);
+        Account account = accountRepository.findByUsername(principal.getName()).orElse(null);
 
-        if (user == null || user.getEmployee() == null) {
+        if (account == null || account.getEmployee() == null) {
             model.addAttribute("message", "Không xác định được thông tin của bạn");
             return "404";
         }
 
-        Employee employee = user.getEmployee();
+        Employee employee = account.getEmployee();
 
         if (amount.compareTo(interest) < 0) {
         //amount > interest

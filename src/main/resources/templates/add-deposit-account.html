@@ -12,7 +12,7 @@
 
 	<div class="create-form">
 		<h2 class="mb-4">Tài khoản tiền gửi mới</h2>
-		<form method="post" th:action="@{/user/deposit-account/add}" th:object="${depositAccount}">
+		<form method="post" th:action="@{/account/deposit-account/add}" th:object="${depositAccount}">
 			<th:block th:insert="~{common/_customer::holder-info}"/>
 
 			<h4>Thông tin tài khoản</h4>
@@ -61,7 +61,7 @@
 			</div>
 
 			<input type="submit" class="btn btn-success" value="Gửi"/>
-			<a th:href="@{'/user/customer/detail?IDCard=' + ${depositAccount.holder.IDCard}}" class="btn btn-secondary ml-2">Hủy</a>
+			<a th:href="@{'/account/customer/detail?IDCard=' + ${depositAccount.holder.IDCard}}" class="btn btn-secondary ml-2">Hủy</a>
 		</form>
 	</div>
 </div>

@@ -1,7 +1,7 @@
 package com.bank.depositsmanagement.controller;
 
+import com.bank.depositsmanagement.dao.AccountRepository;
 import com.bank.depositsmanagement.dao.CustomerRepository;
-import com.bank.depositsmanagement.dao.UserRepository;
 import com.bank.depositsmanagement.entity.*;
 import com.bank.depositsmanagement.utils.CurrencyConstant;
 import com.bank.depositsmanagement.utils.TimeConstant;
@@ -19,11 +19,11 @@ public class CustomerController {
 
     private final CustomerRepository customerRepository;
 
-    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
 
-    public CustomerController(CustomerRepository customerRepository, UserRepository userRepository) {
+    public CustomerController(CustomerRepository customerRepository, AccountRepository accountRepository) {
         this.customerRepository = customerRepository;
-        this.userRepository = userRepository;
+        this.accountRepository = accountRepository;
     }
 
     @GetMapping({"user/","user/customer"})
@@ -53,14 +53,14 @@ public class CustomerController {
             return "add-customer";
         }
 
-        User user = userRepository.findByUsername(principal.getName()).orElse(null);
+        Account account = accountRepository.findByUsername(principal.getName()).orElse(null);
 
-        if (user == null || user.getEmployee() == null) {
+        if (account == null || account.getEmployee() == null) {
             model.addAttribute("message", "Không xác định được thông tin của bạn");
             return "404";
         }
 
-        Employee employee = user.getEmployee();
+        Employee employee = account.getEmployee();
 
         customer.setLastModifiedBy(employee);
 
@@ -111,14 +111,14 @@ public class CustomerController {
             return "customer-detail";
         }
 
-        User user = userRepository.findByUsername(principal.getName()).orElse(null);
+        Account account = accountRepository.findByUsername(principal.getName()).orElse(null);
 
-        if (user == null || user.getEmployee() == null) {
+        if (account == null || account.getEmployee() == null) {
             model.addAttribute("message", "Không xác định được thông tin của bạn");
             return "404";
         }
 
-        Employee employee = user.getEmployee();
+        Employee employee = account.getEmployee();
 
         customer.setLastModifiedBy(employee);
 

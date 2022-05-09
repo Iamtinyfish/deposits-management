@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 @Table(name = "user")
 @Getter
 @Setter
-public class User {
+public class Account {
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -31,6 +31,6 @@ public class User {
 	@Column(nullable = false)
 	private boolean isActive;
 	
-	@OneToOne(mappedBy = "user")
+	@OneToOne(mappedBy = "account")
 	private Employee employee;
 }

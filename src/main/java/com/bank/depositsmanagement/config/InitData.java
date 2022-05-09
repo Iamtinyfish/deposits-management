@@ -2,7 +2,7 @@ package com.bank.depositsmanagement.config;
 
 import com.bank.depositsmanagement.dao.EmployeeRepository;
 import com.bank.depositsmanagement.dao.InterestRateReferenceRepository;
-import com.bank.depositsmanagement.dao.UserRepository;
+import com.bank.depositsmanagement.dao.AccountRepository;
 import com.bank.depositsmanagement.entity.*;
 import com.bank.depositsmanagement.utils.EncryptedPasswordUtils;
 
@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InitData {
-    public static void createUser(UserRepository userRepository, EmployeeRepository employeeRepository) {
-        User admin = userRepository.save(
-                User.builder()
+    public static void createUser(AccountRepository accountRepository, EmployeeRepository employeeRepository) {
+        Account admin = accountRepository.save(
+                Account.builder()
                         .username("admin")
                         .password(EncryptedPasswordUtils.encryptPassword("12345678"))
                         .role("ROLE_ADMIN")
@@ -32,13 +32,13 @@ public class InitData {
                         .email("admin@bank.com")
                         .address("Unknown")
                         .status(EmployeeStatus.WORKING)
-                        .user(admin)
+                        .account(admin)
                         .build()
         );
 
-        User user1 = userRepository.save(
-                User.builder()
-                        .username("user1")
+        Account account1 = accountRepository.save(
+                Account.builder()
+                        .username("account1")
                         .password(EncryptedPasswordUtils.encryptPassword("12345678"))
                         .role("ROLE_USER")
                         .isActive(true)
@@ -56,7 +56,7 @@ public class InitData {
                         .email("employee@bank.com")
                         .address("Unknown")
                         .status(EmployeeStatus.WORKING)
-                        .user(user1)
+                        .account(account1)
                         .build()
         );
     }

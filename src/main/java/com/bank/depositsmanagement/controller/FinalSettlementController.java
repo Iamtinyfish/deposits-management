@@ -2,7 +2,7 @@ package com.bank.depositsmanagement.controller;
 
 import com.bank.depositsmanagement.dao.DepositAccountRepository;
 import com.bank.depositsmanagement.dao.TransactionRepository;
-import com.bank.depositsmanagement.dao.UserRepository;
+import com.bank.depositsmanagement.dao.AccountRepository;
 import com.bank.depositsmanagement.entity.*;
 import com.bank.depositsmanagement.utils.CurrencyConstant;
 import com.bank.depositsmanagement.utils.Interest;
@@ -24,13 +24,13 @@ public class FinalSettlementController {
     private final DepositAccountRepository depositAccountRepository;
     private final TransactionRepository transactionRepository;
     private final Interest interest;
-    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
 
-    public FinalSettlementController(DepositAccountRepository depositAccountRepository, TransactionRepository transactionRepository, Interest interest, UserRepository userRepository) {
+    public FinalSettlementController(DepositAccountRepository depositAccountRepository, TransactionRepository transactionRepository, Interest interest, AccountRepository accountRepository) {
         this.depositAccountRepository = depositAccountRepository;
         this.transactionRepository = transactionRepository;
         this.interest = interest;
-        this.userRepository = userRepository;
+        this.accountRepository = accountRepository;
     }
 
     @GetMapping("user/deposit-account/final-settlement")
@@ -95,14 +95,14 @@ public class FinalSettlementController {
             amount = amount.divide(ONE_THOUSAND,0,RoundingMode.FLOOR).multiply(ONE_THOUSAND);
         }
 
-        User user = userRepository.findByUsername(principal.getName()).orElse(null);
+        Account account = accountRepository.findByUsername(principal.getName()).orElse(null);
 
-        if (user == null || user.getEmployee() == null) {
+        if (account == null || account.getEmployee() == null) {
             model.addAttribute("message", "Không xác định được thông tin của bạn");
             return "404";
         }
 
-        Employee employee = user.getEmployee();
+        Employee employee = account.getEmployee();
 
         Transaction transaction = transactionRepository.save(
                 Transaction.builder()

@@ -10,10 +10,10 @@
 <div class="frames mt-4">
 	<div class="create-form">
 		<h2 class="mb-4">Khách hàng mới</h2>
-		<form method="post" class="form-group" th:action="@{/user/customer/add}" th:object="${customer}">
+		<form method="post" class="form-group" th:action="@{/account/customer/add}" th:object="${customer}">
 			<th:block th:insert="~{/common/_customer::customer-input-form}"/>
 			<input type="submit" value="Tạo khách hàng" class="btn btn-success"/>
-			<a th:href="@{/user/customer}" class="btn btn-secondary">Hủy</a>
+			<a th:href="@{/account/customer}" class="btn btn-secondary">Hủy</a>
 		</form>
 	</div>
 </div>

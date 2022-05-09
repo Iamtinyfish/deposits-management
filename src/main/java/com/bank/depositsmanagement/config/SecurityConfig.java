@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // Set dịch vụ để tìm kiếm User trong Database.
+        // Set dịch vụ để tìm kiếm Account trong Database.
         // Và set PasswordEncoder.
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/css/**","/js/**").permitAll()
                 .antMatchers("/admin","/admin/**").hasRole("ADMIN")
-                .antMatchers("/user","user/**").hasRole("USER")
+                .antMatchers("/account","account/**").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
             .exceptionHandling()
