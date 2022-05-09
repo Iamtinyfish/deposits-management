@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
-	<th:block th:insert="~{/common/_layout::metadata('Rút một phần')}" />
+	<th:block th:insert="~{/common/_layout::metadata('Gửi thêm tiền')}" />
 </head>
 
 <body>
@@ -11,20 +11,19 @@
 <div class="frames d-flex mt-4">
 
 	<div class="create-form">
-	<h2>Rút một phần tiền</h2>
+	<h2>Gửi thêm tiền</h2>
 	<br>
-	<h4 class="title mb-4" th:text="${'Số dư khả dụng: ' + currencyFormatter.format(balance)}"></h4  >
 
-	<form method="post" th:action="@{/user/deposit-account/withdraw-part}">
+	<form method="post" th:action="@{/user/deposit-account/deposit-extra}">
 		<input hidden name="depositAccountID" type="number" th:value="${depositAccountID}" />
 		<p class="text-danger">Số tiền phải là bội số của 100 000 &#8363; đối với VND</p >
 		<p class="text-danger">Số tiền phải là bội số của $5 đối với USD</p >
 
-		<label class="h6 title mt-4" for="amount">Số tiền muốn rút:</label>
+		<label class="h6 title mt-4" for="amount">Số tiền gửi thêm:</label>
 		<p class="d-inline-block" id="amountOutput"></p><br>
 		<div class="d-flex">
-		<input id="amount" class="form-control col-5" name="amount" type="number" placeholder="Nhập số tiền muốn rút" required />
-		<input type="submit" class="btn btn-success ml-4" value="Rút" />
+		<input id="amount" class="form-control col-5" name="amount" type="number" placeholder="Nhập số tiền muốn gửi thêm" required />
+		<input type="submit" class="btn btn-success ml-4" value="Gửi" />
 		</div >
 		<p class="text-danger" style="height: 2rem;"  th:if="${error != null}" th:utext="${error}"></p>
 	</form>

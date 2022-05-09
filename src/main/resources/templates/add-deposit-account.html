@@ -52,11 +52,11 @@
 			</div>
 
 			<div class="mb-4">
-				<label class="h6" th:for="balance">Số tiền gửi :&nbsp&nbsp</label><p class="d-inline-block" id="balanceOutput"></p><br>
-				<input th:errorClass="error-input" th:field="*{balance}" class="form-control" type="number"/>
-				<ul th:if="${#fields.hasErrors('balance') || errorBalance != null}">
-					<li th:each="err : ${#fields.errors('balance')}" th:text="${err}">Input is incorrect</li>
-					<li th:if="${errorBalance != null}" th:text="${errorBalance}"></li>
+				<label class="h6" th:for="originalAmount">Số tiền gửi :&nbsp&nbsp</label><p class="d-inline-block" id="originalAmountOutput"></p><br>
+				<input th:errorClass="error-input" th:field="*{originalAmount}" class="form-control" type="number"/>
+				<ul th:if="${#fields.hasErrors('originalAmount') || errorOriginalAmount != null}">
+					<li th:each="err : ${#fields.errors('originalAmount')}" th:text="${err}">Input is incorrect</li>
+					<li th:if="${errorOriginalAmount != null}" th:text="${errorOriginalAmount}"></li>
 				</ul>
 			</div>
 
@@ -74,10 +74,10 @@
 	const periodElement = document.getElementById("period");
 
 	currencyAndPeriodOnChange();
-	currencyElement.onchange = currencyAndPeriodOnChange;
+	currencyElement.addEventListener("change", currencyAndPeriodOnChange);
 	periodElement.onchange = currencyAndPeriodOnChange;
 
-	function currencyAndPeriodOnChange() {
+	function currencyAndPeriodOnChange(e) {
 		const currency = currencyElement.value;
 		const period = parseInt(periodElement.value);
 
@@ -87,10 +87,10 @@
 	/* Interest rate reference */
 
 	/* Format Currency */
-	const balanceInput = document.getElementById("balance");
-	const balanceOutput = document.getElementById("balanceOutput");
+	const balanceInput = document.getElementById("originalAmount");
+	const balanceOutput = document.getElementById("originalAmountOutput");
 	balanceInput.oninput = formatCurrency;
-	currencyElement.onchange = formatCurrency;
+	currencyElement.addEventListener("change", formatCurrency);
 
 	function formatCurrency(){
 		let balanceValue = parseInt(balanceInput.value);

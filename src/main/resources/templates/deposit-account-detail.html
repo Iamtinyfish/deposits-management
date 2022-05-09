@@ -51,7 +51,7 @@
 					<h6>
 						Tiền gốc :
 					</h6>
-					<p th:text="${currencyFormatter.format(depositAccount.balance)}"></p>
+					<p th:text="${currencyFormatter.format(depositAccount.originalAmount)}"></p>
 				</div>
 				<div class="col">
 					<h6>
@@ -64,32 +64,24 @@
 			<div class="row">
 				<div class="col">
 					<h6>
-						Ngày bắt đầu :
-					</h6>
-					<p th:text="${depositAccount.periodStartAt.format(dateFormatter)}"></p>
-				</div>
-				<div class="col">
-					<h6>
 						Ngày đáo hạn :
 					</h6>
 					<p th:text="${depositAccount.dateOfMaturity != null ? depositAccount.dateOfMaturity.format(dateFormatter) : 'Không có'}"></p>
 				</div>
-			</div>
-			<div class="row">
 				<div class="col">
 					<h6>
 						Số ngày gửi thực :
 					</h6>
 					<p th:text="*{numberOfDay}"></p>
 				</div>
+			</div>
+			<div class="row">
 				<div class="col">
 					<h6>
 						Ngày tạo :
 					</h6>
 					<p th:text="${depositAccount.createdAt.format(dateFormatter)}"></p>
 				</div>
-			</div>
-			<div class="row">
 				<div class="col">
 					<h6>
 						Tạo bởi nhân viên có mã :

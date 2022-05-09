@@ -12,7 +12,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Builder
 @AllArgsConstructor
@@ -85,5 +88,12 @@ public class Customer {
 	@PreUpdate
 	public void lastModifiedAt() {
 		this.lastModifiedAt = LocalDateTime.now();
+	}
+
+	@PostLoad
+	public void sortDepositAccountSet() {
+		this.depositAccountSet = this.depositAccountSet.stream()
+				.sorted(Comparator.comparing(DepositAccount::getId))
+				.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 }

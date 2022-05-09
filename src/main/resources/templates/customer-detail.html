@@ -82,7 +82,7 @@
 			<tbody>
 			<tr th:each="depositAccount : ${customer.depositAccountSet}">
 				<td th:text="${depositAccount.id}"></td>
-				<td th:text="${(depositAccount.currency.toString() == 'VND') ? vndFormatter.format(depositAccount.balance + depositAccount.interest) : usdFormatter.format(depositAccount.balance + depositAccount.interest)}"></td>
+				<td th:text="${(depositAccount.currency.toString() == 'VND') ? vndFormatter.format(depositAccount.originalAmount + depositAccount.interest) : usdFormatter.format(depositAccount.originalAmount + depositAccount.interest)}"></td>
 				<td th:text="${depositAccount.period == 0 ? 'Không kì hạn' : ('Có kì hạn: ' + depositAccount.period + ' tháng')}">
 				</td>
 				<td th:class="${depositAccount.finalSettlement ? 'text-danger' : 'text-success'}" th:text="${depositAccount.finalSettlement ? 'Đã tất toán' : 'Đang hoạt động'}"></td>
@@ -96,6 +96,7 @@
 </div>
 <script th:inline="javascript">
 	/*<![CDATA[*/
+	const allInputElements = document.getElementsByTagName("input");
 	const genderSelect = document.getElementById("gender");
 	const editBtn = document.getElementById("editBtn");
 	const updateBtn = document.getElementById("updateBtn");

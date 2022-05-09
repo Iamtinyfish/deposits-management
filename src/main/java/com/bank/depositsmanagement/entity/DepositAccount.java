@@ -13,7 +13,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "deposit_account")
@@ -38,10 +42,15 @@ public class DepositAccount {
     private int period;
 
     @PositiveOrZero(message = "Không thể là số âm")
-//    @NotNull(message = "Không được bỏ trống")
+    @NotNull(message = "Không được bỏ trống")
+    @Column(nullable = false)
+//    @NumberFormat(pattern = "#,###", style = NumberFormat.Style.CURRENCY)
+    private BigDecimal originalAmount;
+
+    //demand deposit interest before withdraw part or deposit extra
     @Column(nullable = false)
     @NumberFormat(pattern = "#,###", style = NumberFormat.Style.CURRENCY)
-    private BigDecimal balance;
+    private BigDecimal oldInterest = BigDecimal.ZERO;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -73,31 +82,43 @@ public class DepositAccount {
     private Set<Transaction> transactionSet = new java.util.LinkedHashSet<>();
 
     @PrePersist
-    void createdAt() {
+    private void createdAt() {
         this.createdAt = LocalDateTime.now();
         this.periodStartAt = LocalDate.now();
     }
 
     @PostLoad
-    void calculateTransientProperties() {
-//        this.numberOfDay = ((int) ChronoUnit.DAYS.between(this.periodStartAt, LocalDate.now()));
-        this.numberOfDay = 100;
+    private void postLoad() {
+        calculateTransientProperties();
+        sortTransaction();
+    }
+
+    private void sortTransaction() {
+        this.transactionSet = this.transactionSet.stream()
+                .sorted(Comparator.comparing(Transaction::getId))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    private void calculateTransientProperties() {
+        this.numberOfDay = ((int) ChronoUnit.DAYS.between(this.periodStartAt, LocalDate.now()));
+//        this.numberOfDay = 100;
         if (period > 0) {
+            //===========Time deposit interest===========//
             int dayOfPeriod = this.period * TimeConstant.DAY_OF_MONTH;
             int numberOfPeriod = numberOfDay / dayOfPeriod;
             double interestRatePerPeriod = (this.interestRate * 0.01 / TimeConstant.MONTH_OF_YEAR) * this.period;
-            this.interest = this.balance.multiply(
-                    BigDecimal.valueOf(
-                            Math.pow(1d + interestRatePerPeriod, numberOfPeriod) - 1d
-                    )
-            ).setScale(2, RoundingMode.HALF_UP);
+            this.interest = this.originalAmount
+                    .multiply(BigDecimal.valueOf(Math.pow(1d + interestRatePerPeriod, numberOfPeriod) - 1d))
+                    .setScale(2, RoundingMode.HALF_UP);
             this.dateOfMaturity = LocalDate.now().plusDays(dayOfPeriod - (numberOfDay - ((long) numberOfPeriod * dayOfPeriod)));
+            //===========================================//
         } else {
-            this.interest = this.balance.multiply(
-                    BigDecimal.valueOf(
-                            this.numberOfDay * this.interestRate * 0.01 / TimeConstant.DAY_OF_YEAR
-                    )
-            ).setScale(2, RoundingMode.HALF_UP);
+            //===========Demand deposit interest===========//
+            this.interest = this.originalAmount
+                    .multiply(BigDecimal.valueOf(this.numberOfDay * this.interestRate * 0.01 / TimeConstant.DAY_OF_YEAR))
+                    .add(this.oldInterest)
+                    .setScale(2, RoundingMode.HALF_UP);
+            //=============================================//
         }
     }
 }

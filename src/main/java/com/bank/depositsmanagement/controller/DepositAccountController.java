@@ -31,14 +31,12 @@ public class DepositAccountController {
     private final InterestRateReferenceRepository interestRateReferenceRepository;
     private final UserRepository userRepository;
     private final DepositAccountRepository depositAccountRepository;
-    private final TransactionRepository transactionRepository;
 
-    public DepositAccountController(CustomerRepository customerRepository, InterestRateReferenceRepository interestRateReferenceRepository, UserRepository userRepository, DepositAccountRepository depositAccountRepository, TransactionRepository transactionRepository) {
+    public DepositAccountController(CustomerRepository customerRepository, InterestRateReferenceRepository interestRateReferenceRepository, UserRepository userRepository, DepositAccountRepository depositAccountRepository) {
         this.customerRepository = customerRepository;
         this.interestRateReferenceRepository = interestRateReferenceRepository;
         this.userRepository = userRepository;
         this.depositAccountRepository = depositAccountRepository;
-        this.transactionRepository = transactionRepository;
     }
 
     @GetMapping("user/deposit-account/add")
@@ -82,32 +80,32 @@ public class DepositAccountController {
         }
         depositAccount.setInterestRate(interestRateReference.getInterestRate());
 
-        BigDecimal balance = depositAccount.getBalance();
+        BigDecimal originalAmount = depositAccount.getOriginalAmount();
         int period = depositAccount.getPeriod();
-        String errorBalance = null;
+        String errorOriginalAmount = null;
 
-        if (balance != null) {
+        if (originalAmount != null) {
             switch (depositAccount.getCurrency()) {
                 case VND:
-                    if (period > 0 && balance.compareTo(BigDecimal.valueOf(1000000)) < 0)
-                        errorBalance = "Số tiền gửi có kì hạn với VND tối thiểu là 1,000,000đ";
-                    else if (period == 0 && balance.compareTo(BigDecimal.valueOf(500000)) < 0)
-                        errorBalance = "Số tiền gửi không kì hạn với VND tối thiểu là 500,000đ";
+                    if (period > 0 && originalAmount.compareTo(BigDecimal.valueOf(1000000)) < 0)
+                        errorOriginalAmount = "Số tiền gửi có kì hạn với VND tối thiểu là 1,000,000đ";
+                    else if (period == 0 && originalAmount.compareTo(BigDecimal.valueOf(500000)) < 0)
+                        errorOriginalAmount = "Số tiền gửi không kì hạn với VND tối thiểu là 500,000đ";
                     break;
                 case USD:
-                    if (period > 0 && balance.compareTo(BigDecimal.valueOf(100)) < 0)
-                        errorBalance = "Số tiền gửi có kì hạn với USD tối thiểu là 100$";
-                    else if (period == 0 && balance.compareTo(BigDecimal.valueOf(50)) < 0)
-                        errorBalance = "Số tiền gửi không kì hạn với USD tối thiểu là 50$";
+                    if (period > 0 && originalAmount.compareTo(BigDecimal.valueOf(100)) < 0)
+                        errorOriginalAmount = "Số tiền gửi có kì hạn với USD tối thiểu là 100$";
+                    else if (period == 0 && originalAmount.compareTo(BigDecimal.valueOf(50)) < 0)
+                        errorOriginalAmount = "Số tiền gửi không kì hạn với USD tối thiểu là 50$";
                     break;
             }
         } else {
-            errorBalance = "Không được bỏ trống trường này";
+            errorOriginalAmount = "Không được bỏ trống trường này";
         }
 
-        if (bindingResult.hasErrors() || errorBalance != null) {
+        if (bindingResult.hasErrors() || errorOriginalAmount != null) {
             model.addAttribute("depositAccount", depositAccount);
-            model.addAttribute("errorBalance", errorBalance);
+            model.addAttribute("errorOriginalAmount", errorOriginalAmount);
 
             List<InterestRateReference> interestRateReferences = new ArrayList<>() ;
             interestRateReferenceRepository.findAll().forEach(interestRateReferences::add);
@@ -145,226 +143,5 @@ public class DepositAccountController {
         model.addAttribute("dateTimeFormatter", TimeConstant.DATE_TIME_FORMATTER);
         model.addAttribute("currencyFormatter", (depositAccount.getCurrency() == CurrencyType.VND) ? CurrencyConstant.VND_FORMATTER : CurrencyConstant.USD_FORMATTER);
         return "deposit-account-detail";
-    }
-
-    @GetMapping("user/deposit-account/final-settlement")
-    public String finalSettlementPage(Model model,@RequestParam(value = "depositAccountID") Long depositAccountID) {
-        DepositAccount depositAccount = depositAccountRepository.findById(depositAccountID).orElse(null);
-        if (depositAccount == null) {
-            model.addAttribute("message", "Không tìm thấy tài khoản tiền gửi với mã là " + depositAccountID);
-            return "404";
-        }
-
-        if (depositAccount.isFinalSettlement()) {
-            return "redirect:/user/deposit-account/detail?depositAccountID="+depositAccountID;
-        }
-
-        model.addAttribute("depositAccount", depositAccount);
-        HashMap<String, Object> result = calculateInterest(depositAccount);
-
-        if (depositAccount.getPeriod() > 0) {
-            model.addAttribute("timeDepositDays", result.get("timeDepositDays"));
-            model.addAttribute("timeDepositInterestRate", depositAccount.getInterestRate());
-            model.addAttribute("timeDepositInterest", depositAccount.getInterest());
-            model.addAttribute("balance1", result.get("balance1"));
-
-            model.addAttribute("demandDepositDays", result.get("demandDepositDays"));
-            model.addAttribute("demandDepositInterestRate", result.get("demandDepositInterestRate"));
-            model.addAttribute("demandDepositInterest", result.get("demandDepositInterest"));
-        } else {
-            model.addAttribute("demandDepositDays", depositAccount.getNumberOfDay());
-            model.addAttribute("demandDepositInterestRate", depositAccount.getInterestRate());
-            model.addAttribute("demandDepositInterest", depositAccount.getInterest());
-        }
-
-        model.addAttribute("finalBalance", result.get("finalBalance"));
-        //round final balance with VND
-        BigDecimal amount = (BigDecimal) result.get("finalBalance");
-        if (depositAccount.getCurrency() == CurrencyType.VND) {
-            final BigDecimal ONE_THOUSAND = BigDecimal.valueOf(1000);
-            amount = amount.divide(ONE_THOUSAND,0,RoundingMode.FLOOR).multiply(ONE_THOUSAND);
-        }
-        model.addAttribute("amount", amount.setScale(0,RoundingMode.FLOOR));
-        model.addAttribute("currencyFormatter", (depositAccount.getCurrency() == CurrencyType.VND) ? CurrencyConstant.VND_FORMATTER : CurrencyConstant.USD_FORMATTER);
-        return "final-settlement";
-    }
-
-    @PostMapping("user/deposit-account/final-settlement")
-    @Transactional
-    public String finalSettlment(Model model, @RequestParam(value = "depositAccountID") Long depositAccountID, Principal principal) {
-        DepositAccount depositAccount = depositAccountRepository.findById(depositAccountID).orElse(null);
-        if (depositAccount == null) {
-            model.addAttribute("message", "Không tìm thấy tài khoản tiền gửi với mã là " + depositAccountID);
-            return "404";
-        }
-
-        if (depositAccount.isFinalSettlement()) {
-            return "redirect:/user/deposit-account/detail?depositAccountID="+depositAccountID;
-        }
-
-        //round final balance with VND
-        BigDecimal amount = ((BigDecimal) calculateInterest(depositAccount).get("finalBalance")).setScale(0, RoundingMode.FLOOR);
-        if (depositAccount.getCurrency() == CurrencyType.VND) {
-            final BigDecimal ONE_THOUSAND = BigDecimal.valueOf(1000);
-            amount = amount.divide(ONE_THOUSAND,0,RoundingMode.FLOOR).multiply(ONE_THOUSAND);
-        }
-
-        User user = userRepository.findByUsername(principal.getName()).orElse(null);
-
-        if (user == null || user.getEmployee() == null) {
-            model.addAttribute("message", "Không xác định được thông tin của bạn");
-            return "404";
-        }
-
-        Employee employee = user.getEmployee();
-
-        Transaction transaction = transactionRepository.save(
-                Transaction.builder()
-                        .depositAccount(depositAccount)
-                        .amount(amount)
-                        .description("Tất toán tài khoản")
-                        .employee(employee)
-                        .build()
-        );
-
-        depositAccount.setFinalSettlement(true);
-        depositAccount.setBalance(BigDecimal.ZERO);
-        depositAccount.setInterest(BigDecimal.ZERO);
-        depositAccountRepository.save(depositAccount);
-
-        model.addAttribute("transaction", transaction);
-        model.addAttribute("timeFormatter", TimeConstant.DATE_TIME_FORMATTER);
-        model.addAttribute("currencyFormatter", (depositAccount.getCurrency() == CurrencyType.VND) ? CurrencyConstant.VND_FORMATTER : CurrencyConstant.USD_FORMATTER);
-        return "transaction-result";
-    }
-
-    @GetMapping("user/deposit-account/withdraw-part")
-    public String withdrawPartPage(Model model,@RequestParam(value = "depositAccountID") Long depositAccountID) {
-        DepositAccount depositAccount = depositAccountRepository.findById(depositAccountID).orElse(null);
-        if (depositAccount == null) {
-            model.addAttribute("message", "Không tìm thấy tài khoản tiền gửi với mã là " + depositAccountID);
-            return "404";
-        }
-
-        if (depositAccount.getPeriod() != 0) {
-            model.addAttribute("message", "Chức năng này không khả dụng với tài khoản tiền gửi có kì hạn");
-            return "error";
-        }
-
-        model.addAttribute("depositAccountID",depositAccountID);
-        model.addAttribute("currency", depositAccount.getCurrency().toString());
-        model.addAttribute("balance", depositAccount.getBalance().add(depositAccount.getInterest()).setScale(2,RoundingMode.HALF_UP));
-        model.addAttribute("currencyFormatter", (depositAccount.getCurrency() == CurrencyType.VND) ? CurrencyConstant.VND_FORMATTER : CurrencyConstant.USD_FORMATTER);
-        return "withdraw-part";
-    }
-
-    @PostMapping("user/deposit-account/withdraw-part")
-    @Transactional
-    public String withdrawPart(Model model,@RequestParam(value = "depositAccountID") Long depositAccountID,
-                               @RequestParam(value = "amount") BigDecimal amount, Principal principal) {
-        DepositAccount depositAccount = depositAccountRepository.findById(depositAccountID).orElse(null);
-        if (depositAccount == null) {
-            model.addAttribute("message", "Không tìm thấy tài khoản tiền gửi với mã là " + depositAccountID);
-            return "404";
-        }
-
-        if (depositAccount.getPeriod() != 0) {
-            model.addAttribute("message", "Chức năng này không khả dụng với tài khoản tiền gửi có kì hạn");
-            return "error";
-        }
-
-        BigDecimal balance = depositAccount.getBalance().add(depositAccount.getInterest()).setScale(0,RoundingMode.HALF_UP);
-        String error = null;
-
-        //============validate============//
-        if (amount == null) error = "Không được bỏ trống trường này";
-        else {
-            if (amount.compareTo(balance) == 1) {
-                error = "Số tiền phải nhỏ hơn số dư khả dụng";
-            } else {
-                if (depositAccount.getCurrency() == CurrencyType.VND
-                        && amount.remainder(BigDecimal.valueOf(100000)).compareTo(BigDecimal.ZERO) != 0) {
-                    error = "Số tiền phải là bội số của 100,000 &#8363;";
-                } else if (depositAccount.getCurrency() == CurrencyType.USD
-                        && amount.remainder(BigDecimal.valueOf(5)).compareTo(BigDecimal.ZERO) != 0) {
-                    error = "Số tiền phải là bội số của $5";
-                }
-            }
-        }
-
-        if (error != null) {
-            model.addAttribute("error", error);
-            model.addAttribute("depositAccountID",depositAccountID);
-            model.addAttribute("currency", depositAccount.getCurrency().toString());
-            model.addAttribute("balance", balance);
-            model.addAttribute("currencyFormatter", (depositAccount.getCurrency() == CurrencyType.VND) ? CurrencyConstant.VND_FORMATTER : CurrencyConstant.USD_FORMATTER);
-            return "withdraw-part";
-        }
-        //=================================//
-
-        User user = userRepository.findByUsername(principal.getName()).orElse(null);
-
-        if (user == null || user.getEmployee() == null) {
-            model.addAttribute("message", "Không xác định được thông tin của bạn");
-            return "404";
-        }
-
-        Employee employee = user.getEmployee();
-
-        depositAccount.setBalance(balance.subtract(amount).setScale(0,RoundingMode.HALF_UP));
-        depositAccount.setInterest(BigDecimal.ZERO);
-        depositAccount.setPeriodStartAt(LocalDate.now());
-        depositAccountRepository.save(depositAccount);
-
-        Transaction transaction = transactionRepository.save(
-                Transaction.builder()
-                        .depositAccount(depositAccount)
-                        .amount(amount)
-                        .description("Rút một phần")
-                        .employee(employee)
-                        .build()
-        );
-
-        model.addAttribute("transaction", transaction);
-        model.addAttribute("timeFormatter", TimeConstant.DATE_TIME_FORMATTER);
-        model.addAttribute("currencyFormatter", (depositAccount.getCurrency() == CurrencyType.VND) ? CurrencyConstant.VND_FORMATTER : CurrencyConstant.USD_FORMATTER);
-        return "transaction-result";
-    }
-
-    private HashMap<String, Object> calculateInterest(DepositAccount depositAccount) {
-        HashMap<String,Object> result = new HashMap<>();
-
-        int period = depositAccount.getPeriod();
-
-        BigDecimal finalBalance;
-
-        if (period > 0) {
-            int dayOfPeriod = period * TimeConstant.DAY_OF_MONTH;
-            int timeDepositDays = (depositAccount.getNumberOfDay() / dayOfPeriod) * dayOfPeriod;
-            result.put("timeDepositDays", timeDepositDays);
-            BigDecimal balance1 = depositAccount.getBalance().add(depositAccount.getInterest()).setScale(2, RoundingMode.HALF_UP);
-            result.put("balance1", balance1);
-
-            int demandDepositDays = depositAccount.getNumberOfDay() - timeDepositDays;
-            result.put("demandDepositDays", demandDepositDays);
-            InterestRateReference demandInterestRateReference = this.interestRateReferenceRepository.findByPeriodAndCurrency(0,depositAccount.getCurrency()).orElse(null);
-            float demandDepositInterestRate = demandInterestRateReference.getInterestRate();
-            result.put("demandDepositInterestRate", demandDepositInterestRate);
-            BigDecimal demandDepositInterest = balance1.multiply(
-                    BigDecimal.valueOf(
-                            demandDepositDays * demandDepositInterestRate * 0.01 / 360
-                    )
-            ).setScale(2, RoundingMode.HALF_UP);
-            result.put("demandDepositInterest", demandDepositInterest);
-            finalBalance = balance1.add(
-                    demandDepositInterest
-            ).setScale(2, RoundingMode.HALF_UP);
-        } else {
-            finalBalance = depositAccount.getBalance().add(
-                    depositAccount.getInterest()
-            ).setScale(2,RoundingMode.HALF_UP);
-        }
-        result.put("finalBalance", finalBalance);
-        return result;
     }
 }
