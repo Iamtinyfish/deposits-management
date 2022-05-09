@@ -36,9 +36,9 @@ public class InitData {
                         .build()
         );
 
-        Account account1 = accountRepository.save(
+        Account employee1 = accountRepository.save(
                 Account.builder()
-                        .username("account1")
+                        .username("employee1")
                         .password(EncryptedPasswordUtils.encryptPassword("12345678"))
                         .role("ROLE_USER")
                         .isActive(true)
@@ -53,10 +53,34 @@ public class InitData {
                         .birthday(LocalDate.now())
                         .IDCard("123456789100")
                         .phone("1234567890")
-                        .email("employee@bank.com")
+                        .email("employee1@bank.com")
                         .address("Unknown")
                         .status(EmployeeStatus.WORKING)
-                        .account(account1)
+                        .account(employee1)
+                        .build()
+        );
+
+        Account employee2 = accountRepository.save(
+                Account.builder()
+                        .username("employee2")
+                        .password(EncryptedPasswordUtils.encryptPassword("12345678"))
+                        .role("ROLE_USER")
+                        .isActive(true)
+                        .build()
+        );
+
+        employeeRepository.save(
+                Employee.builder()
+                        .firstName("Unknown")
+                        .lastName("Unknown")
+                        .gender(false)
+                        .birthday(LocalDate.now())
+                        .IDCard("123456789122")
+                        .phone("1234567890")
+                        .email("employee2@bank.com")
+                        .address("Unknown")
+                        .status(EmployeeStatus.WORKING)
+                        .account(employee2)
                         .build()
         );
     }
