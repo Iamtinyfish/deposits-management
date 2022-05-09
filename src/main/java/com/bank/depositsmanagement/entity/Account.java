@@ -9,7 +9,7 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "account")
 @Getter
 @Setter
 public class Account {
