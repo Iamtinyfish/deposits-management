@@ -45,13 +45,11 @@ public class Employee implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthday;
 	
-	@Length(message = "CCCD phải có 12 số", min = 12, max = 12)
-	@NotBlank(message = "Không được bỏ trống trường này")
+	@Length(message = "Độ dài 12 số", min = 12, max = 12)
 	@Column(nullable = false, unique = true, length = 12)
 	private String IDCard;
 
-	@Length(message = "Độ dài từ  7 - 20 số", min = 7, max = 20)
-	@NotBlank(message = "Không được bỏ trống trường này")
+	@Length(message = "Độ dài từ 7 - 20 số", min = 7, max = 20)
 	@Column(nullable = false, length = 20)
 	private String phone;
 
@@ -101,24 +99,5 @@ public class Employee implements Serializable {
 	@PreUpdate
 	public void lastModifiedAt() {
 		this.lastModifiedAt = LocalDateTime.now();
-	}
-
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + "(" +
-				"id = " + id + ", " +
-				"firstName = " + firstName + ", " +
-				"lastName = " + lastName + ", " +
-				"gender = " + gender + ", " +
-				"birthday = " + birthday + ", " +
-				"IDCard = " + IDCard + ", " +
-				"phone = " + phone + ", " +
-				"email = " + email + ", " +
-				"address = " + address + ", " +
-				"status = " + status + ", " +
-				"createdAt = " + createdAt + ", " +
-				"lastModifiedAt = " + lastModifiedAt + ", " +
-				"account = " + account + ", " +
-				"position = " + position + ")";
 	}
 }

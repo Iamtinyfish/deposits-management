@@ -4,9 +4,11 @@ import com.bank.depositsmanagement.dao.*;
 import com.bank.depositsmanagement.entity.*;
 import com.bank.depositsmanagement.utils.CurrencyConstant;
 import com.bank.depositsmanagement.utils.TimeConstant;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,13 +25,11 @@ public class DepositAccountController {
 
     private final CustomerRepository customerRepository;
     private final InterestRateReferenceRepository interestRateReferenceRepository;
-    private final AccountRepository accountRepository;
     private final DepositAccountRepository depositAccountRepository;
 
-    public DepositAccountController(CustomerRepository customerRepository, InterestRateReferenceRepository interestRateReferenceRepository, AccountRepository accountRepository, DepositAccountRepository depositAccountRepository) {
+    public DepositAccountController(CustomerRepository customerRepository, InterestRateReferenceRepository interestRateReferenceRepository, DepositAccountRepository depositAccountRepository) {
         this.customerRepository = customerRepository;
         this.interestRateReferenceRepository = interestRateReferenceRepository;
-        this.accountRepository = accountRepository;
         this.depositAccountRepository = depositAccountRepository;
     }
 
@@ -97,9 +97,10 @@ public class DepositAccountController {
             errorOriginalAmount = "Không được bỏ trống trường này";
         }
 
-        if (bindingResult.hasErrors() || errorOriginalAmount != null) {
+        bindingResult.addError(new FieldError("depositAccount","originalAmount",errorOriginalAmount));
+
+        if (bindingResult.hasErrors()) {
             model.addAttribute("depositAccount", depositAccount);
-            model.addAttribute("errorOriginalAmount", errorOriginalAmount);
 
             List<InterestRateReference> interestRateReferences = new ArrayList<>() ;
             interestRateReferenceRepository.findAll().forEach(interestRateReferences::add);
@@ -110,12 +111,13 @@ public class DepositAccountController {
             return "add-deposit-account";
         }
 
-        Account account = accountRepository.findByUsername(principal.getName()).orElse(null);
-        if (account == null || account.getEmployee() == null) {
-            model.addAttribute("message", "Không xác định được thông tin của bạn");
+        Account account = (Account) ((Authentication) principal).getPrincipal();
+        Employee employee = account.getEmployee();
+
+        if (employee == null) {
+            model.addAttribute("message", "Không tìm thấy thông tin của bạn");
             return "404";
         }
-        Employee employee = account.getEmployee();
         depositAccount.setCreateBy(employee);
 
         Long depositAccountID = depositAccountRepository.save(depositAccount).getId();

@@ -42,7 +42,6 @@ public class DepositAccount {
     private int period;
 
     @PositiveOrZero(message = "Không thể là số âm")
-    @NotNull(message = "Không được bỏ trống")
     @Column(nullable = false)
 //    @NumberFormat(pattern = "#,###", style = NumberFormat.Style.CURRENCY)
     private BigDecimal originalAmount;

@@ -5,13 +5,32 @@ import com.bank.depositsmanagement.dao.InterestRateReferenceRepository;
 import com.bank.depositsmanagement.dao.AccountRepository;
 import com.bank.depositsmanagement.entity.*;
 import com.bank.depositsmanagement.utils.EncryptedPasswordUtils;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
+@Scope("singleton")
 public class InitData {
-    public static void createUser(AccountRepository accountRepository, EmployeeRepository employeeRepository) {
+    private final AccountRepository accountRepository;
+    private final EmployeeRepository employeeRepository;
+    private final InterestRateReferenceRepository interestRateReferenceRepository;
+
+    public InitData(AccountRepository accountRepository, EmployeeRepository employeeRepository, InterestRateReferenceRepository interestRateReferenceRepository) {
+        this.accountRepository = accountRepository;
+        this.employeeRepository = employeeRepository;
+        this.interestRateReferenceRepository = interestRateReferenceRepository;
+
+        if (!accountRepository.existsById(1L)) {
+            this.createUser();
+            this.createInterestRateReference();
+        }
+    }
+
+    public void createUser() {
         Account admin = accountRepository.save(
                 Account.builder()
                         .username("admin")
@@ -85,7 +104,7 @@ public class InitData {
         );
     }
 
-    public static void createInterestRateReference(InterestRateReferenceRepository interestRateReferenceRepository) {
+    public void createInterestRateReference() {
         List<InterestRateReference> interestRateReferences = new ArrayList<>();
         interestRateReferences.add(new InterestRateReference(null, 2.3f, 0, CurrencyType.VND));
         interestRateReferences.add(new InterestRateReference(null, 2.9f, 1, CurrencyType.VND));

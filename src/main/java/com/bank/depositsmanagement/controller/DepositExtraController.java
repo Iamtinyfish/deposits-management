@@ -6,6 +6,7 @@ import com.bank.depositsmanagement.dao.TransactionRepository;
 import com.bank.depositsmanagement.entity.*;
 import com.bank.depositsmanagement.utils.CurrencyConstant;
 import com.bank.depositsmanagement.utils.TimeConstant;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -22,12 +23,10 @@ import java.time.LocalDate;
 public class  DepositExtraController {
     private final DepositAccountRepository depositAccountRepository;
     private final TransactionRepository transactionRepository;
-    private final AccountRepository accountRepository;
 
-    public DepositExtraController(DepositAccountRepository depositAccountRepository, TransactionRepository transactionRepository, AccountRepository accountRepository) {
+    public DepositExtraController(DepositAccountRepository depositAccountRepository, TransactionRepository transactionRepository) {
         this.depositAccountRepository = depositAccountRepository;
         this.transactionRepository = transactionRepository;
-        this.accountRepository = accountRepository;
     }
 
     @GetMapping("employee/deposit-account/deposit-extra")
@@ -85,14 +84,13 @@ public class  DepositExtraController {
         }
         //=================================//
 
-        Account account = accountRepository.findByUsername(principal.getName()).orElse(null);
+        Account account = (Account) ((Authentication) principal).getPrincipal();
+        Employee employee = account.getEmployee();
 
-        if (account == null || account.getEmployee() == null) {
-            model.addAttribute("message", "Không xác định được thông tin của bạn");
+        if (employee == null) {
+            model.addAttribute("message", "Không tìm thấy thông tin của bạn");
             return "404";
         }
-
-        Employee employee = account.getEmployee();
 
         depositAccount.setOriginalAmount(
                 depositAccount.getOriginalAmount()

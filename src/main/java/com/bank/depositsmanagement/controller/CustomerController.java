@@ -5,9 +5,11 @@ import com.bank.depositsmanagement.dao.CustomerRepository;
 import com.bank.depositsmanagement.entity.*;
 import com.bank.depositsmanagement.utils.CurrencyConstant;
 import com.bank.depositsmanagement.utils.TimeConstant;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,11 +21,8 @@ public class CustomerController {
 
     private final CustomerRepository customerRepository;
 
-    private final AccountRepository accountRepository;
-
-    public CustomerController(CustomerRepository customerRepository, AccountRepository accountRepository) {
+    public CustomerController(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
-        this.accountRepository = accountRepository;
     }
 
     @GetMapping({"employee/","employee/customer"})
@@ -43,27 +42,25 @@ public class CustomerController {
     @PostMapping("employee/customer/add")
     public String addCustomer(Model model, @ModelAttribute("customer") @Valid Customer customer, BindingResult bindingResult, Principal principal) {
         //check unique fields
-        boolean doesIDCardExist = customerRepository.existsByIDCard(customer.getIDCard());
-        if (doesIDCardExist) model.addAttribute("errorIDCard", "Số CCCD đã tồn tại");
-        boolean doesEmailExist = customerRepository.existsByEmail(customer.getEmail());
-        if (doesEmailExist) model.addAttribute("errorEmail", "Email đã tồn tại");
+        if (customerRepository.existsByIDCard(customer.getIDCard()))
+            bindingResult.addError(new FieldError("customer","IDCard", "Số CCCD đã tồn tại"));
+        if (customerRepository.existsByEmail(customer.getEmail()))
+            bindingResult.addError(new FieldError("customer","email", "Email đã tồn tại"));
 
-        if (bindingResult.hasErrors() || doesEmailExist || doesIDCardExist) {
-            model.addAttribute("customer", customer);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("customer",customer);
             return "add-customer";
         }
 
-        Account account = accountRepository.findByUsername(principal.getName()).orElse(null);
+        Account account = (Account) ((Authentication) principal).getPrincipal();
+        Employee employee = account.getEmployee();
 
-        if (account == null || account.getEmployee() == null) {
-            model.addAttribute("message", "Không xác định được thông tin của bạn");
+        if (employee == null) {
+            model.addAttribute("message", "Không tìm thấy thông tin của bạn");
             return "404";
         }
 
-        Employee employee = account.getEmployee();
-
         customer.setLastModifiedBy(employee);
-
         customerRepository.save(customer);
 
         return "redirect:/employee/customer/detail?IDCard="+customer.getIDCard();
@@ -97,28 +94,29 @@ public class CustomerController {
         customer.setCreatedAt(oldCustomer.getCreatedAt());
 
         //check unique fields
-        boolean doesIDCardExist = !customer.getIDCard().equals(oldCustomer.getIDCard()) && customerRepository.existsByIDCard(customer.getIDCard());
-        if (doesIDCardExist) model.addAttribute("errorIDCard", "Số CCCD đã tồn tại");
-        boolean doesEmailExist = !customer.getEmail().equals(oldCustomer.getEmail()) && customerRepository.existsByEmail(customer.getEmail());
-        if (doesEmailExist) model.addAttribute("errorEmail", "Email đã tồn tại");
+        if (!customer.getIDCard().equals(oldCustomer.getIDCard())
+                && customerRepository.existsByIDCard(customer.getIDCard()))
+            bindingResult.addError(new FieldError("customer","IDCard", "Số CCCD đã tồn tại"));
+        if (!customer.getEmail().equals(oldCustomer.getEmail())
+                && customerRepository.existsByEmail(customer.getEmail()))
+            bindingResult.addError(new FieldError("customer","email", "Email đã tồn tại"));
 
-        if (bindingResult.hasErrors() || doesEmailExist || doesIDCardExist) {
+        if (bindingResult.hasErrors()) {
             customer.setLastModifiedAt(oldCustomer.getLastModifiedAt());
             customer.setLastModifiedBy(oldCustomer.getLastModifiedBy());
-            model.addAttribute("customer", customer);
-            model.addAttribute("readOnly", false);
-            model.addAttribute("currencyFormatter", new DecimalFormat("#,###"));
+            model.addAttribute("customer",customer);
+            model.addAttribute("readOnly",false);
+            model.addAttribute("currencyFormatter",new DecimalFormat("#,###"));
             return "customer-detail";
         }
 
-        Account account = accountRepository.findByUsername(principal.getName()).orElse(null);
+        Account account = (Account) ((Authentication) principal).getPrincipal();
+        Employee employee = account.getEmployee();
 
-        if (account == null || account.getEmployee() == null) {
-            model.addAttribute("message", "Không xác định được thông tin của bạn");
+        if (employee == null) {
+            model.addAttribute("message", "Không tìm thấy thông tin của bạn");
             return "404";
         }
-
-        Employee employee = account.getEmployee();
 
         customer.setLastModifiedBy(employee);
 

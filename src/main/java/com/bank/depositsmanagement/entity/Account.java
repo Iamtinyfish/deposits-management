@@ -1,9 +1,15 @@
 package com.bank.depositsmanagement.entity;
 
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -12,7 +18,7 @@ import javax.validation.constraints.*;
 @Table(name = "account")
 @Getter
 @Setter
-public class Account {
+public class Account implements UserDetails {
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -33,4 +39,32 @@ public class Account {
 	
 	@OneToOne(mappedBy = "account")
 	private Employee employee;
+
+	@Override
+	public List<GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> grantList = new ArrayList<>();
+		GrantedAuthority authority = new SimpleGrantedAuthority(role);
+		grantList.add(authority);
+		return grantList;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return this.isActive;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return this.isActive;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return this.isActive;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return this.isActive;
+	}
 }

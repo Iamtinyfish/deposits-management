@@ -7,6 +7,7 @@ import com.bank.depositsmanagement.entity.*;
 import com.bank.depositsmanagement.utils.CurrencyConstant;
 import com.bank.depositsmanagement.utils.Interest;
 import com.bank.depositsmanagement.utils.TimeConstant;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -95,14 +96,13 @@ public class FinalSettlementController {
             amount = amount.divide(ONE_THOUSAND,0,RoundingMode.FLOOR).multiply(ONE_THOUSAND);
         }
 
-        Account account = accountRepository.findByUsername(principal.getName()).orElse(null);
+        Account account = (Account) ((Authentication) principal).getPrincipal();
+        Employee employee = account.getEmployee();
 
-        if (account == null || account.getEmployee() == null) {
-            model.addAttribute("message", "Không xác định được thông tin của bạn");
+        if (employee == null) {
+            model.addAttribute("message", "Không tìm thấy thông tin của bạn");
             return "404";
         }
-
-        Employee employee = account.getEmployee();
 
         Transaction transaction = transactionRepository.save(
                 Transaction.builder()

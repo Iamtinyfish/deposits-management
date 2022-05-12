@@ -10,6 +10,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
 @Indexed
 @Getter
 @Setter
-public class Customer {
+public class Customer implements Serializable {
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -46,14 +47,12 @@ public class Customer {
 	@PastOrPresent(message = "Phải là thời gian trong quá khứ")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthday;
-	
-	@NotBlank(message = "Không được bỏ trống trường này")
-	@Length(message = "CCCD phải có 12 số", min = 12, max = 12)
+
+	@Length(message = "Độ dài 12 số", min = 12, max = 12)
 	@Column(nullable = false, unique = true, length = 12)
 	private String IDCard;
 
-	@Length(max = 20)
-	@NotBlank(message = "Không được bỏ trống trường này")
+	@Length(message = "Độ dài từ 7 - 20 số", min = 7, max = 20)
 	@Column(nullable = false, length = 20)
 	private String phone;
 
