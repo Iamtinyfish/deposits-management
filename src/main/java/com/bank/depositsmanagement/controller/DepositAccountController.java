@@ -97,7 +97,8 @@ public class DepositAccountController {
             errorOriginalAmount = "Không được bỏ trống trường này";
         }
 
-        bindingResult.addError(new FieldError("depositAccount","originalAmount",errorOriginalAmount));
+        if (errorOriginalAmount != null)
+            bindingResult.addError(new FieldError("depositAccount","originalAmount",errorOriginalAmount));
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("depositAccount", depositAccount);
