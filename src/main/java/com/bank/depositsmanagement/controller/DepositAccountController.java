@@ -34,7 +34,7 @@ public class DepositAccountController {
     }
 
     @GetMapping("employee/deposit-account/add")
-    public String addDepositAccountPage(Model model, @RequestParam(value = "customerID") Long customerID) {
+    public String addDepositAccountPage(Model model, Long customerID) {
 
         DepositAccount depositAccount = new DepositAccount();
         Customer customer = customerRepository.findById(customerID).orElse(null);
